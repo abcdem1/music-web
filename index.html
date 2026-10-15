@@ -3,341 +3,71 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>我的歌单</title>
-<style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  html, body {
-    height: 100%;
-    overflow: hidden;   /* 禁止整页滚动 */
-  }
-
-  body {
-    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
-    color: #fff;
-  }
-
-  .bg-video {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    object-fit: cover;
-    z-index: -2;
-    background: #1a1a2e;
-  }
-
-  .overlay {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.55);
-    z-index: -1;
-  }
-
-  /* 用 flex 纵向布局，把整页分成 头 / 主体 / 页码 三块 */
-  .container {
-    height: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 24px 24px 90px;  /* 底部留出随机按钮的空间 */
-    display: flex;
-    flex-direction: column;
-  }
-
-  h1 {
-    font-size: 22px;
-    font-weight: 600;
-    margin-bottom: 4px;
-  }
-
-  .subtitle {
-    color: rgba(255,255,255,0.5);
-    font-size: 12px;
-    margin-bottom: 16px;
-  }
-
-  /* 主体区域：占满剩余高度 */
-  .song-grid {
-    flex: 1;
-    min-height: 0;
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    grid-template-rows: repeat(2, 1fr);  /* 5列2行 = 10首 */
-    gap: 14px;
-  }
-
-  @media (max-width: 1000px) {
-    .song-grid { grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(3, 1fr); }
-  }
-  @media (max-width: 800px) {
-    .song-grid { grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(4, 1fr); }
-  }
-  @media (max-width: 560px) {
-    .song-grid { grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(5, 1fr); }
-  }
-
-  /* 卡片：内部用 flex，让图片自适应剩余空间 */
-  .song-card {
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 10px;
-    padding: 8px;
-    transition: background 0.2s, border-color 0.2s;
-  }
-
-  .song-card:hover {
-    background: rgba(255,255,255,0.12);
-  }
-
-  .song-card.highlight {
-    border-color: #4ade80;
-    background: rgba(74, 222, 128, 0.15);
-    box-shadow: 0 0 0 2px rgba(74, 222, 128, 0.4);
-  }
-
-  /* 封面：自动填满卡片剩余高度，保持正方形会被裁切 */
-  .cover {
-    flex: 1;
-    min-height: 0;
-    width: 100%;
-    object-fit: cover;
-    border-radius: 6px;
-    background: rgba(255,255,255,0.08);
-    display: block;
-  }
-
-  .song-name {
-    font-size: 13px;
-    font-weight: 500;
-    margin-top: 6px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .song-artist {
-    font-size: 11px;
-    color: rgba(255,255,255,0.5);
-    margin-top: 2px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .song-actions {
-    display: flex;
-    gap: 5px;
-    margin-top: 6px;
-  }
-
-  .btn {
-    flex: 1;
-    font-size: 11px;
-    padding: 4px 0;
-    border-radius: 6px;
-    border: 1px solid rgba(255,255,255,0.15);
-    background: rgba(255,255,255,0.08);
-    color: #fff;
-    cursor: pointer;
-    text-decoration: none;
-    text-align: center;
-    transition: background 0.2s;
-  }
-
-  .btn:hover {
-    background: rgba(255,255,255,0.18);
-  }
-
-  .btn.copied {
-    background: #4ade80;
-    border-color: #4ade80;
-    color: #000;
-  }
-
-  /* 页码：固定在底部区域 */
-  .pagination {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 6px;
-    padding-top: 14px;
-  }
-
-  .page-btn {
-    min-width: 32px;
-    height: 32px;
-    padding: 0 8px;
-    font-size: 13px;
-    border-radius: 8px;
-    border: 1px solid rgba(255,255,255,0.15);
-    background: rgba(255,255,255,0.08);
-    color: #fff;
-    cursor: pointer;
-    transition: background 0.2s;
-  }
-
-  .page-btn:hover {
-    background: rgba(255,255,255,0.18);
-  }
-
-  .page-btn.active {
-    background: #4ade80;
-    border-color: #4ade80;
-    color: #000;
-    font-weight: 600;
-  }
-
-  .random-btn {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 10px 26px;
-    font-size: 14px;
-    font-weight: 600;
-    border: none;
-    border-radius: 999px;
-    background: #4ade80;
-    color: #000;
-    cursor: pointer;
-    box-shadow: 0 4px 20px rgba(74, 222, 128, 0.4);
-    transition: transform 0.2s, box-shadow 0.2s;
-    z-index: 10;
-  }
-
-  .random-btn:hover {
-    transform: translateX(-50%) scale(1.05);
-    box-shadow: 0 6px 28px rgba(74, 222, 128, 0.6);
-  }
-</style>
+<title>私人听歌档案</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai:wght@300;400;500;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai:wght@300;400;500;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap"></noscript>
+<link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="page-home">
 
-<video class="bg-video" autoplay loop muted playsinline>
-  <source src="bg.mp4" type="video/mp4">
-</video>
-<div class="overlay"></div>
-
-<div class="container">
-  <h1>我喜欢的歌</h1>
-  <p class="subtitle">点击“收听”跳转到正版平台</p>
-  <div class="song-grid" id="songGrid"></div>
-  <div class="pagination" id="pagination"></div>
+<div class="botanica" aria-hidden="true">
+  <span class="blob blob-1"></span>
+  <span class="blob blob-2"></span>
+  <span class="blob blob-3"></span>
 </div>
 
-<button class="random-btn" id="randomBtn">随机来一首</button>
+<div class="home-wrap">
+  <header class="home-header">
+    <div class="brand">
+      <span class="brand-mark">♪</span>
+      <span class="brand-name">私人听歌档案</span>
+    </div>
+    <span class="home-tag">Personal Listening Archive</span>
+  </header>
 
-<script>
-const songs = [
-  { name: "示例歌曲 A", artist: "歌手甲", url: "https://y.qq.com/", cover: "covers/cover1.jpg" },
-  { name: "示例歌曲 B", artist: "歌手乙", url: "https://music.163.com/", cover: "covers/cover2.jpg" },
-  { name: "示例歌曲 C", artist: "歌手丙", url: "https://y.qq.com/", cover: "covers/cover3.jpg" },
-  { name: "示例歌曲 D", artist: "歌手丁", url: "https://music.163.com/", cover: "covers/cover4.jpg" },
-  { name: "示例歌曲 E", artist: "歌手戊", url: "https://y.qq.com/", cover: "covers/cover5.jpg" },
-  { name: "示例歌曲 F", artist: "歌手己", url: "https://music.163.com/", cover: "covers/cover6.jpg" },
-  { name: "示例歌曲 G", artist: "歌手庚", url: "https://y.qq.com/", cover: "covers/cover7.jpg" },
-  { name: "示例歌曲 H", artist: "歌手辛", url: "https://music.163.com/", cover: "covers/cover8.jpg" },
-  { name: "示例歌曲 I", artist: "歌手壬", url: "https://y.qq.com/", cover: "covers/cover9.jpg" },
-  { name: "示例歌曲 J", artist: "歌手癸", url: "https://music.163.com/", cover: "covers/cover10.jpg" },
-  { name: "示例歌曲 K", artist: "歌手子", url: "https://y.qq.com/", cover: "covers/cover11.jpg" },
-  { name: "示例歌曲 L", artist: "歌手丑", url: "https://music.163.com/", cover: "covers/cover12.jpg" }
-];
+  <main class="choices">
+    <a class="choice liked" href="liked.html">
+      <span class="choice-index">01</span>
+      <h2>站长推荐</h2>
+      <p class="choice-en">LIKED</p>
+      <p class="choice-desc">指特别喜欢</p>
+      <span class="choice-arrow">进入 →</span>
+    </a>
 
-const PAGE_SIZE = 10;
-const gridEl = document.getElementById("songGrid");
-const paginationEl = document.getElementById("pagination");
-let currentPage = 1;
+    <div class="right-col">
+      <a class="choice order" href="order.html">
+        <span class="choice-index">02</span>
+        <h2>秩序</h2>
+        <p class="choice-en">ORDER</p>
+        <p class="choice-desc">旋律相对舒缓 · 秩序安然</p>
+        <span class="choice-arrow">进入 →</span>
+      </a>
 
-function renderSongs() {
-  const start = (currentPage - 1) * PAGE_SIZE;
-  const pageSongs = songs.slice(start, start + PAGE_SIZE);
+      <a class="choice chaos" href="chaos.html">
+        <span class="choice-index">03</span>
+        <h2>混沌</h2>
+        <p class="choice-en">CHAOS</p>
+        <p class="choice-desc">节奏遂意狂放 · 混沌不羁</p>
+        <span class="choice-arrow">进入 →</span>
+      </a>
 
-  gridEl.innerHTML = pageSongs.map((s, i) => {
-    const globalIndex = start + i;
-    return `
-      <div class="song-card" data-index="${globalIndex}">
-        <img class="cover" src="${s.cover}" alt="${s.name}" loading="lazy">
-        <div class="song-name">${s.name}</div>
-        <div class="song-artist">${s.artist}</div>
-        <div class="song-actions">
-          <button class="btn copy-btn" data-index="${globalIndex}">复制</button>
-          <a class="btn" href="${s.url}" target="_blank" rel="noopener">收听</a>
-        </div>
-      </div>
-    `;
-  }).join("");
+      <a class="choice pop" href="pop.html">
+        <span class="choice-index">04</span>
+        <h2>流行乐</h2>
+        <p class="choice-en">POP</p>
+        <p class="choice-desc">跟上节拍 · 随手就来</p>
+        <span class="choice-arrow">进入 →</span>
+      </a>
+    </div>
+  </main>
 
-  bindCopy();
-}
+  <footer class="home-tip">
+    <span class="tips-icon">i</span>
+    <span>点击任意卡片进入对应歌单 · 内部点击封面即可跳转收听</span>
+  </footer>
+</div>
 
-function renderPagination() {
-  const totalPages = Math.ceil(songs.length / PAGE_SIZE);
-  let html = "";
-  for (let p = 1; p <= totalPages; p++) {
-    html += `<button class="page-btn ${p === currentPage ? "active" : ""}" data-page="${p}">${p}</button>`;
-  }
-  paginationEl.innerHTML = html;
-
-  paginationEl.querySelectorAll(".page-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-      currentPage = Number(btn.dataset.page);
-      renderSongs();
-      renderPagination();
-    });
-  });
-}
-
-function bindCopy() {
-  document.querySelectorAll(".copy-btn").forEach(btn => {
-    btn.addEventListener("click", async () => {
-      const song = songs[btn.dataset.index];
-      const text = `${song.name} - ${song.artist}`;
-      try {
-        await navigator.clipboard.writeText(text);
-        btn.textContent = "已复制";
-        btn.classList.add("copied");
-        setTimeout(() => {
-          btn.textContent = "复制";
-          btn.classList.remove("copied");
-        }, 1500);
-      } catch {
-        btn.textContent = "失败";
-        setTimeout(() => btn.textContent = "复制", 1500);
-      }
-    });
-  });
-}
-
-let lastIndex = -1;
-document.getElementById("randomBtn").addEventListener("click", () => {
-  if (songs.length === 0) return;
-  let idx;
-  do {
-    idx = Math.floor(Math.random() * songs.length);
-  } while (songs.length > 1 && idx === lastIndex);
-  lastIndex = idx;
-
-  const targetPage = Math.floor(idx / PAGE_SIZE) + 1;
-
-  if (targetPage !== currentPage) {
-    currentPage = targetPage;
-    renderSongs();
-    renderPagination();
-  }
-
-  document.querySelectorAll(".song-card").forEach(el => el.classList.remove("highlight"));
-
-  const target = document.querySelector(`.song-card[data-index="${idx}"]`);
-  if (target) {
-    target.classList.add("highlight");
-  }
-});
-
-renderSongs();
-renderPagination();
-</script>
 </body>
 </html>

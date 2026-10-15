@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>混沌</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai:wght@300;400;500;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai:wght@300;400;500;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap"></noscript>
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="page-chaos">
+
+<video class="bg-video" id="bgVideo" loop muted playsinline preload="auto">
+  <source src="chaos.mp4" type="video/mp4">
+</video>
+<div class="bg-scrim"></div>
+
+<div class="page-wrap">
+  <header class="page-header">
+    <div>
+      <div class="title-group">
+        <a class="back" href="index.html">← 返回</a>
+        <h1>混沌</h1>
+      </div>
+      <p class="page-sub">节奏狂放，混沌不羁</p>
+    </div>
+    <div class="header-actions">
+      <div class="tips">
+        <span class="tips-icon">i</span>
+        <span>「复制」保存歌名 · 「收听」跳转平台 · 下方按钮随机来一首</span>
+      </div>
+      <button class="video-toggle" id="videoToggle" type="button" aria-pressed="false">
+        <span>视频背景</span><span class="vt-state">关</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="search-bar">
+    <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+    <input id="searchInput" type="text" placeholder="搜索歌名或曲师…" autocomplete="off">
+    <button class="search-clear" id="searchClear" hidden>清除</button>
+  </div>
+
+  <section class="song-grid" id="songGrid"></section>
+  <nav class="pagination" id="pagination"></nav>
+</div>
+
+<button class="random-btn" id="randomBtn">随机来一首</button>
+<div class="toast" id="toast"></div>
+
+<script>
+// 混沌区歌单
+const songs = [
+  { name: "Grievous Lady", artist: "Team Grimoire vs Laur", url: "", cover: "covers/chaos/Songs_grievouslady.png" },
+  { name: "DREAD AREA", artist: "Ashrount vs. 打打だいず", url: "", cover: "covers/chaos/Songs_dreadarea.png" },
+  { name: "Judgement", artist: "Tatsunoshin", url: "", cover: "covers/chaos/Songs_judgement.png" },
+  { name: "暗夜苏醒 (REANIMATE)", artist: "Warak", url: "", cover: "covers/chaos/暗夜苏醒 (REANIMATE).png" },
+  { name: "Viyella's Tears", artist: "Laur", url: "", cover: "covers/chaos/Songs_viyellastears.png" },
+  { name: "Igallta", artist: "Se-U-Ra", url: "", cover: "covers/chaos/Songs_igallta.png" },
+  { name: "Re: End of a Dream", artist: "uma vs. モリモリあつし", url: "", cover: "covers/chaos/Cover_reendofadream.png" },
+  { name: "Infinite Strife,", artist: "BlackYooh vs. siromaru", url: "", cover: "covers/chaos/Songs_infinitestrife.png" },
+  { name: "Arcana Eden", artist: "Team Grimoire vs Sakuzyo vs Laur", url: "", cover: "covers/chaos/Songs_arcanaeden.png" },
+  { name: "INN3RFLAME", artist: "seatrus", url: "", cover: "covers/chaos/Songs_inn3rflame.png" },
+  { name: "Viyella's Melancholy", artist: "Laur", url: "", cover: "covers/chaos/Cover_viyellasmelancholy.png" },
+  { name: "We're All Gonna Die", artist: "Paul Bazooka", url: "", cover: "covers/chaos/Songs_wereallgonnadie.png" },
+  { name: "▓", artist: "∞", url: "", cover: "covers/chaos/▓.png" },
+  { name: "竹", artist: "立秋 feat.ちょこ", url: "", cover: "covers/chaos/Songs_take.png" },
+  { name: "DESTRUCTION 3,2,1", artist: "Normal1zer vs. Broken Nerdz", url: "", cover: "covers/chaos/Cover_destruction321.png" },
+  { name: "Crimson Throne", artist: "Dimier√Lisb", url: "", cover: "covers/chaos/Songs_crimsonthrone.png" },
+  { name: "PANIC PARADISE", artist: "DJ SHION.Y", url: "", cover: "covers/chaos/panicparadise.png" },
+  { name: "Nyarlathotep's Dreamland", artist: "Raimukun", url: "", cover: "covers/chaos/Songs_nyarlathoteps-dreamland.png" },
+  { name: "Designant.", artist: "Designant", url: "", cover: "covers/chaos/Songs_designant.png" },
+  { name: "祈 -我ら神祖と共に歩む者なり-", artist: "光吉猛修 VS 穴山大輔 VS Kai VS 水野健治 VS 大国奏音", url: "", cover: "covers/chaos/祈 -我ら神祖と共に歩む者なり-.png" },
+  { name: "Tempestissimo", artist: "t+pazolite", url: "", cover: "covers/chaos/Songs_tempestissimo.png" },
+  { name: "#1f1e33", artist: "かめりあ(EDP)", url: "", cover: "covers/chaos/Songs_1f1e33.png" },
+  { name: "Retribution", artist: "nm-y & Kry.exe", url: "", cover: "covers/chaos/Cover_retribution.png" },
+  { name: "Restricted Access", artist: "Knighthood", url: "", cover: "covers/chaos/Cover_restrictedaccess.png" },
+  { name: "Exoplanetary Mirage", artist: "かめりあ", url: "", cover: "covers/chaos/Exoplanetary Mirage.png" },
+  { name: "Heavensdoor", artist: "LeaF", url: "", cover: "covers/chaos/Songs_heavensdoor.png" },
+  { name: "Vainspire", artist: "satella", url: "", cover: "covers/chaos/Songs_vainspire.png" },
+  { name: "[NWAD]", artist: "Knighthood", url: "", cover: "covers/chaos/Cover_nwad.png" },
+  { name: "ma[χ]zo", artist: "t+pazolite", url: "", cover: "covers/chaos/Cover_makaizo.png" },
+  { name: "Sheriruth", artist: "Team Grimoire", url: "", cover: "covers/chaos/Songs_sheriruth.png" },
+  { name: "ALTER EGO", artist: "Yuta Imai vs Qlarabelle", url: "", cover: "covers/chaos/Songs_alterego.png" },
+  { name: "Silentphobia", artist: "t+pazolite VS 削除", url: "", cover: "covers/chaos/Songs_silentphobia.png" },
+  { name: "Wolves Standing Towards Enemies", artist: "かめりあ(EDP)", url: "", cover: "covers/chaos/Cover_wolvesstanding.png" },
+  { name: "Einherjar Joker", artist: "DJ Genki vs Gram", url: "", cover: "covers/chaos/Songs_einherjar.png" },
+  { name: "Vandalism", artist: "Ashrount", url: "", cover: "covers/chaos/Songs_vandalism.png" },
+  { name: "Lyrith -迷宮リリス-", artist: "ユメミド", url: "", cover: "covers/chaos/lyrith迷宫.png" },
+  { name: "cry of viyella", artist: "Laur", url: "", cover: "covers/chaos/Songs_viyella.png" },
+  { name: "GIGANTO MACHINA", artist: "Supa7onyz vs. Sound piercer", url: "", cover: "covers/chaos/Cover_gigantomachina.png" },
+  { name: "The Chariot ~REVIIVAL~", artist: "Attoclef", url: "", cover: "covers/chaos/The Chariot ~REVIIVAL~.png" },
+  { name: "Synthesis.", artist: "tn-shi", url: "", cover: "covers/chaos/Cover_synthesis.png" },
+  { name: "Rrhar'il", artist: "Team Grimoire", url: "", cover: "covers/chaos/Cover_rrharil.png" },
+  { name: "GALACTIC WARZONE", artist: "Akira Complex", url: "", cover: "covers/chaos/Cover_galacticwarzone.png" },
+  { name: "Undying Macula", artist: "Ashrount", url: "", cover: "covers/chaos/Songs_undyingmacula.png" },
+  { name: "OLDSCHOOL TENTACLES", artist: "Raimukun", url: "", cover: "covers/chaos/Songs_oldschool-tentacles.png" },
+  { name: "+ERABY+E CONNEC+10N", artist: "かめりあ", url: "", cover: "covers/chaos/erabyeconnec10n.png" },
+  { name: "Grandspell", artist: "Hylen", url: "", cover: "covers/chaos/Songs_grandspell.png" },
+  { name: "Absolution Pulse", artist: "nm-y", url: "", cover: "covers/chaos/Illustration.AbsolutionPulse.nmy.0.png" },
+  { name: "LABYRINTHOX", artist: "BlackYooh vs. siromaru", url: "", cover: "covers/chaos/Cover_labyrinthox.png" },
+  { name: "͟͝͞Ⅱ́̕", artist: "Cytus", url: "", cover: "covers/chaos/Songs_ii.png" },
+  { name: "MVURBD", artist: "ETIA.", url: "", cover: "covers/chaos/Songs_mvurbd.png" },
+  { name: "宿星審判", artist: "suzu", url: "", cover: "covers/chaos/Cover_shukuseishinpan.png" },
+  { name: "DEINOS PHAINEIN", artist: "Blacklolita vs Juggernaut.", url: "", cover: "covers/chaos/Songs_deinosphainein.png" },
+  { name: "Vicious Mockery", artist: "Kry.exe", url: "", cover: "covers/chaos/Illustration.ViciousMockery.Kryexe.0.png" },
+  { name: "Sound Chimera", artist: "Laur", url: "", cover: "covers/chaos/Sound_Chimera.png" },
+  { name: "QZKago Requiem", artist: "tpazolite", url: "", cover: "covers/chaos/QZKago Requiem.png" },
+  { name: "Sphalerite", artist: "RYOQUCHA & CS4W", url: "", cover: "covers/chaos/Sphalerite.png" },
+  { name: "Dantalion", artist: "Team Grimoire", url: "", cover: "covers/chaos/Songs_dantalion.png" },
+  { name: "Entrance to the Chaos", artist: "打打だいず vs siromaru", url: "", cover: "covers/chaos/entrancetothechaos.png" },
+  { name: "DA'AT -The First Seeker of Souls-", artist: "水野健治 VS 大国奏音", url: "", cover: "covers/chaos/Songs_daat.png" },
+  { name: "Meteorite Lotus", artist: "wa.", url: "", cover: "covers/chaos/Cover_meteoritelotus.png" },
+  { name: "十拳剣", artist: "5KiLOBYTE vs. Raphiiel", url: "", cover: "covers/chaos/十拳剣.png" },
+  { name: "ANDORXOR", artist: "Sobrem", url: "", cover: "covers/chaos/Songs_andorxor.png" },
+  { name: "Hydra", artist: "James Landino X Akira Complex", url: "", cover: "covers/chaos/Cover_hydra.png" },
+  { name: "Fractured Skies", artist: "Flay! feat. xia & Yoominel", url: "", cover: "covers/chaos/Songs_fractured-skies.png" },
+  { name: "Abstruse Dilemma", artist: "Ashrount vs. 打打だいず", url: "", cover: "covers/chaos/Songs_abstruse-dilemma.png" },
+  { name: "Balor", artist: "Redsign", url: "", cover: "covers/chaos/Songs_balor.png" },
+  { name: "Pentiment", artist: "Nothing But Requiem with Museo", url: "", cover: "covers/chaos/Songs_pentiment.png" },
+  { name: "Traxxendenza", artist: "CS4W", url: "", cover: "covers/chaos/Cover_traxxendenza.png" },
+  { name: "Ikazuchi(怒槌)", artist: "光吉猛修", url: "", cover: "covers/chaos/Songs_ikazuchi.png" },
+  { name: "MEGALOVANIA (Camellia Remix)", artist: "Camellia", url: "", cover: "covers/chaos/Songs_megalovaniarmx.png" },
+  { name: "XLIX", artist: "Daily天利 feat. Sayayayako", url: "", cover: "covers/chaos/Songs_xlix.png" },
+  { name: "Pierrot Fixer", artist: "ルゼ", url: "", cover: "covers/chaos/Illustration.PierrotFixer.ルゼ.0.png" },
+  { name: "Deus Judicium", artist: "黒皇帝 vs MIssionary", url: "", cover: "covers/chaos/Songs_deus-judicium.png" },
+  { name: "Valhalla:0", artist: "Juggernaut.", url: "", cover: "covers/chaos/Songs_valhallazero.png" },
+  { name: "Chase", artist: "HLXQ", url: "", cover: "covers/chaos/Cover_chase.png" },
+  { name: "業 -善なる神とこの世の悪について-", artist: "光吉猛修 VS 穴山大輔", url: "", cover: "covers/chaos/Songs_业善.png" }
+];
+
+const PAGE_SIZE = 10;
+const gridEl = document.getElementById("songGrid");
+const paginationEl = document.getElementById("pagination");
+const toastEl = document.getElementById("toast");
+const searchInput = document.getElementById("searchInput");
+const searchClear = document.getElementById("searchClear");
+let currentPage = 1;
+let query = "";
+let toastTimer = null;
+let picked = -1;
+
+function showToast(msg) {
+  toastEl.textContent = msg;
+  toastEl.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toastEl.classList.remove("show"), 1600);
+}
+
+// 过长的歌名/曲师自动缩小字号，最多两行，保持封面尺寸一致
+function shrinkToLines(el, maxLines, minPx) {
+  el.style.fontSize = "";
+  let size = parseFloat(getComputedStyle(el).fontSize) || 16;
+  let guard = 0;
+  while (guard++ < 80) {
+    const lh = parseFloat(getComputedStyle(el).lineHeight) || size * 1.3;
+    const lines = Math.round(el.scrollHeight / lh);
+    if (lines <= maxLines || size <= minPx) break;
+    size = Math.max(minPx, size - 0.5);
+    el.style.fontSize = size + "px";
+  }
+}
+
+function fitText() {
+  document.querySelectorAll(".song-name").forEach(el => shrinkToLines(el, 2, 10));
+  document.querySelectorAll(".song-artist").forEach(el => shrinkToLines(el, 2, 9));
+}
+
+function currentSongs() {
+  const q = query.trim().toLowerCase();
+  if (!q) return songs;
+  return songs.filter(s => s.name.toLowerCase().includes(q) || s.artist.toLowerCase().includes(q));
+}
+
+function renderSongs() {
+  const list = currentSongs();
+  const start = (currentPage - 1) * PAGE_SIZE;
+  const pageSongs = list.slice(start, start + PAGE_SIZE);
+
+  if (!pageSongs.length) {
+    gridEl.innerHTML = `<div class="empty">${query ? "没有找到匹配的歌曲" : "还没有添加曲目"}</div>`;
+    return;
+  }
+
+  gridEl.innerHTML = pageSongs.map(s => {
+    const globalIndex = songs.indexOf(s);
+    const cover = s.cover
+      ? `<img src="${s.cover}" alt="${s.name}" loading="lazy" onerror="this.style.display='none'">`
+      : "";
+    const listen = s.url
+      ? `<a class="btn" href="${s.url}" target="_blank" rel="noopener">收听</a>`
+      : `<span class="btn is-disabled" title="链接待补充">收听</span>`;
+    return `
+      <article class="song-card${globalIndex === picked ? " highlight" : ""}" data-index="${globalIndex}">
+        <div class="cover">${cover}</div>
+        <div class="song-name">${s.name}</div>
+        <div class="song-artist">${s.artist}</div>
+        <div class="song-actions">
+          <button class="btn copy-btn" data-index="${globalIndex}">复制</button>
+          ${listen}
+        </div>
+      </article>
+    `;
+  }).join("");
+
+  bindCopy();
+  fitText();
+}
+
+function pageItems(current, total) {
+  const items = [];
+  if (total <= 7) {
+    for (let i = 1; i <= total; i++) items.push(i);
+    return items;
+  }
+  items.push(1);
+  const start = Math.max(2, current - 1);
+  const end = Math.min(total - 1, current + 1);
+  if (start > 2) items.push("...");
+  for (let i = start; i <= end; i++) items.push(i);
+  if (end < total - 1) items.push("...");
+  items.push(total);
+  return items;
+}
+
+function gotoPage(p) {
+  const totalPages = Math.ceil(currentSongs().length / PAGE_SIZE);
+  currentPage = Math.min(Math.max(1, p), Math.max(1, totalPages));
+  renderSongs();
+  renderPagination();
+}
+
+function renderPagination() {
+  const totalPages = Math.ceil(currentSongs().length / PAGE_SIZE);
+  if (totalPages <= 0) { paginationEl.innerHTML = ""; return; }
+
+  const nums = pageItems(currentPage, totalPages).map(v => v === "..."
+    ? `<span class="page-ellipsis">…</span>`
+    : `<button class="page-btn ${v === currentPage ? "active" : ""}" data-page="${v}">${v}</button>`
+  ).join("");
+
+  paginationEl.innerHTML = `
+    <div class="page-list">${nums}</div>
+    <div class="page-jump">
+      <input id="jumpInput" type="number" min="1" max="${totalPages}" placeholder="输入页码" inputmode="numeric">
+      <button id="jumpBtn" type="button">跳转</button>
+    </div>
+  `;
+
+  paginationEl.querySelectorAll(".page-btn").forEach(btn => {
+    btn.addEventListener("click", () => gotoPage(Number(btn.dataset.page)));
+  });
+
+  const jumpInput = document.getElementById("jumpInput");
+  const jumpBtn = document.getElementById("jumpBtn");
+  const submitJump = () => {
+    const v = parseInt(jumpInput.value, 10);
+    if (!Number.isNaN(v)) gotoPage(v);
+  };
+  jumpBtn.addEventListener("click", submitJump);
+  jumpInput.addEventListener("keydown", e => { if (e.key === "Enter") submitJump(); });
+}
+
+async function copyText(text) {
+  if (navigator.clipboard && window.isSecureContext) {
+    await navigator.clipboard.writeText(text);
+    return;
+  }
+  const ta = document.createElement("textarea");
+  ta.value = text;
+  ta.style.position = "fixed";
+  ta.style.opacity = "0";
+  document.body.appendChild(ta);
+  ta.select();
+  document.execCommand("copy");
+  ta.remove();
+}
+
+function bindCopy() {
+  document.querySelectorAll(".copy-btn").forEach(btn => {
+    btn.addEventListener("click", async () => {
+      const song = songs[btn.dataset.index];
+      const text = `${song.name} - ${song.artist}`;
+      try {
+        await copyText(text);
+        btn.textContent = "已复制";
+        btn.classList.add("copied");
+        showToast(`已复制：${text}`);
+        setTimeout(() => {
+          btn.textContent = "复制";
+          btn.classList.remove("copied");
+        }, 1500);
+      } catch {
+        showToast("复制失败，请手动复制");
+      }
+    });
+  });
+}
+
+// 搜索
+searchInput.addEventListener("input", () => {
+  query = searchInput.value;
+  currentPage = 1;
+  searchClear.hidden = !query;
+  renderSongs();
+  renderPagination();
+});
+
+searchClear.addEventListener("click", () => {
+  searchInput.value = "";
+  query = "";
+  currentPage = 1;
+  searchClear.hidden = true;
+  renderSongs();
+  renderPagination();
+  searchInput.focus();
+});
+
+// 视频背景开关（默认关）
+const videoEl = document.getElementById("bgVideo");
+const toggleEl = document.getElementById("videoToggle");
+const stateEl = toggleEl.querySelector(".vt-state");
+const STORE_KEY = "music-chaos-video";
+
+function readStore(key) { try { return localStorage.getItem(key); } catch { return null; } }
+function writeStore(key, val) { try { localStorage.setItem(key, val); } catch {} }
+
+let videoOn = readStore(STORE_KEY) !== "off";
+function applyVideo() {
+  document.body.classList.toggle("video-on", videoOn);
+  stateEl.textContent = videoOn ? "开" : "关";
+  toggleEl.setAttribute("aria-pressed", String(videoOn));
+  if (videoOn) { videoEl.play().catch(() => {}); } else { videoEl.pause(); }
+}
+toggleEl.addEventListener("click", () => {
+  videoOn = !videoOn;
+  writeStore(STORE_KEY, videoOn ? "on" : "off");
+  applyVideo();
+});
+applyVideo();
+
+// 随机来一首：由当前时间生成两个值 —— 一页内的位置(0~9) 与 页码
+function timeSeed() {
+  const d = new Date();
+  return ((d.getHours() * 60 + d.getMinutes()) * 60 + d.getSeconds()) * 1000 + d.getMilliseconds();
+}
+
+document.getElementById("randomBtn").addEventListener("click", () => {
+  const list = currentSongs();
+  const N = list.length;
+  if (!N) return;
+
+  const totalPages = Math.ceil(N / PAGE_SIZE);
+  const seed = timeSeed();
+  const slot = seed % PAGE_SIZE;                          // 一页内的位置：0~9
+  const page = Math.floor(seed / PAGE_SIZE) % totalPages; // 页码：0 ~ totalPages-1
+
+  let pos = page * PAGE_SIZE + slot;
+  if (pos >= N) pos = pos % N;
+  if (N > 1 && songs.indexOf(list[pos]) === picked) pos = (pos + 1) % N;
+
+  picked = songs.indexOf(list[pos]);
+  currentPage = Math.floor(pos / PAGE_SIZE) + 1;
+
+  renderSongs();
+  renderPagination();
+
+  const target = document.querySelector(`.song-card[data-index="${picked}"]`);
+  if (target) target.scrollIntoView({ behavior: "smooth", block: "center" });
+});
+
+renderSongs();
+renderPagination();
+
+if (document.fonts) {
+  document.fonts.addEventListener("loadingdone", fitText);
+  if (document.fonts.ready) document.fonts.ready.then(fitText);
+}
+</script>
+</body>
+</html>

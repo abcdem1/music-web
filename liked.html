@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>站长推荐</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai:wght@300;400;500;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai:wght@300;400;500;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap"></noscript>
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="page-liked">
+
+<div class="bg-scrim"></div>
+
+<div class="page-wrap">
+  <header class="page-header">
+    <div>
+      <div class="title-group">
+        <a class="back" href="index.html">← 返回</a>
+        <h1>站长推荐</h1>
+      </div>
+      <p class="page-sub">没在这放不代表不喜欢，这些特别喜欢</p>
+    </div>
+    <div class="tips">
+      <span class="tips-icon">i</span>
+      <span>点击封面查看曲师与收听链接</span>
+    </div>
+  </header>
+
+  <div id="tierList"></div>
+</div>
+
+<div class="modal" id="modal" hidden>
+  <div class="modal-backdrop" data-close></div>
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <button class="modal-close" type="button" data-close aria-label="关闭">×</button>
+    <img class="modal-cover" id="modalCover" alt="">
+    <div class="modal-info">
+      <span class="modal-eyebrow">TRACK</span>
+      <h2 class="modal-title" id="modalTitle"></h2>
+      <div class="modal-row"><span class="label">曲师</span><span id="modalArtist"></span></div>
+      <a class="modal-link" id="modalLink" target="_blank" rel="noopener"></a>
+    </div>
+  </div>
+</div>
+
+<script>
+const tiers = [
+  {
+    label: "超脱",
+    color: "#e89a78",
+    songs: [
+      { name: "sense of wonder", artist: "Yu_Asahina", cover: "covers/order/Cover_senseofwonder.png", url: "" }
+    ]
+  },
+  {
+    label: "超神",
+    color: "#d9bd6a",
+    songs: [
+      { name: "Lament Rain", artist: "Ashrount vs. 打打だいず", cover: "covers/order/Songs_lamentrain.png", url: "" },
+      { name: "Quadruplicity", artist: "LucaProject vs NeLiME", cover: "covers/order/Songs_quadruplicity.png", url: "" }
+    ]
+  },
+  {
+    label: "神",
+    color: "#a6c08f",
+    songs: [
+      { name: "#1f1e33", artist: "かめりあ(EDP)", cover: "covers/chaos/Songs_1f1e33.png", url: "" },
+      { name: "Grievous Lady", artist: "Team Grimoire vs Laur", cover: "covers/chaos/Songs_grievouslady.png", url: "" },
+      { name: "PRAGMATISM -RESURRECTION-", artist: "Laur", cover: "covers/order/Songs_pragmatism.png", url: "" },
+      { name: "Incyde", artist: "YbeLL", cover: "covers/order/Cover_incyde.png", url: "" },
+      { name: "Start to The End", artist: "LucaProject & Xeudo Code", cover: "covers/order/Start_to_The_End.png", url: "" }
+    ]
+  },
+  {
+    label: "仙品",
+    color: "#8ab5ad",
+    songs: [
+      { name: "Observatory", artist: "かめりあ", cover: "covers/order/Cover_observatory.png", url: "" },
+      { name: "Riven Pilgrimage", artist: "rejection & Supire feat. eili", cover: "covers/order/Songs_rivenpilgrim.png", url: "" },
+      { name: "MIRINAE", artist: "TAK × Zekk", cover: "covers/order/Songs_mirinae.png", url: "" },
+      { name: "Hydra", artist: "James Landino X Akira Complex", cover: "covers/chaos/Cover_hydra.png", url: "" },
+      { name: "Valhalla:0", artist: "Juggernaut.", cover: "covers/chaos/Songs_valhallazero.png", url: "" },
+      { name: "Grandspell", artist: "Hylen", cover: "covers/chaos/Songs_grandspell.png", url: "" },
+      { name: "Undying Macula", artist: "Ashrount", cover: "covers/chaos/Songs_undyingmacula.png", url: "" },
+      { name: "Testify", artist: "void (Mournfinale) feat. 星熊南巫", cover: "covers/order/Songs_testify.png", url: "" }
+    ]
+  }
+];
+
+const tierListEl = document.getElementById("tierList");
+
+tierListEl.innerHTML = tiers.map(t => `
+  <div class="tier">
+    <div class="tier-label" style="--tier-color:${t.color}">${t.label}</div>
+    <div class="tier-songs">
+      ${t.songs.map((s, i) => `
+        <span class="tile" title="点击查看详情" data-tier="${t.label}" data-index="${i}">
+          <img src="${s.cover}" alt="${s.name}" loading="lazy" onerror="this.style.display='none'">
+        </span>
+      `).join("")}
+    </div>
+  </div>
+`).join("");
+
+// 详情弹窗（左图 / 右曲师与链接）
+const modal = document.getElementById("modal");
+const modalCover = document.getElementById("modalCover");
+const modalTitle = document.getElementById("modalTitle");
+const modalArtist = document.getElementById("modalArtist");
+const modalLink = document.getElementById("modalLink");
+
+function openModal(song) {
+  modalCover.src = song.cover;
+  modalCover.alt = song.name;
+  modalTitle.textContent = song.name;
+  modalArtist.textContent = song.artist || "未知";
+  if (song.url) {
+    modalLink.textContent = "前往收听";
+    modalLink.href = song.url;
+    modalLink.classList.remove("is-disabled");
+  } else {
+    modalLink.textContent = "收听链接待补充";
+    modalLink.removeAttribute("href");
+    modalLink.classList.add("is-disabled");
+  }
+  modal.hidden = false;
+}
+
+function closeModal() {
+  modal.hidden = true;
+  modalCover.src = "";
+}
+
+tierListEl.querySelectorAll(".tile").forEach(tile => {
+  tile.addEventListener("click", () => {
+    const tier = tiers.find(x => x.label === tile.dataset.tier);
+    openModal(tier.songs[Number(tile.dataset.index)]);
+  });
+});
+
+modal.querySelectorAll("[data-close]").forEach(el => el.addEventListener("click", closeModal));
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape" && !modal.hidden) closeModal();
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>秩序</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai:wght@300;400;500;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai:wght@300;400;500;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap"></noscript>
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="page-order">
+
+<video class="bg-video" id="bgVideo" loop muted playsinline preload="auto">
+  <source src="order.mp4" type="video/mp4">
+</video>
+<div class="bg-scrim"></div>
+
+<div class="page-wrap">
+  <header class="page-header">
+    <div>
+      <div class="title-group">
+        <a class="back" href="index.html">← 返回</a>
+        <h1>秩序</h1>
+      </div>
+      <p class="page-sub">旋律舒缓，秩序安然</p>
+    </div>
+    <div class="header-actions">
+      <div class="tips">
+        <span class="tips-icon">i</span>
+        <span>「复制」保存歌名 · 「收听」跳转平台 · 下方按钮随机来一首</span>
+      </div>
+      <button class="video-toggle" id="videoToggle" type="button" aria-pressed="false">
+        <span>视频背景</span><span class="vt-state">关</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="search-bar">
+    <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+    <input id="searchInput" type="text" placeholder="搜索歌名或曲师…" autocomplete="off">
+    <button class="search-clear" id="searchClear" hidden>清除</button>
+  </div>
+
+  <section class="song-grid" id="songGrid"></section>
+  <nav class="pagination" id="pagination"></nav>
+</div>
+
+<button class="random-btn" id="randomBtn">随机来一首</button>
+<div class="toast" id="toast"></div>
+
+<script>
+// 秩序区歌单
+const songs = [
+  { name: "Incyde", artist: "YbeLL", url: "", cover: "covers/order/Cover_incyde.png" },
+  { name: "GLORY：ROAD", artist: "uma vs. モリモリあつし", url: "", cover: "covers/order/Songs_gloryroad.png" },
+  { name: "Lumina", artist: "Wisp X & Xomu", url: "", cover: "covers/order/Songs_lumina.png" },
+  { name: "Abyssgazer", artist: "xi VS Sakuzyo", url: "", cover: "covers/order/Cover_abyssgazer.png" },
+  { name: "Rain of Conflict in a Radiant Abyss", artist: "ak+q", url: "", cover: "covers/order/Songs_rainofconflict.png" },
+  { name: "sacred sacrifices", artist: "ak+q", url: "", cover: "covers/order/Cover_sacredsacrifices.png" },
+  { name: "Shattered Sky After Rain", artist: "Lorph & Elexia", url: "", cover: "covers/order/Songs_shattered-sky-after-rain.png" },
+  { name: "CRYSTAL MINING", artist: "Salty Salt", url: "", cover: "covers/order/Cover_crystalmining.png" },
+  { name: "sølips", artist: "rintarosoma", url: "", cover: "covers/order/sølips.png" },
+  { name: "Quadruplicity", artist: "LucaProject vs NeLiME", url: "", cover: "covers/order/Songs_quadruplicity.png" },
+  { name: "Alfheim's faith", artist: "影虎。", url: "", cover: "covers/order/Songs_alfheims-faith.png" },
+  { name: "Start to The End", artist: "LucaProject & Xeudo Code", url: "", cover: "covers/order/Start_to_The_End.png" },
+  { name: "Neural Rewind Protocol", artist: "Connexio", url: "", cover: "covers/order/Songs_neural-rewind-protocol.png" },
+  { name: "Slide Into Light", artist: "ValeraP", url: "", cover: "covers/order/Songs_slide-into-light.png" },
+  { name: "［筏］は云う。幾ら漂流すれど不撓の心さえ有れば軈て行到ると。", artist: "庭師", url: "", cover: "covers/order/Songs_筏.png" },
+  { name: "Summer Time Memory", artist: "kanemiko", url: "", cover: "covers/order/Songs_summer-time-memory.png" },
+  { name: "Felis", artist: "M2U", url: "", cover: "covers/order/Songs_felis.png" },
+  { name: "多次元宇宙融合論", artist: "TAKIO feat. つぐ", url: "", cover: "covers/order/Songs_extradimensional.png" },
+  { name: "彩", artist: "MisoilePunch♪", url: "", cover: "covers/order/彩.png" },
+  { name: "sense of wonder", artist: "Yu_Asahina", url: "", cover: "covers/order/Cover_senseofwonder.png" },
+  { name: "felys -final remix-", artist: "onoken", url: "", cover: "covers/order/Cover_felysfinalremix.png" },
+  { name: "Pure Ruby", artist: "SHIKI", url: "", cover: "covers/order/Songs_pure-ruby.png" },
+  { name: "Der Richter", artist: "Ωμεγα", url: "", cover: "covers/order/derichter.png" },
+  { name: "明晰夢にて", artist: "DJ Raisei", url: "", cover: "covers/order/Songs_meiseki-yume-nite.png" },
+  { name: "Act Beloved", artist: "void (Mournfinale) feat. Salita", url: "", cover: "covers/order/Cover_actbeloved.png" },
+  { name: "Stolen Lips", artist: "Osamu Kubota", url: "", cover: "covers/order/Songs_stolen-lips.png" },
+  { name: "Dawn Nymphaea", artist: "花徒めと", url: "", cover: "covers/order/Songs_dawn-nymphaea.png" },
+  { name: "Alive", artist: "eicateve", url: "", cover: "covers/order/Songs_alive.png" },
+  { name: "Overflow", artist: "effe", url: "", cover: "covers/order/Cover_overflow.png" },
+  { name: "No Way Back", artist: "Nhato", url: "", cover: "covers/order/Songs_nowayback.png" },
+  { name: "Lumia", artist: "sky_delta", url: "", cover: "covers/order/Songs_lumia.png" },
+  { name: "distant call", artist: "nuphory", url: "", cover: "covers/order/Songs_distant-call.png" },
+  { name: "edge of the world", artist: "Shade", url: "", cover: "covers/order/Edge_of_the_world.png" },
+  { name: "Testify", artist: "void (Mournfinale) feat. 星熊南巫", url: "", cover: "covers/order/Songs_testify.png" },
+  { name: "Waltz for Lorelei", artist: "Sobrem & 庭師", url: "", cover: "covers/order/Songs_waltz-for-lorelei.png" },
+  { name: "Fracture Ray", artist: "Sakuzyo", url: "", cover: "covers/order/Songs_fractureray.png" },
+  { name: "遊錘", artist: "Mylta feat. 菊植", url: "", cover: "covers/order/Songs_yusui.png" },
+  { name: "夢の降る日に", artist: "seatrus", url: "", cover: "covers/order/夢の降る日に.png" },
+  { name: "Axium Crisis", artist: "ak+q", url: "", cover: "covers/order/Songs_axiumcrisis.png" },
+  { name: "Secret Illumination", artist: "Yooh", url: "", cover: "covers/order/Cover_secretillumination.png" },
+  { name: "Graves -Ancient Memories-", artist: "Juggernaut.", url: "", cover: "covers/order/Illustration.GravesAncientMemories.Juggernaut.0.png" },
+  { name: "И00.", artist: "Se-U-Ra", url: "", cover: "covers/order/Cover_n00.png" },
+  { name: "Desultory Signals", artist: "technoplanet", url: "", cover: "covers/order/desultory signals.png" },
+  { name: "Flutter Echo", artist: "Cansol", url: "", cover: "covers/order/Songs_flutter-echo.png" },
+  { name: "Elyqiria", artist: "Connexio", url: "", cover: "covers/order/Songs_elyqiria.png" },
+  { name: "Aether Crest: Astral", artist: "void (Mournfinale) × 水野健治", url: "", cover: "covers/order/Songs_aethercrest.png" },
+  { name: "Straight into the lights", artist: "Cosmograph", url: "", cover: "covers/order/Cover_straightintothelights.png" },
+  { name: "Uchronia", artist: "7mai", url: "", cover: "covers/order/Songs_uchronia.png" },
+  { name: "悔_", artist: "Essbee", url: "", cover: "covers/order/Songs_kai.png" },
+  { name: "咲く星々", artist: "ユアミトス", url: "", cover: "covers/order/Songs_saku-hoshiboshi.png" },
+  { name: "Steadfast", artist: "Gardens", url: "", cover: "covers/order/Songs_steadfast.png" },
+  { name: "Chunlian", artist: "utzbo", url: "", cover: "covers/order/Songs_chunlian.png" },
+  { name: "Fractal Fission", artist: "ARForest", url: "", cover: "covers/order/Cover_fractalfission.png" },
+  { name: "Chromafill", artist: "ていぬ", url: "", cover: "covers/order/Songs_chromafill.png" },
+  { name: "Renegade", artist: "sky_delta", url: "", cover: "covers/order/Songs_renegade.png" },
+  { name: "翠杜", artist: "隣の庭は青い(庭師+Aoi)", url: "", cover: "covers/order/Cover_suito.png" },
+  { name: "Hark! The wyntres wynd bloweth", artist: "SeyriN", url: "", cover: "covers/order/Songs_hark-bloweth.png" },
+  { name: "amethyst", artist: "かねこちはる", url: "", cover: "covers/order/Songs_amethyst.png" },
+  { name: "Matane", artist: "Moose", url: "", cover: "covers/order/Matane.png" },
+  { name: "Frey's Philosophy", artist: "Powerless", url: "", cover: "covers/order/Cover_freysphilosophy.png" },
+  { name: "Distorted Fate", artist: "Sakuzyo", url: "", cover: "covers/order/Cover_distortedfate.png" },
+  { name: "Luminescence", artist: "米虾Fomiki & 初云CLoudie", url: "", cover: "covers/order/Cover_luminescence.png" },
+  { name: "森奥虚迹", artist: "ShiBa", url: "", cover: "covers/order/Illustration.森奥虚跡.ShiBa.0.png" },
+  { name: "World Ender", artist: "sasakure.UK × TJ.hangneil", url: "", cover: "covers/order/Songs_worldender.png" },
+  { name: "Xenith", artist: "Tatsh", url: "", cover: "covers/order/Songs_xenith.png" },
+  { name: "Journey", artist: "ARForest", url: "", cover: "covers/order/Songs_journey.png" },
+  { name: "キオク回路", artist: "ShiBa", url: "", cover: "covers/order/Cover_kiokukairo.png" },
+  { name: "残響404号DDD線", artist: "Nyan.PLANET (TAKIO + 羽鳥玲)", url: "", cover: "covers/order/Cover_zankyou404.png" },
+  { name: "Observatory", artist: "かめりあ", url: "", cover: "covers/order/Cover_observatory.png" },
+  { name: "Petrichor", artist: "void (Mournfinale)", url: "", cover: "covers/order/Petrichor.png" },
+  { name: "Lament Rain", artist: "Ashrount vs. 打打だいず", url: "", cover: "covers/order/Songs_lamentrain.png" },
+  { name: "Riven Pilgrimage", artist: "rejection & Supire feat. eili", url: "", cover: "covers/order/Songs_rivenpilgrim.png" },
+  { name: "Inverted World", artist: "ARForest", url: "", cover: "covers/order/Songs_inverted-world.png" },
+  { name: "Message", artist: "くるぶっこちゃん", url: "", cover: "covers/order/message.png" },
+  { name: "Weaver & Wanderer", artist: "黒魔(Chroma)", url: "", cover: "covers/order/Songs_weaver-wanderer.png" },
+  { name: "驟雨の狭間", artist: "Silentroom", url: "", cover: "covers/order/Cover_rainshower.png" },
+  { name: "Heart Jackin'", artist: "Yu_Asahina", url: "", cover: "covers/order/Songs_heartjackin.png" },
+  { name: "PRAGMATISM -RESURRECTION-", artist: "Laur", url: "", cover: "covers/order/Songs_pragmatism.png" },
+  { name: "Antikythera", artist: "technoplanet", url: "", cover: "covers/order/Cover_antikythera.png" },
+  { name: "cyanine", artist: "jioyi", url: "", cover: "covers/order/Cover_cyanine.png" },
+  { name: "-ish", artist: "natsume & alpha", url: "", cover: "covers/order/Songs_ish.png" },
+  { name: "Never Say Goodbye", artist: "黒魔", url: "", cover: "covers/order/Illustration.NeverSayGoodbye.黒魔.0.png" },
+  { name: "MIRINAE", artist: "TAK × Zekk", url: "", cover: "covers/order/Songs_mirinae.png" },
+  { name: "Schwarzschild", artist: "Tsukasa", url: "", cover: "covers/order/Cover_schwarzschild.png" },
+  { name: "Artificial Existence", artist: "Jun Kuroda", url: "", cover: "covers/order/Cover_artificialexistence.png" },
+  { name: "Ether Strike", artist: "Akira Complex", url: "", cover: "covers/order/Songs_etherstrike.png" },
+  { name: "Slic.hertz", artist: "Sobrem", url: "", cover: "covers/order/Illustration.slichertz.Sobrem.0.png" },
+  { name: "Colorless Coldness", artist: "かねこちはる", url: "", cover: "covers/order/Cover_colorlesscoldness.png" },
+  { name: "World Vanquisher", artist: "void (Mournfinale)", url: "", cover: "covers/order/Songs_worldvanquisher.png" }
+];
+
+const PAGE_SIZE = 10;
+const gridEl = document.getElementById("songGrid");
+const paginationEl = document.getElementById("pagination");
+const toastEl = document.getElementById("toast");
+const searchInput = document.getElementById("searchInput");
+const searchClear = document.getElementById("searchClear");
+let currentPage = 1;
+let query = "";
+let toastTimer = null;
+let picked = -1;
+
+function showToast(msg) {
+  toastEl.textContent = msg;
+  toastEl.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toastEl.classList.remove("show"), 1600);
+}
+
+// 过长的歌名/曲师自动缩小字号，最多两行，保持封面尺寸一致
+function shrinkToLines(el, maxLines, minPx) {
+  el.style.fontSize = "";
+  let size = parseFloat(getComputedStyle(el).fontSize) || 16;
+  let guard = 0;
+  while (guard++ < 80) {
+    const lh = parseFloat(getComputedStyle(el).lineHeight) || size * 1.3;
+    const lines = Math.round(el.scrollHeight / lh);
+    if (lines <= maxLines || size <= minPx) break;
+    size = Math.max(minPx, size - 0.5);
+    el.style.fontSize = size + "px";
+  }
+}
+
+function fitText() {
+  document.querySelectorAll(".song-name").forEach(el => shrinkToLines(el, 2, 10));
+  document.querySelectorAll(".song-artist").forEach(el => shrinkToLines(el, 2, 9));
+}
+
+function currentSongs() {
+  const q = query.trim().toLowerCase();
+  if (!q) return songs;
+  return songs.filter(s => s.name.toLowerCase().includes(q) || s.artist.toLowerCase().includes(q));
+}
+
+function renderSongs() {
+  const list = currentSongs();
+  const start = (currentPage - 1) * PAGE_SIZE;
+  const pageSongs = list.slice(start, start + PAGE_SIZE);
+
+  if (!pageSongs.length) {
+    gridEl.innerHTML = `<div class="empty">${query ? "没有找到匹配的歌曲" : "还没有添加曲目"}</div>`;
+    return;
+  }
+
+  gridEl.innerHTML = pageSongs.map(s => {
+    const globalIndex = songs.indexOf(s);
+    const cover = s.cover
+      ? `<img src="${s.cover}" alt="${s.name}" loading="lazy" onerror="this.style.display='none'">`
+      : "";
+    const listen = s.url
+      ? `<a class="btn" href="${s.url}" target="_blank" rel="noopener">收听</a>`
+      : `<span class="btn is-disabled" title="链接待补充">收听</span>`;
+    return `
+      <article class="song-card${globalIndex === picked ? " highlight" : ""}" data-index="${globalIndex}">
+        <div class="cover">${cover}</div>
+        <div class="song-name">${s.name}</div>
+        <div class="song-artist">${s.artist}</div>
+        <div class="song-actions">
+          <button class="btn copy-btn" data-index="${globalIndex}">复制</button>
+          ${listen}
+        </div>
+      </article>
+    `;
+  }).join("");
+
+  bindCopy();
+  fitText();
+}
+
+function pageItems(current, total) {
+  const items = [];
+  if (total <= 7) {
+    for (let i = 1; i <= total; i++) items.push(i);
+    return items;
+  }
+  items.push(1);
+  const start = Math.max(2, current - 1);
+  const end = Math.min(total - 1, current + 1);
+  if (start > 2) items.push("...");
+  for (let i = start; i <= end; i++) items.push(i);
+  if (end < total - 1) items.push("...");
+  items.push(total);
+  return items;
+}
+
+function gotoPage(p) {
+  const totalPages = Math.ceil(currentSongs().length / PAGE_SIZE);
+  currentPage = Math.min(Math.max(1, p), Math.max(1, totalPages));
+  renderSongs();
+  renderPagination();
+}
+
+function renderPagination() {
+  const totalPages = Math.ceil(currentSongs().length / PAGE_SIZE);
+  if (totalPages <= 0) { paginationEl.innerHTML = ""; return; }
+
+  const nums = pageItems(currentPage, totalPages).map(v => v === "..."
+    ? `<span class="page-ellipsis">…</span>`
+    : `<button class="page-btn ${v === currentPage ? "active" : ""}" data-page="${v}">${v}</button>`
+  ).join("");
+
+  paginationEl.innerHTML = `
+    <div class="page-list">${nums}</div>
+    <div class="page-jump">
+      <input id="jumpInput" type="number" min="1" max="${totalPages}" placeholder="输入页码" inputmode="numeric">
+      <button id="jumpBtn" type="button">跳转</button>
+    </div>
+  `;
+
+  paginationEl.querySelectorAll(".page-btn").forEach(btn => {
+    btn.addEventListener("click", () => gotoPage(Number(btn.dataset.page)));
+  });
+
+  const jumpInput = document.getElementById("jumpInput");
+  const jumpBtn = document.getElementById("jumpBtn");
+  const submitJump = () => {
+    const v = parseInt(jumpInput.value, 10);
+    if (!Number.isNaN(v)) gotoPage(v);
+  };
+  jumpBtn.addEventListener("click", submitJump);
+  jumpInput.addEventListener("keydown", e => { if (e.key === "Enter") submitJump(); });
+}
+
+async function copyText(text) {
+  if (navigator.clipboard && window.isSecureContext) {
+    await navigator.clipboard.writeText(text);
+    return;
+  }
+  const ta = document.createElement("textarea");
+  ta.value = text;
+  ta.style.position = "fixed";
+  ta.style.opacity = "0";
+  document.body.appendChild(ta);
+  ta.select();
+  document.execCommand("copy");
+  ta.remove();
+}
+
+function bindCopy() {
+  document.querySelectorAll(".copy-btn").forEach(btn => {
+    btn.addEventListener("click", async () => {
+      const song = songs[btn.dataset.index];
+      const text = `${song.name} - ${song.artist}`;
+      try {
+        await copyText(text);
+        btn.textContent = "已复制";
+        btn.classList.add("copied");
+        showToast(`已复制：${text}`);
+        setTimeout(() => {
+          btn.textContent = "复制";
+          btn.classList.remove("copied");
+        }, 1500);
+      } catch {
+        showToast("复制失败，请手动复制");
+      }
+    });
+  });
+}
+
+// 搜索
+searchInput.addEventListener("input", () => {
+  query = searchInput.value;
+  currentPage = 1;
+  searchClear.hidden = !query;
+  renderSongs();
+  renderPagination();
+});
+
+searchClear.addEventListener("click", () => {
+  searchInput.value = "";
+  query = "";
+  currentPage = 1;
+  searchClear.hidden = true;
+  renderSongs();
+  renderPagination();
+  searchInput.focus();
+});
+
+// 视频背景开关（默认关）
+const videoEl = document.getElementById("bgVideo");
+const toggleEl = document.getElementById("videoToggle");
+const stateEl = toggleEl.querySelector(".vt-state");
+const STORE_KEY = "music-order-video";
+
+function readStore(key) { try { return localStorage.getItem(key); } catch { return null; } }
+function writeStore(key, val) { try { localStorage.setItem(key, val); } catch {} }
+
+let videoOn = readStore(STORE_KEY) !== "off";
+function applyVideo() {
+  document.body.classList.toggle("video-on", videoOn);
+  stateEl.textContent = videoOn ? "开" : "关";
+  toggleEl.setAttribute("aria-pressed", String(videoOn));
+  if (videoOn) { videoEl.play().catch(() => {}); } else { videoEl.pause(); }
+}
+toggleEl.addEventListener("click", () => {
+  videoOn = !videoOn;
+  writeStore(STORE_KEY, videoOn ? "on" : "off");
+  applyVideo();
+});
+applyVideo();
+
+// 随机来一首：由当前时间生成两个值 —— 一页内的位置(0~9) 与 页码
+function timeSeed() {
+  const d = new Date();
+  return ((d.getHours() * 60 + d.getMinutes()) * 60 + d.getSeconds()) * 1000 + d.getMilliseconds();
+}
+
+document.getElementById("randomBtn").addEventListener("click", () => {
+  const list = currentSongs();
+  const N = list.length;
+  if (!N) return;
+
+  const totalPages = Math.ceil(N / PAGE_SIZE);
+  const seed = timeSeed();
+  const slot = seed % PAGE_SIZE;                          // 一页内的位置：0~9
+  const page = Math.floor(seed / PAGE_SIZE) % totalPages; // 页码：0 ~ totalPages-1
+
+  let pos = page * PAGE_SIZE + slot;
+  if (pos >= N) pos = pos % N;
+  if (N > 1 && songs.indexOf(list[pos]) === picked) pos = (pos + 1) % N;
+
+  picked = songs.indexOf(list[pos]);
+  currentPage = Math.floor(pos / PAGE_SIZE) + 1;
+
+  renderSongs();
+  renderPagination();
+
+  const target = document.querySelector(`.song-card[data-index="${picked}"]`);
+  if (target) target.scrollIntoView({ behavior: "smooth", block: "center" });
+});
+
+renderSongs();
+renderPagination();
+
+if (document.fonts) {
+  document.fonts.addEventListener("loadingdone", fitText);
+  if (document.fonts.ready) document.fonts.ready.then(fitText);
+}
+</script>
+</body>
+</html>

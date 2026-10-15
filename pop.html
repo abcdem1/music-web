@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>流行乐</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai:wght@300;400;500;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai:wght@300;400;500;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap"></noscript>
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="page-pop">
+
+<div class="page-wrap">
+  <header class="page-header">
+    <div>
+      <div class="title-group">
+        <a class="back" href="index.html">← 返回</a>
+        <h1>流行乐</h1>
+      </div>
+      <p class="page-sub">跟上节拍，随手就来</p>
+    </div>
+    <div class="header-actions">
+      <div class="tips">
+        <span class="tips-icon">i</span>
+        <span>「复制」保存歌名 · 「收听」跳转平台 · 下方按钮随机来一首</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="search-bar">
+    <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+    <input id="searchInput" type="text" placeholder="搜索歌名或曲师…" autocomplete="off">
+    <button class="search-clear" id="searchClear" hidden>清除</button>
+  </div>
+
+  <section class="song-grid" id="songGrid"></section>
+  <nav class="pagination" id="pagination"></nav>
+</div>
+
+<button class="random-btn" id="randomBtn">随机来一首</button>
+<div class="toast" id="toast"></div>
+
+<script>
+// 流行乐歌单（待添加，格式：{ name: "歌名", artist: "曲师", url: "收听链接", cover: "covers/pop/xxx.png" }）
+const songs = [];
+
+const PAGE_SIZE = 10;
+const gridEl = document.getElementById("songGrid");
+const paginationEl = document.getElementById("pagination");
+const toastEl = document.getElementById("toast");
+const searchInput = document.getElementById("searchInput");
+const searchClear = document.getElementById("searchClear");
+let currentPage = 1;
+let query = "";
+let toastTimer = null;
+let picked = -1;
+
+function showToast(msg) {
+  toastEl.textContent = msg;
+  toastEl.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toastEl.classList.remove("show"), 1600);
+}
+
+// 过长的歌名/曲师自动缩小字号，最多两行，保持封面尺寸一致
+function shrinkToLines(el, maxLines, minPx) {
+  el.style.fontSize = "";
+  let size = parseFloat(getComputedStyle(el).fontSize) || 16;
+  let guard = 0;
+  while (guard++ < 80) {
+    const lh = parseFloat(getComputedStyle(el).lineHeight) || size * 1.3;
+    const lines = Math.round(el.scrollHeight / lh);
+    if (lines <= maxLines || size <= minPx) break;
+    size = Math.max(minPx, size - 0.5);
+    el.style.fontSize = size + "px";
+  }
+}
+
+function fitText() {
+  document.querySelectorAll(".song-name").forEach(el => shrinkToLines(el, 2, 10));
+  document.querySelectorAll(".song-artist").forEach(el => shrinkToLines(el, 2, 9));
+}
+
+function currentSongs() {
+  const q = query.trim().toLowerCase();
+  if (!q) return songs;
+  return songs.filter(s => s.name.toLowerCase().includes(q) || s.artist.toLowerCase().includes(q));
+}
+
+function renderSongs() {
+  const list = currentSongs();
+  const start = (currentPage - 1) * PAGE_SIZE;
+  const pageSongs = list.slice(start, start + PAGE_SIZE);
+
+  if (!pageSongs.length) {
+    gridEl.innerHTML = `<div class="empty">${query ? "没有找到匹配的歌曲" : "歌单还在整理中，敬请期待"}</div>`;
+    return;
+  }
+
+  gridEl.innerHTML = pageSongs.map(s => {
+    const globalIndex = songs.indexOf(s);
+    const cover = s.cover
+      ? `<img src="${s.cover}" alt="${s.name}" loading="lazy" onerror="this.style.display='none'">`
+      : "";
+    const listen = s.url
+      ? `<a class="btn" href="${s.url}" target="_blank" rel="noopener">收听</a>`
+      : `<span class="btn is-disabled" title="链接待补充">收听</span>`;
+    return `
+      <article class="song-card${globalIndex === picked ? " highlight" : ""}" data-index="${globalIndex}">
+        <div class="cover">${cover}</div>
+        <div class="song-name">${s.name}</div>
+        <div class="song-artist">${s.artist}</div>
+        <div class="song-actions">
+          <button class="btn copy-btn" data-index="${globalIndex}">复制</button>
+          ${listen}
+        </div>
+      </article>
+    `;
+  }).join("");
+
+  bindCopy();
+  fitText();
+}
+
+function pageItems(current, total) {
+  const items = [];
+  if (total <= 7) {
+    for (let i = 1; i <= total; i++) items.push(i);
+    return items;
+  }
+  items.push(1);
+  const start = Math.max(2, current - 1);
+  const end = Math.min(total - 1, current + 1);
+  if (start > 2) items.push("...");
+  for (let i = start; i <= end; i++) items.push(i);
+  if (end < total - 1) items.push("...");
+  items.push(total);
+  return items;
+}
+
+function gotoPage(p) {
+  const totalPages = Math.ceil(currentSongs().length / PAGE_SIZE);
+  currentPage = Math.min(Math.max(1, p), Math.max(1, totalPages));
+  renderSongs();
+  renderPagination();
+}
+
+function renderPagination() {
+  const totalPages = Math.ceil(currentSongs().length / PAGE_SIZE);
+  if (totalPages <= 0) { paginationEl.innerHTML = ""; return; }
+
+  const nums = pageItems(currentPage, totalPages).map(v => v === "..."
+    ? `<span class="page-ellipsis">…</span>`
+    : `<button class="page-btn ${v === currentPage ? "active" : ""}" data-page="${v}">${v}</button>`
+  ).join("");
+
+  paginationEl.innerHTML = `
+    <div class="page-list">${nums}</div>
+    <div class="page-jump">
+      <input id="jumpInput" type="number" min="1" max="${totalPages}" placeholder="输入页码" inputmode="numeric">
+      <button id="jumpBtn" type="button">跳转</button>
+    </div>
+  `;
+
+  paginationEl.querySelectorAll(".page-btn").forEach(btn => {
+    btn.addEventListener("click", () => gotoPage(Number(btn.dataset.page)));
+  });
+
+  const jumpInput = document.getElementById("jumpInput");
+  const jumpBtn = document.getElementById("jumpBtn");
+  const submitJump = () => {
+    const v = parseInt(jumpInput.value, 10);
+    if (!Number.isNaN(v)) gotoPage(v);
+  };
+  jumpBtn.addEventListener("click", submitJump);
+  jumpInput.addEventListener("keydown", e => { if (e.key === "Enter") submitJump(); });
+}
+
+async function copyText(text) {
+  if (navigator.clipboard && window.isSecureContext) {
+    await navigator.clipboard.writeText(text);
+    return;
+  }
+  const ta = document.createElement("textarea");
+  ta.value = text;
+  ta.style.position = "fixed";
+  ta.style.opacity = "0";
+  document.body.appendChild(ta);
+  ta.select();
+  document.execCommand("copy");
+  ta.remove();
+}
+
+function bindCopy() {
+  document.querySelectorAll(".copy-btn").forEach(btn => {
+    btn.addEventListener("click", async () => {
+      const song = songs[btn.dataset.index];
+      const text = `${song.name} - ${song.artist}`;
+      try {
+        await copyText(text);
+        btn.textContent = "已复制";
+        btn.classList.add("copied");
+        showToast(`已复制：${text}`);
+        setTimeout(() => {
+          btn.textContent = "复制";
+          btn.classList.remove("copied");
+        }, 1500);
+      } catch {
+        showToast("复制失败，请手动复制");
+      }
+    });
+  });
+}
+
+// 搜索
+searchInput.addEventListener("input", () => {
+  query = searchInput.value;
+  currentPage = 1;
+  searchClear.hidden = !query;
+  renderSongs();
+  renderPagination();
+});
+
+searchClear.addEventListener("click", () => {
+  searchInput.value = "";
+  query = "";
+  currentPage = 1;
+  searchClear.hidden = true;
+  renderSongs();
+  renderPagination();
+  searchInput.focus();
+});
+
+// 随机来一首：由当前时间生成两个值 —— 一页内的位置(0~9) 与 页码
+function timeSeed() {
+  const d = new Date();
+  return ((d.getHours() * 60 + d.getMinutes()) * 60 + d.getSeconds()) * 1000 + d.getMilliseconds();
+}
+
+document.getElementById("randomBtn").addEventListener("click", () => {
+  const list = currentSongs();
+  const N = list.length;
+  if (!N) return;
+
+  const totalPages = Math.ceil(N / PAGE_SIZE);
+  const seed = timeSeed();
+  const slot = seed % PAGE_SIZE;                          // 一页内的位置：0~9
+  const page = Math.floor(seed / PAGE_SIZE) % totalPages; // 页码：0 ~ totalPages-1
+
+  let pos = page * PAGE_SIZE + slot;
+  if (pos >= N) pos = pos % N;
+  if (N > 1 && songs.indexOf(list[pos]) === picked) pos = (pos + 1) % N;
+
+  picked = songs.indexOf(list[pos]);
+  currentPage = Math.floor(pos / PAGE_SIZE) + 1;
+
+  renderSongs();
+  renderPagination();
+
+  const target = document.querySelector(`.song-card[data-index="${picked}"]`);
+  if (target) target.scrollIntoView({ behavior: "smooth", block: "center" });
+});
+
+renderSongs();
+renderPagination();
+
+if (document.fonts) {
+  document.fonts.addEventListener("loadingdone", fitText);
+  if (document.fonts.ready) document.fonts.ready.then(fitText);
+}
+</script>
+</body>
+</html>
