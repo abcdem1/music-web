@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>流行乐</title>
+<title>众生</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai:wght@300;400;500;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" media="print" onload="this.media='all'">
@@ -12,20 +12,28 @@
 </head>
 <body class="page-pop">
 
+<video class="bg-video" id="bgVideo" loop muted playsinline preload="auto">
+  <source src="pop.mp4" type="video/mp4">
+</video>
+<div class="bg-scrim"></div>
+
 <div class="page-wrap">
   <header class="page-header">
     <div>
       <div class="title-group">
         <a class="back" href="index.html">← 返回</a>
-        <h1>流行乐</h1>
+        <h1>众生</h1>
       </div>
-      <p class="page-sub">跟上节拍，随手就来</p>
+      <p class="page-sub">过去的章节</p>
     </div>
     <div class="header-actions">
       <div class="tips">
         <span class="tips-icon">i</span>
         <span>「复制」保存歌名 · 「收听」跳转平台 · 下方按钮随机来一首</span>
       </div>
+      <button class="video-toggle" id="videoToggle" type="button" aria-pressed="false">
+        <span>视频背景</span><span class="vt-state">关</span>
+      </button>
     </div>
   </header>
 
@@ -43,8 +51,164 @@
 <div class="toast" id="toast"></div>
 
 <script>
-// 流行乐歌单（待添加，格式：{ name: "歌名", artist: "曲师", url: "收听链接", cover: "covers/pop/xxx.png" }）
-const songs = [];
+// 流行乐歌单（字段：name 歌名 / artist 曲师 / url 收听链接 / cover 封面路径）
+const songs = [
+{ name: "Stray (游荡)", artist: "Feint", url: "", cover: "covers/pop/398 Stray (游荡) - Feint.png" },
+{ name: "Flashback", artist: "Beatrich", url: "", cover: "covers/pop/442 Flashback - Beatrich.png" },
+{ name: "春はゆく (春逝)", artist: "Aimer", url: "", cover: "covers/pop/401 春はゆく (春逝) - Aimer.png" },
+{ name: "The Phoenix", artist: "Fall Out Boy", url: "", cover: "covers/pop/434 The Phoenix - Fall Out Boy.png" },
+{ name: "Castle On A Cloud", artist: "Isabelle Allen", url: "", cover: "covers/pop/297 Castle On A Cloud - Isabelle Allen.png" },
+{ name: "雾里", artist: "姚六一", url: "", cover: "covers/pop/368 雾里 - 姚六一.png" },
+{ name: "Purple Passion (紫色激情)", artist: "Diana Boncheva", url: "", cover: "covers/pop/485 Purple Passion (紫色激情) - Diana Boncheva.png" },
+{ name: "斗罗大陆", artist: "萧敬腾", url: "", cover: "covers/pop/468 斗罗大陆 - 萧敬腾.png" },
+{ name: "恋西游", artist: "TFBOYS", url: "", cover: "covers/pop/455 恋西游 - TFBOYS.png" },
+{ name: "安和桥", artist: "宋冬野", url: "", cover: "covers/pop/405 安和桥 - 宋冬野.png" },
+{ name: "Demons", artist: "Imagine Dragons", url: "", cover: "covers/pop/436 Demons - Imagine Dragons.png" },
+{ name: "Shots (remix：Broiler)", artist: "Imagine Dragons、Broiler", url: "", cover: "covers/pop/355 Shots (remix：Broiler) - Imagine Dragons、Broiler.png" },
+{ name: "Life Will Change", artist: "Lyn、アトラスサウンドチーム", url: "", cover: "covers/pop/333 Life Will Change - Lyn、アトラスサウンドチーム.png" },
+{ name: "Animals", artist: "Maroon 5", url: "", cover: "covers/pop/476 Animals - Maroon 5.png" },
+{ name: "无人之岛", artist: "任然", url: "", cover: "covers/pop/246 无人之岛 - 任然.png" },
+{ name: "琵琶行", artist: "奇然、沈谧仁", url: "", cover: "covers/pop/426 琵琶行 - 奇然、沈谧仁.png" },
+{ name: "I Need A Doctor (Explicit)", artist: "Dr. Dre、Eminem、Skylar Grey", url: "", cover: "covers/pop/378 I Need A Doctor (Explicit) - Dr. Dre、Eminem、Skylar Grey.png" },
+{ name: "恋愛サーキュレーション (恋爱循环)", artist: "花澤香菜", url: "", cover: "covers/pop/432 恋愛サーキュレーション (恋爱循环) - 花澤香菜.png" },
+{ name: "Together We Fight", artist: "果味VC", url: "", cover: "covers/pop/395 Together We Fight - 果味VC.png" },
+{ name: "涅槃 (Phoenix)", artist: "英雄联盟", url: "", cover: "covers/pop/348 涅槃 (Phoenix) - 英雄联盟.png" },
+{ name: "广寒宫", artist: "丸子呦", url: "", cover: "covers/pop/423 广寒宫 - 丸子呦.png" },
+{ name: "神宠传说", artist: "洛克王国", url: "", cover: "covers/pop/440 神宠传说 - 洛克王国.png" },
+{ name: "ホウキ雲 (彗星云)", artist: "RYTHEM", url: "", cover: "covers/pop/449 ホウキ雲 (彗星云) - RYTHEM.png" },
+{ name: "Lose Control (Explicit)", artist: "Hedley", url: "", cover: "covers/pop/362 Lose Control (Explicit) - Hedley.png" },
+{ name: "芒种", artist: "赵方婧", url: "", cover: "covers/pop/488 芒种 - 赵方婧.png" },
+{ name: "ブラッドサーキュレーター (血压循环)", artist: "ASIAN KUNG-FU GENERATION", url: "", cover: "covers/pop/382 ブラッドサーキュレーター (血压循环) - ASIAN KUNG-FU GENERATION.png" },
+{ name: "ジャスミン (茉莉)", artist: "牧野由依", url: "", cover: "covers/pop/451 ジャスミン (茉莉) - 牧野由依.png" },
+{ name: "罗生门 (Follow)", artist: "梨冻紧、Wiz_H张子豪", url: "", cover: "covers/pop/314 罗生门 (Follow) - 梨冻紧、Wiz_H张子豪.png" },
+{ name: "Whistle", artist: "Flo Rida", url: "", cover: "covers/pop/431 Whistle - Flo Rida.png" },
+{ name: "燕无歇", artist: "蒋雪儿Snow.J", url: "", cover: "covers/pop/417 燕无歇 - 蒋雪儿Snow.J.png" },
+{ name: "周大侠", artist: "周杰伦", url: "", cover: "covers/pop/454 周大侠 - 周杰伦.png" },
+{ name: "ENEMY (宿敌)", artist: "Imagine Dragons、JID", url: "", cover: "covers/pop/354 ENEMY (宿敌) - Imagine Dragons、JID.png" },
+{ name: "虞兮叹", artist: "闻人听書_", url: "", cover: "covers/pop/419 虞兮叹 - 闻人听書_.png" },
+{ name: "mede:mede", artist: "Reol", url: "", cover: "covers/pop/478 mede_mede - Reol.png" },
+{ name: "Kill This Love", artist: "BLACKPINK", url: "", cover: "covers/pop/394 Kill This Love - BLACKPINK.png" },
+{ name: "Layers", artist: "SawanoHiroyuki[nZk]", url: "", cover: "covers/pop/446 Layers - SawanoHiroyuki[nZk].png" },
+{ name: "Despacito", artist: "Luis Fonsi、Daddy Yankee", url: "", cover: "covers/pop/486 Despacito - Luis Fonsi、Daddy Yankee.png" },
+{ name: "悬溺", artist: "葛东琪", url: "", cover: "covers/pop/318 悬溺 - 葛东琪.png" },
+{ name: "PLANET", artist: "ラムジ", url: "", cover: "covers/pop/329 PLANET - ラムジ.png" },
+{ name: "春娇与志明", artist: "街道办GDC、欧阳耀莹", url: "", cover: "covers/pop/437 春娇与志明 - 街道办GDC、欧阳耀莹.png" },
+{ name: "Without Me", artist: "Eminem", url: "", cover: "covers/pop/377 Without Me - Eminem.png" },
+{ name: "紅蓮 (红莲)", artist: "DOES", url: "", cover: "covers/pop/384 紅蓮 (红莲) - DOES.png" },
+{ name: "One more time, One more chance", artist: "Eastalso", url: "", cover: "covers/pop/391 One more time, One more chance - Eastalso.png" },
+{ name: "倒数", artist: "G.E.M.邓紫棋", url: "", cover: "covers/pop/331 倒数 - G.E.M.邓紫棋.png" },
+{ name: "浮诛", artist: "张杰", url: "", cover: "covers/pop/469 浮诛 - 张杰.png" },
+{ name: "Take My Hand", artist: "Simple Plan", url: "", cover: "covers/pop/341 Take My Hand - Simple Plan.png" },
+{ name: "Last Ride Of The Day", artist: "Nightwish", url: "", cover: "covers/pop/481 Last Ride Of The Day - Nightwish.png" },
+{ name: "噩梦", artist: "TizzyT", url: "", cover: "covers/pop/322 噩梦 - TizzyT.png" },
+{ name: "I Want My Tears Back", artist: "Nightwish", url: "", cover: "covers/pop/462 I Want My Tears Back - Nightwish.png" },
+{ name: "Lose Yourself", artist: "Eminem", url: "", cover: "covers/pop/404 Lose Yourself - Eminem.png" },
+{ name: "Stitches", artist: "Shawn Mendes", url: "", cover: "covers/pop/335 Stitches - Shawn Mendes.png" },
+{ name: "Natural", artist: "James Major", url: "", cover: "covers/pop/364 Natural - James Major.png" },
+{ name: "In The End", artist: "Linkin Park", url: "", cover: "covers/pop/346 In The End - Linkin Park.png" },
+{ name: "I SAY YES", artist: "ICHIKO", url: "", cover: "covers/pop/447 I SAY YES - ICHIKO.png" },
+{ name: "only my railgun", artist: "fripSide", url: "", cover: "covers/pop/334 only my railgun - fripSide.png" },
+{ name: "寄明月", artist: "SING女团", url: "", cover: "covers/pop/425 寄明月 - SING女团.png" },
+{ name: "꽃 (FLOWER)", artist: "JISOO", url: "", cover: "covers/pop/319 꽃 (FLOWER) - JISOO.png" },
+{ name: "Italian Coffee Shop (Idea Extended)", artist: "3Nacria", url: "", cover: "covers/pop/400 Italian Coffee Shop (Idea Extended) - 3Nacria.png" },
+{ name: "Peter Pan Was Right", artist: "Anson Seabra", url: "", cover: "covers/pop/371 Peter Pan Was Right - Anson Seabra.png" },
+{ name: "Touhikou (逃避行)", artist: "Eve", url: "", cover: "covers/pop/290 Touhikou (逃避行) - Eve.png" },
+{ name: "Faint", artist: "Linkin Park", url: "", cover: "covers/pop/347 Faint - Linkin Park.png" },
+{ name: "千本桜 (千本樱)", artist: "初音ミク、镜音リン・レン、巡音ルカ、KAITO、Haigo Meiko", url: "", cover: "covers/pop/470 千本桜 (千本樱) - 初音ミク、镜音リン・レン、巡音ルカ、KAITO、Haigo Meiko.png" },
+{ name: "God knows…", artist: "平野綾", url: "", cover: "covers/pop/332 God knows… - 平野綾.png" },
+{ name: "牵丝戏", artist: "银临、Aki阿杰", url: "", cover: "covers/pop/418 牵丝戏 - 银临、Aki阿杰.png" },
+{ name: "春庭雪", artist: "邓寓君(等什么君)", url: "", cover: "covers/pop/420 春庭雪 - 邓寓君(等什么君).png" },
+{ name: "怪物", artist: "YOASOBI", url: "", cover: "covers/pop/351 怪物 - YOASOBI.png" },
+{ name: "Born to Do", artist: "Steven Cooper", url: "", cover: "covers/pop/370 Born to Do - Steven Cooper.png" },
+{ name: "嗤うマネキン (嗤笑着的人体模型)", artist: "电鸟个灯泡", url: "", cover: "covers/pop/327 嗤うマネキン (嗤笑着的人体模型) - 电鸟个灯泡.png" },
+{ name: "祝福", artist: "YOASOBI", url: "", cover: "covers/pop/336 祝福 - YOASOBI.png" },
+{ name: "Star Sky", artist: "Two Steps From Hell、Thomas Bergersen", url: "", cover: "covers/pop/482 Star Sky - Two Steps From Hell、Thomas Bergersen.png" },
+{ name: "超兽武装", artist: "刘罡、陈洁丽", url: "", cover: "covers/pop/429 超兽武装 - 刘罡、陈洁丽.png" },
+{ name: "Lose Yourself", artist: "Eminem", url: "", cover: "covers/pop/381 Lose Yourself - Eminem.png" },
+{ name: "漠河舞厅·2022", artist: "柳爽", url: "", cover: "covers/pop/313 漠河舞厅·2022 - 柳爽.png" },
+{ name: "凉凉", artist: "杨宗纬、张碧晨", url: "", cover: "covers/pop/458 凉凉 - 杨宗纬、张碧晨.png" },
+{ name: "HandClap", artist: "Fitz and The Tantrums", url: "", cover: "covers/pop/457 HandClap - Fitz and The Tantrums.png" },
+{ name: "满天星辰不及你", artist: "ycccc", url: "", cover: "covers/pop/387 满天星辰不及你 - ycccc.png" },
+{ name: "Lemon", artist: "米津玄師", url: "", cover: "covers/pop/414 Lemon - 米津玄師.png" },
+{ name: "Light My Fire (TVサイズ)", artist: "KOTOKO", url: "", cover: "covers/pop/450 Light My Fire (TVサイズ) - KOTOKO.png" },
+{ name: "带我去找夜生活", artist: "告五人", url: "", cover: "covers/pop/358 带我去找夜生活 - 告五人.png" },
+{ name: "Lalalalalalalalalala (Explicit)", artist: "Mikolas Josef", url: "", cover: "covers/pop/323 Lalalalalalalalalala (Explicit) - Mikolas Josef.png" },
+{ name: "シルエット (剪影)", artist: "KANA-BOON", url: "", cover: "covers/pop/385 シルエット (剪影) - KANA-BOON.png" },
+{ name: "RISE", artist: "The Glitch Mob、Mako、The Word Alive", url: "", cover: "covers/pop/374 RISE - The Glitch Mob、Mako、The Word Alive.png" },
+{ name: "NO", artist: "Meghan Trainor", url: "", cover: "covers/pop/444 NO - Meghan Trainor.png" },
+{ name: "三生三世", artist: "张杰", url: "", cover: "covers/pop/467 三生三世 - 张杰.png" },
+{ name: "曾经你说", artist: "赵乃吉", url: "", cover: "covers/pop/396 曾经你说 - 赵乃吉.png" },
+{ name: "霜雪千年", artist: "双笙 (陈元汐)、封茗囧菌", url: "", cover: "covers/pop/424 霜雪千年 - 双笙 (陈元汐)、封茗囧菌.png" },
+{ name: "Legends Never Die (传奇永不熄)", artist: "英雄联盟、Against The Current", url: "", cover: "covers/pop/466 Legends Never Die (传奇永不熄) - 英雄联盟、Against The Current.png" },
+{ name: "Wonderful U (Demo Version)", artist: "AGA", url: "", cover: "covers/pop/393 Wonderful U (Demo Version) - AGA.png" },
+{ name: "Zombie", artist: "Bad Wolves", url: "", cover: "covers/pop/472 Zombie - Bad Wolves.png" },
+{ name: "双面燕洵 (网友改编)", artist: "王英涛", url: "", cover: "covers/pop/416 双面燕洵 (网友改编) - 王英涛.png" },
+{ name: "Mountain Journey", artist: "Foxtail-Grass Studio", url: "", cover: "covers/pop/489 Mountain Journey - Foxtail-Grass Studio.png" },
+{ name: "Wolves", artist: "Selena Gomez、Marshmello", url: "", cover: "covers/pop/428 Wolves - Selena Gomez、Marshmello.png" },
+{ name: "CHOIR JAIL", artist: "鈴木このみ", url: "", cover: "covers/pop/477 CHOIR JAIL - 鈴木このみ.png" },
+{ name: "你曾是少年", artist: "S.H.E", url: "", cover: "covers/pop/487 你曾是少年 - S.H.E.png" },
+{ name: "他夏了夏天", artist: "苏打绿", url: "", cover: "covers/pop/410 他夏了夏天 - 苏打绿.png" },
+{ name: "看见什么吃什么", artist: "林宥嘉", url: "", cover: "covers/pop/474 看见什么吃什么 - 林宥嘉.png" },
+{ name: "BAD BAD", artist: "可可爱kkluv、THOME", url: "", cover: "covers/pop/315 BAD BAD - 可可爱kkluv、THOME.png" },
+{ name: "耍把戏", artist: "阿禹ayy", url: "", cover: "covers/pop/367 耍把戏 - 阿禹ayy.png" },
+{ name: "王者战歌", artist: "王者荣耀", url: "", cover: "covers/pop/433 王者战歌 - 王者荣耀.png" },
+{ name: "Umbrella (Matte Remix)", artist: "Ember Island、Matte", url: "", cover: "covers/pop/373 Umbrella (Matte Remix) - Ember Island、Matte.png" },
+{ name: "下山", artist: "徐泽（要不要买菜）", url: "", cover: "covers/pop/409 下山 - 徐泽（要不要买菜）.png" },
+{ name: "君以外害", artist: "电鸟个灯泡", url: "", cover: "covers/pop/339 君以外害 - 电鸟个灯泡.png" },
+{ name: "不该 (with aMEI)", artist: "周杰伦、张惠妹", url: "", cover: "covers/pop/294 不该 (with aMEI) - 周杰伦、张惠妹.png" },
+{ name: "Normal No More (Explicit)", artist: "TYSM", url: "", cover: "covers/pop/365 Normal No More (Explicit) - TYSM.png" },
+{ name: "Sold Out", artist: "Hawk Nelson、Jonathan Steingard", url: "", cover: "covers/pop/471 Sold Out - Hawk Nelson、Jonathan Steingard.png" },
+{ name: "你的答案", artist: "阿冗", url: "", cover: "covers/pop/460 你的答案 - 阿冗.png" },
+{ name: "Just Like Fire", artist: "P!NK", url: "", cover: "covers/pop/403 Just Like Fire - P!NK.png" },
+{ name: "爱人错过", artist: "告五人", url: "", cover: "covers/pop/359 爱人错过 - 告五人.png" },
+{ name: "New Divide", artist: "Linkin Park", url: "", cover: "covers/pop/349 New Divide - Linkin Park.png" },
+{ name: "Love The Way You Lie", artist: "Eminem、Rihanna", url: "", cover: "covers/pop/413 Love The Way You Lie - Eminem、Rihanna.png" },
+{ name: "初学者", artist: "薛之谦", url: "", cover: "covers/pop/430 初学者 - 薛之谦.png" },
+{ name: "unravel", artist: "TK from 凛として時雨", url: "", cover: "covers/pop/379 unravel - TK from 凛として時雨.png" },
+{ name: "Believer", artist: "Imagine Dragons、Lil Wayne", url: "", cover: "covers/pop/438 Believer - Imagine Dragons、Lil Wayne.png" },
+{ name: "孤勇者", artist: "陈奕迅", url: "", cover: "covers/pop/390 孤勇者 - 陈奕迅.png" },
+{ name: "STAY (Explicit)", artist: "The Kid LAROI、Justin Bieber", url: "", cover: "covers/pop/376 STAY (Explicit) - The Kid LAROI、Justin Bieber.png" },
+{ name: "少年", artist: "梦然", url: "", cover: "covers/pop/439 少年 - 梦然.png" },
+{ name: "群青", artist: "YOASOBI", url: "", cover: "covers/pop/343 群青 - YOASOBI.png" },
+{ name: "Shake It Off", artist: "Taylor Swift", url: "", cover: "covers/pop/330 Shake It Off - Taylor Swift.png" },
+{ name: "Counting Stars", artist: "OneRepublic", url: "", cover: "covers/pop/465 Counting Stars - OneRepublic.png" },
+{ name: "明月天涯", artist: "五音Jw", url: "", cover: "covers/pop/475 明月天涯 - 五音Jw.png" },
+{ name: "Blame", artist: "Calvin Harris、John Newman", url: "", cover: "covers/pop/386 Blame - Calvin Harris、John Newman.png" },
+{ name: "...Baby One More Time", artist: "Britney Spears", url: "", cover: "covers/pop/459 ...Baby One More Time - Britney Spears.png" },
+{ name: "打上花火", artist: "米津玄師、Daoko", url: "", cover: "covers/pop/443 打上花火 - 米津玄師、Daoko.png" },
+{ name: "盗墓笔记·十年人间", artist: "李常超（Lao乾妈）", url: "", cover: "covers/pop/380 盗墓笔记·十年人间 - 李常超（Lao乾妈）.png" },
+{ name: "BINGBIAN病变 (女声版)", artist: "鞠文娴", url: "", cover: "covers/pop/473 BINGBIAN病变 (女声版) - 鞠文娴.png" },
+{ name: "采茶纪", artist: "双笙 (陈元汐)", url: "", cover: "covers/pop/490 采茶纪 - 双笙 (陈元汐).png" },
+{ name: "Geisha (Original Mix)", artist: "Dino Sor", url: "", cover: "covers/pop/480 Geisha (Original Mix) - Dino Sor.png" },
+{ name: "Time Bomb", artist: "Feint、Veela、Boyinaband", url: "", cover: "covers/pop/483 Time Bomb - Feint、Veela、Boyinaband.png" },
+{ name: "Welcome to Wonderland", artist: "Anson Seabra", url: "", cover: "covers/pop/372 Welcome to Wonderland - Anson Seabra.png" },
+{ name: "Numb", artist: "Linkin Park", url: "", cover: "covers/pop/411 Numb - Linkin Park.png" },
+{ name: "Love Story", artist: "Taylor Swift", url: "", cover: "covers/pop/406 Love Story - Taylor Swift.png" },
+{ name: "Goodbye Happiness", artist: "宇多田ヒカル", url: "", cover: "covers/pop/448 Goodbye Happiness - 宇多田ヒカル.png" },
+{ name: "Promise (Reprise)", artist: "山岡晃", url: "", cover: "covers/pop/357 Promise (Reprise) - 山岡晃.png" },
+{ name: "心如止水", artist: "Ice Paper", url: "", cover: "covers/pop/479 心如止水 - Ice Paper.png" },
+{ name: "棠梨煎雪", artist: "银临", url: "", cover: "covers/pop/392 棠梨煎雪 - 银临.png" },
+{ name: "锦鲤抄", artist: "双笙 (陈元汐)", url: "", cover: "covers/pop/491 锦鲤抄 - 双笙 (陈元汐).png" },
+{ name: "不染 (Live)", artist: "毛不易", url: "", cover: "covers/pop/415 不染 (Live) - 毛不易.png" },
+{ name: "secret base～君がくれたもの～ (secret base ~你给我的所有~)(10 years after Ver.)", artist: "茅野愛衣、戸松遥、早見沙織", url: "", cover: "covers/pop/388 secret base～君がくれたもの～ (secret base ~你给我的所有~)(10 years after Ver.) - 茅野愛衣、戸松遥、早見沙織.png" },
+{ name: "LOSER", artist: "米津玄師", url: "", cover: "covers/pop/427 LOSER - 米津玄師.png" },
+{ name: "Edge of My Life", artist: "Manafest", url: "", cover: "covers/pop/399 Edge of My Life - Manafest.png" },
+{ name: "Electric Romeo", artist: "Immediate Music", url: "", cover: "covers/pop/484 Electric Romeo - Immediate Music.png" },
+{ name: "冠军杯", artist: "Jason Walsh", url: "", cover: "covers/pop/453 冠军杯 - Jason Walsh.png" },
+{ name: "뱅뱅뱅 (BANG BANG BANG)", artist: "BIGBANG", url: "", cover: "covers/pop/445 뱅뱅뱅 (BANG BANG BANG) - BIGBANG.png" },
+{ name: "風 (风)", artist: "山猿", url: "", cover: "covers/pop/383 風 (风) - 山猿.png" },
+{ name: "Intro", artist: "Dreamtale", url: "", cover: "covers/pop/464 Intro - Dreamtale.png" },
+{ name: "红昭愿", artist: "音阙诗听", url: "", cover: "covers/pop/421 红昭愿 - 音阙诗听.png" },
+{ name: "Breaking Now (混音)", artist: "From Ashes to New", url: "", cover: "covers/pop/402 Breaking Now (混音) - From Ashes to New.png" },
+{ name: "透明だった世界 (曾经透明的世界)", artist: "秦基博", url: "", cover: "covers/pop/408 透明だった世界 (曾经透明的世界) - 秦基博.png" },
+{ name: "Bye Bye Beautiful", artist: "Nightwish", url: "", cover: "covers/pop/463 Bye Bye Beautiful - Nightwish.png" },
+{ name: "マインドブランド (Mind Brand)", artist: "足首", url: "", cover: "covers/pop/338 マインドブランド (Mind Brand) - 足首.png" },
+{ name: "Revolution", artist: "The Score", url: "", cover: "covers/pop/452 Revolution - The Score.png" },
+{ name: "喜迎新春", artist: "Jeff Broadbent", url: "", cover: "covers/pop/441 喜迎新春 - Jeff Broadbent.png" },
+{ name: "谪仙", artist: "伊格赛听、叶里", url: "", cover: "covers/pop/422 谪仙 - 伊格赛听、叶里.png" },
+{ name: "不可阻挡 (Burn It All Down)", artist: "英雄联盟", url: "", cover: "covers/pop/375 不可阻挡 (Burn It All Down) - 英雄联盟.png" },
+{ name: "Bones", artist: "Imagine Dragons", url: "", cover: "covers/pop/366 Bones - Imagine Dragons.png" }
+];
 
 const PAGE_SIZE = 10;
 const gridEl = document.getElementById("songGrid");
@@ -233,6 +397,29 @@ searchClear.addEventListener("click", () => {
   searchInput.focus();
 });
 
+// 视频背景开关（占位：把 pop.mp4 放进 music-web 后即可生效，默认关）
+const videoEl = document.getElementById("bgVideo");
+const toggleEl = document.getElementById("videoToggle");
+const stateEl = toggleEl.querySelector(".vt-state");
+const STORE_KEY = "music-pop-video";
+
+function readStore(key) { try { return localStorage.getItem(key); } catch { return null; } }
+function writeStore(key, val) { try { localStorage.setItem(key, val); } catch {} }
+
+let videoOn = readStore(STORE_KEY) === "on";
+function applyVideo() {
+  document.body.classList.toggle("video-on", videoOn);
+  stateEl.textContent = videoOn ? "开" : "关";
+  toggleEl.setAttribute("aria-pressed", String(videoOn));
+  if (videoOn) { videoEl.play().catch(() => {}); } else { videoEl.pause(); }
+}
+toggleEl.addEventListener("click", () => {
+  videoOn = !videoOn;
+  writeStore(STORE_KEY, videoOn ? "on" : "off");
+  applyVideo();
+});
+applyVideo();
+
 // 随机来一首：由当前时间生成两个值 —— 一页内的位置(0~9) 与 页码
 function timeSeed() {
   const d = new Date();
@@ -270,6 +457,14 @@ if (document.fonts) {
   document.fonts.addEventListener("loadingdone", fitText);
   if (document.fonts.ready) document.fonts.ready.then(fitText);
 }
+
+// 左右方向键翻页
+document.addEventListener("keydown", (e) => {
+  const t = e.target;
+  if (t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.isContentEditable)) return;
+  if (e.key === "ArrowLeft") { e.preventDefault(); gotoPage(currentPage - 1); }
+  else if (e.key === "ArrowRight") { e.preventDefault(); gotoPage(currentPage + 1); }
+});
 </script>
 </body>
 </html>
