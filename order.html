@@ -17,6 +17,8 @@
 </video>
 <div class="bg-scrim"></div>
 
+
+
 <div class="page-wrap">
   <header class="page-header">
     <div>
@@ -24,7 +26,7 @@
         <a class="back" href="index.html">← 返回</a>
         <h1>秩序</h1>
       </div>
-      <p class="page-sub">旋律相对舒缓 · 秩序安然</p>
+      <p class="page-sub">旋律相对舒缓 · 秩序安然（同人音乐1）</p>
     </div>
     <div class="header-actions">
       <div class="tips">
@@ -50,152 +52,163 @@
 <button class="random-btn" id="randomBtn">随机来一首</button>
 <div class="toast" id="toast"></div>
 
+<!-- listen-picker -->
+<div class="modal" id="listenModal" hidden>
+  <div class="modal-backdrop" data-close></div>
+  <div class="modal-card listen-card" role="dialog" aria-modal="true" aria-labelledby="listenTitle">
+    <button class="modal-close" type="button" data-close aria-label="关闭">×</button>
+    <div class="listen-head">
+      <span class="modal-eyebrow">LISTEN</span>
+      <h2 class="modal-title" id="listenTitle"></h2>
+      <p class="listen-sub" id="listenSub"></p>
+    </div>
+    <div class="listen-options" id="listenOptions"></div>
+  </div>
+</div>
+<!-- /listen-picker -->
 <script>
 // 秩序区歌单
 const songs = [
-{ name: "Kou", artist: "Feryquitous", url: "", cover: "covers/order/051 Kou - Feryquitous.png" },
-{ name: "Start to The End", artist: "LucaProject & Xeudo Code", url: "", cover: "covers/order/Start_to_The_End.png" },
-{ name: "The Zulla", artist: "KOAN Sound", url: "", cover: "covers/order/045 The Zulla - KOAN Sound.png" },
-{ name: "sacred sacrifices", artist: "ak+q", url: "", cover: "covers/order/Cover_sacredsacrifices.png" },
-{ name: "Stolen Lips", artist: "Osamu Kubota", url: "", cover: "covers/order/Songs_stolen-lips.png" },
-{ name: "Abyssgazer", artist: "xi VS Sakuzyo", url: "", cover: "covers/order/Cover_abyssgazer.png" },
-{ name: "edge of the world", artist: "Shade", url: "", cover: "covers/order/Edge_of_the_world.png" },
-{ name: "Elyqiria", artist: "Connexio", url: "", cover: "covers/order/Songs_elyqiria.png" },
-{ name: "Hydroplane", artist: "KOAN Sound", url: "", cover: "covers/order/042 Hydroplane - KOAN Sound.png" },
-{ name: "Xenith", artist: "Tatsh", url: "", cover: "covers/order/Songs_xenith.png" },
-{ name: "Forgotten Myths", artist: "KOAN Sound", url: "", cover: "covers/order/041 Forgotten Myths - KOAN Sound.png" },
-{ name: "Colorless Coldness", artist: "かねこちはる", url: "", cover: "covers/order/Cover_colorlesscoldness.png" },
-{ name: "И00.", artist: "Se-U-Ra", url: "", cover: "covers/order/Cover_n00.png" },
-{ name: "Estahv", artist: "Feryquitous", url: "", cover: "covers/order/050 Estahv - Feryquitous.png" },
-{ name: "夢の降る日に", artist: "seatrus", url: "", cover: "covers/order/夢の降る日に.png" },
-{ name: "Chunlian", artist: "utzbo", url: "", cover: "covers/order/Songs_chunlian.png" },
-{ name: "Straight into the lights", artist: "Cosmograph", url: "", cover: "covers/order/Cover_straightintothelights.png" },
-{ name: "Fervidex", artist: "Feryquitous", url: "", cover: "covers/order/052 Fervidex - Feryquitous.png" },
-{ name: "Just Before the Nightmare", artist: "PHONO、Salty Salt", url: "", cover: "covers/order/022 Just Before the Nightmare - PHONO、Salty Salt.png" },
-{ name: "GLORY：ROAD", artist: "uma vs. モリモリあつし", url: "", cover: "covers/order/Songs_gloryroad.png" },
-{ name: "Weaver & Wanderer", artist: "黒魔(Chroma)", url: "", cover: "covers/order/Songs_weaver-wanderer.png" },
-{ name: "Valhalla:0 (其他|Extended|©lowiro)", artist: "Juggernaut.", url: "", cover: "covers/order/198 Valhalla_0 (其他_Extended_©lowiro) - Juggernaut.png" },
-{ name: "Distorted Fate", artist: "Sakuzyo", url: "", cover: "covers/order/Cover_distortedfate.png" },
-{ name: "MIRINAE", artist: "TAK × Zekk", url: "", cover: "covers/order/Songs_mirinae.png" },
-{ name: "Felis", artist: "M2U", url: "", cover: "covers/order/Songs_felis.png" },
-{ name: "Matane", artist: "Moose", url: "", cover: "covers/order/Matane.png" },
-{ name: "Campo", artist: "Team Grimoire", url: "", cover: "covers/order/182 Campo - Team Grimoire.png" },
-{ name: "Glitter", artist: "Systile、Yung Kim", url: "", cover: "covers/order/071 Glitter - Systile、Yung Kim.png" },
-{ name: "終の舞姫 (Extended Mix)", artist: "Se-U-Ra", url: "", cover: "covers/order/235 終の舞姫 (Extended Mix) - Se-U-Ra.png" },
-{ name: "Graves -Ancient Memories-", artist: "Juggernaut.", url: "", cover: "covers/order/Illustration.GravesAncientMemories.Juggernaut.0.png" },
-{ name: "Steadfast", artist: "Gardens", url: "", cover: "covers/order/Songs_steadfast.png" },
-{ name: "Excelsia", artist: "ak+q", url: "", cover: "covers/order/243 Excelsia - ak+q.png" },
-{ name: "Blooming", artist: "Emotional Addict", url: "", cover: "covers/order/062 Blooming - Emotional Addict.png" },
-{ name: "Journey", artist: "ARForest", url: "", cover: "covers/order/Songs_journey.png" },
-{ name: "Cobalt", artist: "KOAN Sound", url: "", cover: "covers/order/044 Cobalt - KOAN Sound.png" },
-{ name: "明晰夢にて", artist: "DJ Raisei", url: "", cover: "covers/order/Songs_meiseki-yume-nite.png" },
-{ name: "Chromafill", artist: "ていぬ", url: "", cover: "covers/order/Songs_chromafill.png" },
-{ name: "ひやむぎ、そーめん、時々うどん (冷面、素面、有时乌冬)", artist: "みかん箱", url: "", cover: "covers/order/317 ひやむぎ、そーめん、時々うどん (冷面、素面、有时乌冬) - みかん箱.png" },
-{ name: "MIRINAE (Original Mix)", artist: "Zekk", url: "", cover: "covers/order/002 MIRINAE (Original Mix) - Zekk.png" },
-{ name: "Rhuzerv", artist: "Sennzai、Feryquitous", url: "", cover: "covers/order/013 Rhuzerv - Sennzai、Feryquitous.png" },
-{ name: "Der Richter", artist: "Ωμεγα", url: "", cover: "covers/order/derichter.png" },
-{ name: "Reditus Croni", artist: "ARForest、Iceloki", url: "", cover: "covers/order/077 Reditus Croni - ARForest、Iceloki.png" },
-{ name: "翠杜", artist: "隣の庭は青い(庭師+Aoi)", url: "", cover: "covers/order/Cover_suito.png" },
-{ name: "lkoik", artist: "Unfolding", url: "", cover: "covers/order/lkoik.png" },
-{ name: "Grievous Lady -nothing is but what is not-", artist: "Various Artists、Laur、Team Grimoire", url: "", cover: "covers/order/264 Grievous Lady -nothing is but what is not- - Various Artists、Laur、Team Grimoire.png" },
-{ name: "Valedict", artist: "void", url: "", cover: "covers/order/091 Valedict - void.png" },
-{ name: "Undying Macula ~penumbra~", artist: "Ashrount", url: "", cover: "covers/order/083 Undying Macula ~penumbra~ - Ashrount.png" },
-{ name: "Hollow Green", artist: "Yu-dachi、Seunghwan Yoo", url: "", cover: "covers/order/148 Hollow Green - Yu-dachi、Seunghwan Yoo.png" },
-{ name: "Prism Pulse", artist: "KOAN Sound", url: "", cover: "covers/order/043 Prism Pulse - KOAN Sound.png" },
-{ name: "Incyde", artist: "YbeLL", url: "", cover: "covers/order/Cover_incyde.png" },
-{ name: "季曲 ~Seasons of Asia~", artist: "詹勋伟", url: "", cover: "covers/order/356 季曲 ~Seasons of Asia~ - 詹勋伟.png" },
-{ name: "Vindication", artist: "Laur", url: "", cover: "covers/order/271 Vindication - Laur.png" },
-{ name: "Pure Ruby", artist: "SHIKI", url: "", cover: "covers/order/Songs_pure-ruby.png" },
-{ name: "Uchronia", artist: "7mai", url: "", cover: "covers/order/Songs_uchronia.png" },
-{ name: "咲く星々", artist: "ユアミトス", url: "", cover: "covers/order/Songs_saku-hoshiboshi.png" },
-{ name: "World Ender", artist: "sasakure.UK × TJ.hangneil", url: "", cover: "covers/order/Songs_worldender.png" },
-{ name: "多次元宇宙融合論", artist: "TAKIO feat. つぐ", url: "", cover: "covers/order/Songs_extradimensional.png" },
-{ name: "Shattered Sky After Rain", artist: "Lorph & Elexia", url: "", cover: "covers/order/Songs_shattered-sky-after-rain.png" },
-{ name: "Slic.hertz", artist: "Sobrem", url: "", cover: "covers/order/Illustration.slichertz.Sobrem.0.png" },
-{ name: "Achromic Riddle", artist: "Nego_tiator", url: "", cover: "covers/order/015 Achromic Riddle - Nego_tiator.png" },
-{ name: "Flutter Echo", artist: "Cansol", url: "", cover: "covers/order/Songs_flutter-echo.png" },
-{ name: "Frey's Philosophy", artist: "Powerless", url: "", cover: "covers/order/Cover_freysphilosophy.png" },
-{ name: "sølips", artist: "rintarosoma", url: "", cover: "covers/order/sølips.png" },
-{ name: "Art for Rest", artist: "ARForest", url: "", cover: "covers/order/238 Art for Rest - ARForest.png" },
-{ name: "Overflow", artist: "effe", url: "", cover: "covers/order/Cover_overflow.png" },
-{ name: "Quaoar (For \"Thanks Follower 50k\")", artist: "かめりあ", url: "", cover: "covers/order/225 Quaoar (For _Thanks Follower 50k_) - かめりあ.png" },
-{ name: "Inst.", artist: "Aurora", url: "", cover: "covers/order/389 Inst. - Aurora.png" },
-{ name: "Lament Rain", artist: "Ashrount vs. 打打だいず", url: "", cover: "covers/order/Songs_lamentrain.png" },
-{ name: "Dragon Rider", artist: "Two Steps From Hell", url: "", cover: "covers/order/369 Dragon Rider - Two Steps From Hell.png" },
-{ name: "amethyst", artist: "かねこちはる", url: "", cover: "covers/order/Songs_amethyst.png" },
-{ name: "Observatory", artist: "かめりあ", url: "", cover: "covers/order/Cover_observatory.png" },
-{ name: "Sidewalk Cafe", artist: "削除", url: "", cover: "covers/order/132 Sidewalk Cafe - 削除.png" },
-{ name: "Quadruplicity", artist: "LucaProject vs NeLiME", url: "", cover: "covers/order/Songs_quadruplicity.png" },
-{ name: "Artificial Existence", artist: "Jun Kuroda", url: "", cover: "covers/order/Cover_artificialexistence.png" },
-{ name: "Hark! The wyntres wynd bloweth", artist: "SeyriN", url: "", cover: "covers/order/Songs_hark-bloweth.png" },
-{ name: "彩", artist: "MisoilePunch♪", url: "", cover: "covers/order/彩.png" },
-{ name: "distant call", artist: "nuphory", url: "", cover: "covers/order/Songs_distant-call.png" },
-{ name: "Summer Time Memory", artist: "kanemiko", url: "", cover: "covers/order/Songs_summer-time-memory.png" },
-{ name: "Travel Begins", artist: "ARForest", url: "", cover: "covers/order/079 Travel Begins - ARForest.png" },
-{ name: "［筏］は云う。幾ら漂流すれど不撓の心さえ有れば軈て行到ると。", artist: "庭師", url: "", cover: "covers/order/Songs_筏.png" },
-{ name: "Ether Strike ('Divine Mercy' Extended)", artist: "Akira Complex", url: "", cover: "covers/order/171 Ether Strike ('Divine Mercy' Extended) - Akira Complex.png" },
-{ name: "Bustling Bar", artist: "削除", url: "", cover: "covers/order/121 Bustling Bar - 削除.png" },
-{ name: "Luminescence", artist: "米虾Fomiki & 初云CLoudie", url: "", cover: "covers/order/Cover_luminescence.png" },
-{ name: "Schwarzschild", artist: "Tsukasa", url: "", cover: "covers/order/Cover_schwarzschild.png" },
-{ name: "Never Say Goodbye", artist: "黒魔", url: "", cover: "covers/order/Illustration.NeverSayGoodbye.黒魔.0.png" },
-{ name: "Final Resonance", artist: "ARForest", url: "", cover: "covers/order/240 Final Resonance - ARForest.png" },
-{ name: "Renegade", artist: "sky_delta", url: "", cover: "covers/order/Songs_renegade.png" },
-{ name: "キオク回路", artist: "ShiBa", url: "", cover: "covers/order/Cover_kiokukairo.png" },
-{ name: "Slide Into Light", artist: "ValeraP", url: "", cover: "covers/order/Songs_slide-into-light.png" },
-{ name: "Rain of Conflict in a Radiant Abyss", artist: "ak+q", url: "", cover: "covers/order/Songs_rainofconflict.png" },
-{ name: "World Vanquisher", artist: "void (Mournfinale)", url: "", cover: "covers/order/Songs_worldvanquisher.png" },
-{ name: "Message", artist: "くるぶっこちゃん", url: "", cover: "covers/order/message.png" },
-{ name: "Lumia", artist: "sky_delta", url: "", cover: "covers/order/Songs_lumia.png" },
-{ name: "残響404号DDD線", artist: "Nyan.PLANET (TAKIO + 羽鳥玲)", url: "", cover: "covers/order/Cover_zankyou404.png" },
-{ name: "Antikythera", artist: "technoplanet", url: "", cover: "covers/order/Cover_antikythera.png" },
-{ name: "Serendibite", artist: "Nego_tiator", url: "", cover: "covers/order/017 Serendibite - Nego_tiator.png" },
-{ name: "Secret Illumination", artist: "Yooh", url: "", cover: "covers/order/Cover_secretillumination.png" },
-{ name: "Dawn Nymphaea", artist: "花徒めと", url: "", cover: "covers/order/Songs_dawn-nymphaea.png" },
-{ name: "cyanine", artist: "jioyi", url: "", cover: "covers/order/Cover_cyanine.png" },
-{ name: "遊錘", artist: "Mylta feat. 菊植", url: "", cover: "covers/order/Songs_yusui.png" },
-{ name: "チューリングの跡", artist: "Frums", url: "", cover: "covers/order/076 チューリングの跡 - Frums.png" },
-{ name: "Petrichor", artist: "void (Mournfinale)", url: "", cover: "covers/order/Petrichor.png" },
-{ name: "Works and Coffee", artist: "削除", url: "", cover: "covers/order/131 Works and Coffee - 削除.png" },
-{ name: "Embracing intelligences", artist: "かめりあ", url: "", cover: "covers/order/224 Embracing intelligences - かめりあ.png" },
-{ name: "Fractal Fission", artist: "ARForest", url: "", cover: "covers/order/Cover_fractalfission.png" },
-{ name: "Ether Strike", artist: "Akira Complex", url: "", cover: "covers/order/Songs_etherstrike.png" },
-{ name: "sense of wonder", artist: "Yu_Asahina", url: "", cover: "covers/order/Cover_senseofwonder.png" },
-{ name: "Lumina", artist: "Wisp X & Xomu", url: "", cover: "covers/order/Songs_lumina.png" },
-{ name: "悔_", artist: "Essbee", url: "", cover: "covers/order/Songs_kai.png" },
-{ name: "Mondlicht", artist: "Street", url: "", cover: "covers/order/014 Mondlicht - Street.png" },
-{ name: "CRYSTAL MINING", artist: "Salty Salt", url: "", cover: "covers/order/Cover_crystalmining.png" },
-{ name: "In the Garden", artist: "Qutabire", url: "", cover: "covers/order/063 In the Garden - Qutabire.png" },
-{ name: "Broken Conviction", artist: "Cansol", url: "", cover: "covers/order/047 Broken Conviction - Cansol.png" },
-{ name: "Fracture Ray", artist: "Sakuzyo", url: "", cover: "covers/order/Songs_fractureray.png" },
-{ name: "Alive", artist: "eicateve", url: "", cover: "covers/order/Songs_alive.png" },
-{ name: "Riven Pilgrimage", artist: "rejection & Supire feat. eili", url: "", cover: "covers/order/Songs_rivenpilgrim.png" },
-{ name: "驟雨の狭間", artist: "Silentroom", url: "", cover: "covers/order/Cover_rainshower.png" },
-{ name: "NOVOCAINE", artist: "PHONO、Salty Salt", url: "", cover: "covers/order/020 NOVOCAINE - PHONO、Salty Salt.png" },
-{ name: "Testify", artist: "void (Mournfinale) feat. 星熊南巫", url: "", cover: "covers/order/Songs_testify.png" },
-{ name: "Flows With Errors", artist: "日本群星、ARForest", url: "", cover: "covers/order/010 Flows With Errors - 日本群星、ARForest.png" },
-{ name: "Desultory Signals", artist: "technoplanet", url: "", cover: "covers/order/desultory signals.png" },
-{ name: "Neural Rewind Protocol", artist: "Connexio", url: "", cover: "covers/order/Songs_neural-rewind-protocol.png" },
-{ name: "Cafeteria divertida", artist: "削除", url: "", cover: "covers/order/123 Cafeteria divertida - 削除.png" },
-{ name: "Inverted World", artist: "ARForest", url: "", cover: "covers/order/Songs_inverted-world.png" },
-{ name: "Satelite：memories (Rework)", artist: "Qutabire", url: "", cover: "covers/order/061 Satelite：memories (Rework) - Qutabire.png" },
-{ name: "PRAGMATISM -RESURRECTION-", artist: "Laur", url: "", cover: "covers/order/Songs_pragmatism.png" },
-{ name: "ALTER EGO (Extended Mix)", artist: "Yuta Imai", url: "", cover: "covers/order/084 ALTER EGO (Extended Mix) - Yuta Imai.png" },
-{ name: "Waltz for Lorelei", artist: "Sobrem & 庭師", url: "", cover: "covers/order/Songs_waltz-for-lorelei.png" },
-{ name: "Birds Of Plague", artist: "ARForest", url: "", cover: "covers/order/242 Birds Of Plague - ARForest.png" },
-{ name: "Aether Crest: Astral", artist: "void (Mournfinale) × 水野健治", url: "", cover: "covers/order/Songs_aethercrest.png" },
-{ name: "森奥虚迹", artist: "ShiBa", url: "", cover: "covers/order/Illustration.森奥虚跡.ShiBa.0.png" },
-{ name: "No Way Back", artist: "Nhato", url: "", cover: "covers/order/Songs_nowayback.png" },
-{ name: "Lisrim", artist: "Onoken", url: "", cover: "covers/order/104 Lisrim - Onoken.png" },
-{ name: "Act Beloved", artist: "void (Mournfinale) feat. Salita", url: "", cover: "covers/order/Cover_actbeloved.png" },
-{ name: "Last Guardian", artist: "ARForest", url: "", cover: "covers/order/011 Last Guardian - ARForest.png" },
-{ name: "Three pieces", artist: "effe", url: "", cover: "covers/order/137 Three pieces - effe.png" },
-{ name: "felys -final remix-", artist: "onoken", url: "", cover: "covers/order/Cover_felysfinalremix.png" },
-{ name: "Heart Jackin'", artist: "Yu_Asahina", url: "", cover: "covers/order/Songs_heartjackin.png" },
-{ name: "Traveller's Hub", artist: "MUyu", url: "", cover: "covers/order/140 Traveller's Hub - MUyu.png" },
-{ name: "Axium Crisis", artist: "ak+q", url: "", cover: "covers/order/Songs_axiumcrisis.png" },
-{ name: "Alfheim's faith", artist: "影虎。", url: "", cover: "covers/order/Songs_alfheims-faith.png" },
-{ name: "Crisscrosser", artist: "void", url: "", cover: "covers/order/107 Crisscrosser - void.png" },
-{ name: "-ish", artist: "natsume & alpha", url: "", cover: "covers/order/Songs_ish.png" }
+{ name: "Secret Illumination", artist: "Yooh", url: "orpheus://song/2014795357/?autoplay=1", cover: "covers/order/Cover_secretillumination.png", urls: { bilibili: "https://www.bilibili.com/video/BV1oG4y1X7bQ" } },
+{ name: "Broken Conviction", artist: "Cansol", url: "orpheus://song/2662029189/?autoplay=1", cover: "covers/order/047 Broken Conviction - Cansol.png", urls: { bilibili: "https://www.bilibili.com/video/BV1q16DY1E2B" } },
+{ name: "Rhuzerv", artist: "Sennzai、Feryquitous", url: "orpheus://song/2069008729/?autoplay=1", cover: "covers/order/013 Rhuzerv - Sennzai、Feryquitous.png", urls: { bilibili: "https://www.bilibili.com/video/BV1QW41177ib" } },
+{ name: "Last Guardian", artist: "ARForest", url: "https://t1.kugou.com/1mwmnd2G6V3", cover: "covers/order/011 Last Guardian - ARForest.png", urls: { bilibili: "https://www.bilibili.com/video/BV1VT4m1S7Pt" } },
+{ name: "MIRINAE", artist: "TAK × Zekk", url: "orpheus://song/2156451294/?autoplay=1", cover: "covers/order/Songs_mirinae.png", urls: { bilibili: "https://www.bilibili.com/video/BV1MipWzxE4Z" } },
+{ name: "Prism Pulse", artist: "KOAN Sound", url: "orpheus://song/1332439237/?autoplay=1", cover: "covers/order/043 Prism Pulse - KOAN Sound.png" },
+{ name: "ひやむぎ、そーめん、時々うどん (冷面、素面、有时乌冬)", artist: "みかん箱", url: "orpheus://song/785793/?autoplay=1", cover: "covers/order/317 ひやむぎ、そーめん、時々うどん (冷面、素面、有时乌冬) - みかん箱.png", urls: { bilibili: "https://www.bilibili.com/video/BV1Wk4y1W7sx" } },
+{ name: "Riven Pilgrimage", artist: "rejection & Supire feat. eili", url: "orpheus://song/3426079306/?autoplay=1", cover: "covers/order/Songs_rivenpilgrim.png", urls: { bilibili: "https://www.bilibili.com/video/BV11Rhw6wE5o", kugou:"https://t1.kugou.com/1pVep52G6V3" } },
+{ name: "Slic.hertz", artist: "Sobrem", url: "orpheus://song/2013361823/?autoplay=1", cover: "covers/order/Illustration.slichertz.Sobrem.0.png", urls: { bilibili: "https://www.bilibili.com/video/BV1rg411a7bC" } },
+{ name: "Inst.", artist: "勇士的信仰", url: "https://t1.kugou.com/1mvcZ34G6V3", cover: "covers/order/389 Inst. - Aurora.png" },
+{ name: "Artificial Existence", artist: "Jun Kuroda", url: "orpheus://song/2605886690/?autoplay=1", cover: "covers/order/Cover_artificialexistence.png", urls: { bilibili: "https://www.bilibili.com/video/BV1XN411T7gZ" } },
+{ name: "Message", artist: "くるぶっこちゃん", url: "orpheus://song/3444183581/?autoplay=1", cover: "covers/order/message.png", urls: { bilibili: "https://www.bilibili.com/video/BV1qcHq6XELG" } },
+{ name: "Mondlicht", artist: "Street", url: "https://t1.kugou.com/1n3A74eG6V3", cover: "covers/order/014 Mondlicht - Street.png", urls: { bilibili: "https://www.bilibili.com/video/BV1aK411e7NN" } },
+{ name: "sacred sacrifices", artist: "ak+q", url: "orpheus://song/2082261657/?autoplay=1", cover: "covers/order/Cover_sacredsacrifices.png", urls: { bilibili: "https://www.bilibili.com/video/BV1HxETzWEYM" } },
+{ name: "Lisrim", artist: "Onoken", url: "orpheus://song/1481157289/?autoplay=1", cover: "covers/order/104 Lisrim - Onoken.png", urls: { bilibili: "https://www.bilibili.com/video/BV14N411D7pi/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
+{ name: "Three pieces", artist: "effe", url: "orpheus://song/2653071618/?autoplay=1", cover: "covers/order/137 Three pieces - effe.png", urls: { bilibili: "https://www.bilibili.com/video/BV1PWBRYhEEz" } },
+{ name: "Act Beloved", artist: "void (Mournfinale) feat. Salita", url: "orpheus://song/722278/?autoplay=1", cover: "covers/order/Cover_actbeloved.png", urls: { bilibili: "https://www.bilibili.com/video/BV1nw4m1173J/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
+{ name: "Valedict", artist: "void", url: "orpheus://song/35779209/?autoplay=1", cover: "covers/order/091 Valedict - void.png", urls: { bilibili: "https://www.bilibili.com/video/BV1THBfY7E1Y" } },
+{ name: "Steadfast", artist: "Gardens", url: "orpheus://song/2683333577/?autoplay=1", cover: "covers/order/Songs_steadfast.png", urls: { bilibili: "https://www.bilibili.com/video/BV1rJAze5EDa" } },
+{ name: "Rain of Conflict in a Radiant Abyss", artist: "ak+q", url: "orpheus://song/2652405072/?autoplay=1", cover: "covers/order/Songs_rainofconflict.png", urls: { bilibili: "https://www.bilibili.com/video/BV12b4peiEpa" } },
+{ name: "森奥虚迹", artist: "ShiBa", url: "orpheus://song/2757261085/?autoplay=1", cover: "covers/order/Illustration.森奥虚跡.ShiBa.0.png", urls: {bilibili: "https://www.bilibili.com/video/BV1dWNvzHEGh/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", kugou:"https://t1.kugou.com/1pVDZadG6V3"}},
+{ name: "Quadruplicity", artist: "LucaProject vs NeLiME", url: "orpheus://song/2689897074/?autoplay=1", cover: "covers/order/Songs_quadruplicity.png", urls: { bilibili: "https://www.bilibili.com/video/BV1xLFVegEXr", kugou:"https://t1.kugou.com/1pUAxf6G6V3" } },
+{ name: "Graves -Ancient Memories-", artist: "Juggernaut.", url: "https://t1.kugou.com/1mx9f2aG6V3", cover: "covers/order/Illustration.GravesAncientMemories.Juggernaut.0.png", urls: { bilibili: "https://www.bilibili.com/video/BV12y1qYqE1A" } },
+{ name: "Chromafill", artist: "ていぬ", url: "orpheus://song/2672431270/?autoplay=1", cover: "covers/order/Songs_chromafill.png", urls: { bilibili: "https://www.bilibili.com/video/BV1rJ4m1J7Gn" } },
+{ name: "PRAGMATISM -RESURRECTION-", artist: "Laur", url: "orpheus://song/1907125216/?autoplay=1", cover: "covers/order/Songs_pragmatism.png", urls: { bilibili: "https://www.bilibili.com/video/BV1pD4y1F7eB",kugou:"https://t1.kugou.com/1pVsp36G6V3" } },
+{ name: "Antikythera", artist: "technoplanet", url: "https://t1.kugou.com/1n2OR2aG6V3", cover: "covers/order/Cover_antikythera.png", urls: { bilibili: "https://www.bilibili.com/video/BV18QHZ6uEUe?vd_source=64e26223d101732a5f226369aa88ddb9&spm_id_from=333.788.videopod.sections" } },
+{ name: "Distorted Fate", artist: "Sakuzyo", url: "orpheus://song/2080461744/?autoplay=1", cover: "covers/order/Cover_distortedfate.png", urls: { bilibili: "https://www.bilibili.com/video/BV1ZG411o7Sy" } },
+{ name: "Heart Jackin'", artist: "Yu_Asahina", url: "https://www.bilibili.com/video/BV1nU4y1K7W4/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", cover: "covers/order/Songs_heartjackin.png" },
+{ name: "Hydroplane", artist: "KOAN Sound", url: "orpheus://song/1332440139/?autoplay=1", cover: "covers/order/042 Hydroplane - KOAN Sound.png" },
+{ name: "Incyde", artist: "YbeLL", url: "orpheus://song/2646478984/?autoplay=1", cover: "covers/order/Cover_incyde.png", urls: { bilibili: "https://www.bilibili.com/video/BV1wV411W7HB", kugou:"https://t1.kugou.com/1pUb32eG6V3" } },
+{ name: "Dragon Rider", artist: "Two Steps From Hell", url: "orpheus://song/19554998/?autoplay=1", cover: "covers/order/369 Dragon Rider - Two Steps From Hell.png", urls: { bilibili: "https://www.bilibili.com/video/BV1pt411s7dh" } },
+{ name: "Dawn Nymphaea", artist: "花徒めと", url: "orpheus://song/3413081476/?autoplay=1", cover: "covers/order/Songs_dawn-nymphaea.png", urls: { bilibili: "https://www.bilibili.com/video/BV1kmga6dEmb" } },
+{ name: "GLORY：ROAD", artist: "uma vs. モリモリあつし", url: "orpheus://song/2670090259/?autoplay=1", cover: "covers/order/Songs_gloryroad.png", urls: { bilibili: "https://www.bilibili.com/video/BV1RK4y1X7iL/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
+{ name: "Alive", artist: "eicateve", url: "orpheus://song/2101756975/?autoplay=1", cover: "covers/order/Songs_alive.png", urls: { bilibili: "https://www.bilibili.com/video/BV1gD4y1n7nK" } },
+{ name: "Neural Rewind Protocol", artist: "Connexio", url: "orpheus://song/3440906440/?autoplay=1", cover: "covers/order/Songs_neural-rewind-protocol.png", urls: { bilibili: "https://www.bilibili.com/video/BV1Tme86pEYa" } },
+{ name: "Petrichor", artist: "void (Mournfinale)", url: "orpheus://song/3444519724/?autoplay=1", cover: "covers/order/Petrichor.png", urls: { bilibili: "https://www.bilibili.com/video/BV1hXHx6EEaM" } },
+{ name: "Journey", artist: "ARForest", url: "https://t1.kugou.com/1mr5La5G6V3", cover: "covers/order/Songs_journey.png", urls: { bilibili: "https://www.bilibili.com/video/BV1uD421A7TB" } },
+{ name: "Flutter Echo", artist: "Cansol", url: "orpheus://song/1927491548/?autoplay=1", cover: "covers/order/Songs_flutter-echo.png", urls: { bilibili: "https://www.bilibili.com/video/BV1tt4y1a7w8" } },
+{ name: "И00.", artist: "Se-U-Ra", url: "orpheus://song/2614414542/?autoplay=1", cover: "covers/order/Cover_n00.png", urls: { bilibili: "https://www.bilibili.com/video/BV1gsqsYWE3t" } },
+{ name: "Colorless Coldness", artist: "かねこちはる", url: "https://www.bilibili.com/video/BV1bZFjzmE81/?spm_id_from=333.337.search-card.all.click", cover: "covers/order/Cover_colorlesscoldness.png" },
+{ name: "Unfolding", artist: "lkoik", url: "orpheus://song/2637433188/?autoplay=1", cover: "covers/order/lkoik.png", urls: {bilibili: "https://www.bilibili.com/video/BV11Fbs6nErj/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9"} },
+{ name: "Summer Time Memory", artist: "kanemiko", url: "orpheus://song/2743486202/?autoplay=1", cover: "covers/order/Songs_summer-time-memory.png", urls: { bilibili: "https://www.bilibili.com/video/BV1Z7vwzGEDu" } },
+{ name: "Overflow", artist: "effe", url: "https://www.bilibili.com/video/BV1TQ5GzTEeH/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", cover: "covers/order/Cover_overflow.png" },
+{ name: "翠杜", artist: "隣の庭は青い(庭師+Aoi)", url: "orpheus://song/2600757405/?autoplay=1", cover: "covers/order/Cover_suito.png", urls: { bilibili: "https://www.bilibili.com/video/BV1J7421o72N" } },
+{ name: "sølips", artist: "rintarosoma", url: "orpheus://song/3317354159/?autoplay=1", cover: "covers/order/sølips.png", urls: { bilibili: "https://www.bilibili.com/video/BV163411p7zQ" } },
+{ name: "Bustling Bar", artist: "削除", url: "orpheus://song/1430271511/?autoplay=1", cover: "covers/order/121 Bustling Bar - 削除.png" },
+{ name: "Fervidex", artist: "Feryquitous", url: "orpheus://song/1413787803/?autoplay=1", cover: "covers/order/052 Fervidex - Feryquitous.png", urls: { bilibili: "https://www.bilibili.com/video/BV1K15MzRE4D" } },
+{ name: "Travel Begins", artist: "ARForest", url: "orpheus://song/1402825201/?autoplay=1", cover: "covers/order/079 Travel Begins - ARForest.png", urls: { bilibili: "https://www.bilibili.com/video/BV1PG4y1T7gg" } },
+{ name: "World Vanquisher", artist: "void (Mournfinale)", url: "orpheus://song/1339904920/?autoplay=1", cover: "covers/order/Songs_worldvanquisher.png", urls: { bilibili: "https://www.bilibili.com/video/BV1x142197nj" } },
+{ name: "Ether Strike ('Divine Mercy' Extended)", artist: "Akira Complex", url: "https://www.bilibili.com/video/BV1664y1X767/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", cover: "covers/order/171 Ether Strike ('Divine Mercy' Extended) - Akira Complex.png" },
+{ name: "遊錘", artist: "Mylta feat. 菊植", url: "orpheus://song/3362752306/?autoplay=1", cover: "covers/order/Songs_yusui.png", urls: { bilibili: "https://www.bilibili.com/video/BV1NoAJzoE9a" } },
+{ name: "Testify", artist: "void (Mournfinale) feat. 星熊南巫", url: "orpheus://song/1965912564/?autoplay=1", cover: "covers/order/Songs_testify.png", urls: { bilibili: "https://www.bilibili.com/video/BV1QS4y1J7BK/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
+{ name: "Felis", artist: "M2U", url: "orpheus://song/1501035681/?autoplay=1", cover: "covers/order/Songs_felis.png", urls: { bilibili: "https://www.bilibili.com/video/BV1Ho4y1r75T" } },
+{ name: "Reditus Croni", artist: "ARForest、Iceloki", url: "https://t1.kugou.com/1mZ9F01G6V3", cover: "covers/order/077 Reditus Croni - ARForest、Iceloki.png", urls: { bilibili: "https://www.bilibili.com/video/BV1EiHUzzEcX" } },
+{ name: "Alfheim's faith", artist: "影虎。", url: "orpheus://song/2600753733/?autoplay=1", cover: "covers/order/Songs_alfheims-faith.png", urls: { bilibili: "https://www.bilibili.com/video/BV1eb421q7ox" } },
+{ name: "sense of wonder", artist: "Yu_Asahina", url: "orpheus://song/2734867374/?autoplay=1", cover: "covers/order/Cover_senseofwonder.png", urls: { bilibili: "https://www.bilibili.com/video/BV1Y3E1z7Ekv", kugou:"https://t1.kugou.com/1pURVa5G6V3" } },
+{ name: "［筏］は云う。幾ら漂流すれど不撓の心さえ有れば軈て行到ると。", artist: "庭師", url: "orpheus://song/3368743440/?autoplay=1", cover: "covers/order/Songs_筏.png", urls: { bilibili: "https://www.bilibili.com/video/BV1mfqKBoEao" } },
+{ name: "Elyqiria", artist: "Connexio", url: "orpheus://song/3332332369/?autoplay=1", cover: "covers/order/Songs_elyqiria.png", urls: { bilibili: "https://www.bilibili.com/video/BV1kiVAzaEWu" } },
+{ name: "edge of the world", artist: "Major Axis/Accelio", url: "orpheus://song/2726793654/?autoplay=1", cover: "covers/order/Edge_of_the_world.png"},
+{ name: "Blooming", artist: "Emotional Addict", url: "orpheus://song/1443143738/?autoplay=1", cover: "covers/order/062 Blooming - Emotional Addict.png" },
+{ name: "Fractal Fission", artist: "ARForest", url: "https://www.bilibili.com/video/BV1qU7z69E1g/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", cover: "covers/order/Cover_fractalfission.png" },
+{ name: "Stolen Lips", artist: "Osamu Kubota", url: "orpheus://song/3416774384/?autoplay=1", cover: "covers/order/Songs_stolen-lips.png", urls: { bilibili: "https://www.bilibili.com/video/BV1Whgv6NEhD" } },
+{ name: "残響404号DDD線", artist: "Nyan.PLANET (TAKIO + 羽鳥玲)", url: "https://www.bilibili.com/video/BV1hW1XB2ELD/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", cover: "covers/order/Cover_zankyou404.png" },
+{ name: "悔_", artist: "Essbee", url: "orpheus://song/3329651548/?autoplay=1", cover: "covers/order/Songs_kai.png", urls: { bilibili: "https://www.bilibili.com/video/BV1KF2QBMEA5" } },
+{ name: "Kou", artist: "Feryquitous", url: "orpheus://song/1413789349/?autoplay=1", cover: "covers/order/051 Kou - Feryquitous.png", urls: { bilibili: "https://www.bilibili.com/video/BV1dA411S7ci" } },
+{ name: "amethyst", artist: "かねこちはる", url: "orpheus://song/2612967059/?autoplay=1", cover: "covers/order/Songs_amethyst.png", urls: { bilibili: "https://www.bilibili.com/video/BV1k8411L7GP" } },
+{ name: "CRYSTAL MINING", artist: "Salty Salt", url: "https://www.bilibili.com/video/BV1ThBXB4EmD/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", cover: "covers/order/Cover_crystalmining.png" },
+{ name: "Weaver & Wanderer", artist: "黒魔(Chroma)", url: "orpheus://song/3378786094/?autoplay=1", cover: "covers/order/Songs_weaver-wanderer.png", urls: { bilibili: "https://www.bilibili.com/video/BV1M4QZBrEaY" } },
+{ name: "MIRINAE (Original Mix)", artist: "Zekk", url: "orpheus://song/2156451308/?autoplay=1", cover: "covers/order/002 MIRINAE (Original Mix) - Zekk.png", urls: { bilibili: "https://www.bilibili.com/video/BV1Fm411C7Hi", kugou: "https://t1.kugou.com/1pTKj1bG6V3"} },
+{ name: "distant call", artist: "nuphory", url: "orpheus://song/3346756405/?autoplay=1", cover: "covers/order/Songs_distant-call.png", urls: { bilibili: "https://www.bilibili.com/video/BV1hLzCBzESF/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
+{ name: "彩", artist: "MisoilePunch♪", url: "https://t1.kugou.com/1n0NL63G6V3", cover: "covers/order/彩.png", urls: { bilibili: "https://www.bilibili.com/video/BV1y5411174Z" } },
+{ name: "-ish", artist: "natsume & alpha", url: "orpheus://song/3363530196/?autoplay=1", cover: "covers/order/Songs_ish.png", urls: { bilibili: "https://www.bilibili.com/video/BV1NoAJzoE6W" } },
+{ name: "Start to The End", artist: "LucaProject & Xeudo Code", url: "orpheus://song/2106210196/?autoplay=1", cover: "covers/order/Start_to_The_End.png", urls: { bilibili: "https://www.bilibili.com/video/BV17u411b7nK" , kugou: "https://t1.kugou.com/1pTpj33G6V3"} },
+{ name: "Forgotten Myths", artist: "KOAN Sound", url: "orpheus://song/32189281/?autoplay=1", cover: "covers/order/041 Forgotten Myths - KOAN Sound.png", urls: { bilibili: "https://www.bilibili.com/video/BV1fQySY4E19" } },
+{ name: "Chunlian", artist: "utzbo", url: "orpheus://song/3350032819/?autoplay=1", cover: "covers/order/Songs_chunlian.png", urls: { bilibili: "https://www.bilibili.com/video/BV1jiFdzKEWA" } },
+{ name: "多次元宇宙融合論", artist: "TAKIO feat. つぐ", url: "orpheus://song/3340439385/?autoplay=1", cover: "covers/order/Songs_extradimensional.png", urls: { bilibili: "https://www.bilibili.com/video/BV1UYbs6ZEux" } },
+{ name: "Lumina", artist: "Wisp X & Xomu", url: "orpheus://song/1395977748/?autoplay=1", cover: "covers/order/Songs_lumina.png", urls: { bilibili: "https://www.bilibili.com/video/BV1PE411Y7Lc" } },
+{ name: "Satelite：memories (Rework)", artist: "Qutabire", url: "orpheus://song/2009992247/?autoplay=1", cover: "covers/order/061 Satelite：memories (Rework) - Qutabire.png", urls: { bilibili: "https://www.bilibili.com/video/BV1REYbzBEvz" } },
+{ name: "Works and Coffee", artist: "削除", url: "orpheus://song/440101458/?autoplay=1", cover: "covers/order/131 Works and Coffee - 削除.png" },
+{ name: "Hollow Green", artist: "Yu-dachi、Seunghwan Yoo", url: "orpheus://song/1944651759/?autoplay=1", cover: "covers/order/148 Hollow Green - Yu-dachi、Seunghwan Yoo.png", urls: { bilibili: "https://www.bilibili.com/video/BV1Ja4y197ND" } },
+{ name: "Embracing intelligences", artist: "かめりあ", url: "orpheus://song/1336656392/?autoplay=1", cover: "covers/order/224 Embracing intelligences - かめりあ.png", urls: { bilibili: "https://www.bilibili.com/video/BV1U5zDBpEfA" } },
+{ name: "Frey's Philosophy", artist: "Powerless", url: "orpheus://song/561307211/?autoplay=1", cover: "covers/order/Cover_freysphilosophy.png", urls: { bilibili: "https://www.bilibili.com/video/BV1p4411L7YT" } },
+{ name: "キオク回路", artist: "ShiBa", url: "https://www.bilibili.com/video/BV1L6W7zpERH/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", cover: "covers/order/Cover_kiokukairo.png" },
+{ name: "明晰夢にて", artist: "DJ Raisei", url: "orpheus://song/3378755182/?autoplay=1", cover: "covers/order/Songs_meiseki-yume-nite.png", urls: { bilibili: "https://www.bilibili.com/video/BV1xoAJzoE4o" } },
+{ name: "Sidewalk Cafe", artist: "削除", url: "orpheus://song/440101455/?autoplay=1", cover: "covers/order/132 Sidewalk Cafe - 削除.png", urls: { bilibili: "https://www.bilibili.com/video/BV1fs4118772" } },
+{ name: "Birds Of Plague", artist: "ARForest", url: "orpheus://song/1363303059/?autoplay=1", cover: "covers/order/242 Birds Of Plague - ARForest.png", urls: { bilibili: "https://www.bilibili.com/video/BV1ST411V7sm" } },
+{ name: "Waltz for Lorelei", artist: "Sobrem & 庭師", url: "orpheus://song/2601565693/?autoplay=1", cover: "covers/order/Songs_waltz-for-lorelei.png", urls: { bilibili: "https://www.bilibili.com/video/BV18s421G7ET" } },
+{ name: "Vindication", artist: "Laur", url: "orpheus://song/1391247763/?autoplay=1", cover: "covers/order/271 Vindication - Laur.png", urls: { bilibili: "https://www.bilibili.com/video/BV147411w7ip/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
+{ name: "Excelsia", artist: "ak+q", url: "orpheus://song/1441250066/?autoplay=1", cover: "covers/order/243 Excelsia - ak+q.png", urls: { bilibili: "https://www.bilibili.com/video/BV16x411u7wh" } },
+{ name: "Lament Rain", artist: "Ashrount vs. 打打だいず", url: "orpheus://song/2648894511/?autoplay=1", cover: "covers/order/Songs_lamentrain.png", urls: { bilibili: "https://www.bilibili.com/video/BV1ftUDYiECJ" ,kugou:"https://t1.kugou.com/1pUlrc8G6V3"} },
+{ name: "Lumia", artist: "sky_delta", url: "https://www.bilibili.com/video/BV1JpCjB9EDS/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", cover: "covers/order/Songs_lumia.png" },
+{ name: "Shattered Sky After Rain", artist: "Lorph & Elexia", url: "orpheus://song/2682074878/?autoplay=1", cover: "covers/order/Songs_shattered-sky-after-rain.png", urls: { bilibili: "https://www.bilibili.com/video/BV1GTYuzLE4y" } },
+{ name: "夢の降る日に", artist: "seatrus", url: "orpheus://song/3416792092/?autoplay=1", cover: "covers/order/夢の降る日に.png", urls: { bilibili: "https://www.bilibili.com/video/BV1vxT46REZa" } },
+{ name: "Straight into the lights", artist: "Cosmograph", url: "orpheus://song/2628998924/?autoplay=1", cover: "covers/order/Cover_straightintothelights.png", urls: { bilibili: "https://www.bilibili.com/video/BV1mx4y1Z7kh" } },
+{ name: "Observatory", artist: "かめりあ", url: "https://www.bilibili.com/video/BV1SYqKYNESP/?spm_id_from=333.337.search-card.all.click", cover: "covers/order/Cover_observatory.png" },
+{ name: "Serendibite", artist: "Nego_tiator", url: "https://t1.kugou.com/1n3ixf2G6V3", cover: "covers/order/017 Serendibite - Nego_tiator.png", urls: { bilibili: "https://www.bilibili.com/video/BV1mv4meBEW8" } },
+{ name: "World Ender", artist: "sasakure.UK × TJ.hangneil", url: "orpheus://song/1962519608/?autoplay=1", cover: "covers/order/Songs_worldender.png", urls: { bilibili: "https://www.bilibili.com/video/BV1qa411n7UV/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
+{ name: "Final Resonance", artist: "ARForest", url: "https://t1.kugou.com/1n1Rtd7G6V3", cover: "covers/order/240 Final Resonance - ARForest.png", urls: { bilibili: "https://www.bilibili.com/video/BV1uVEDzHEW2" } },
+{ name: "Quaoar (For \"Thanks Follower 50k\")", artist: "かめりあ", url: "orpheus://song/1336689107/?autoplay=1", cover: "covers/order/225 Quaoar (For _Thanks Follower 50k_) - かめりあ.png", urls: { bilibili: "https://www.bilibili.com/video/BV1N54y1a7wv" } },
+{ name: "Axium Crisis", artist: "ak+q", url: "orpheus://song/2650427950/?autoplay=1", cover: "covers/order/Songs_axiumcrisis.png", urls: { bilibili: "https://www.bilibili.com/video/BV1Lc411w7Mq" } },
+{ name: "cyanine", artist: "jioyi", url: "orpheus://song/1403719540/?autoplay=1", cover: "covers/order/Cover_cyanine.png", urls: { bilibili: "https://www.bilibili.com/video/BV1nnFXegEKG" } },
+{ name: "Renegade", artist: "sky_delta", url: "orpheus://song/2714793272/?autoplay=1", cover: "covers/order/Songs_renegade.png", urls: { bilibili: "https://www.bilibili.com/video/BV14WUmYkEfa" } },
+{ name: "The Zulla", artist: "KOAN Sound", url: "orpheus://song/1332439239/?autoplay=1", cover: "covers/order/045 The Zulla - KOAN Sound.png", urls: { bilibili: "https://www.bilibili.com/video/BV1q9YKzjERU" } },
+{ name: "Campo", artist: "Team Grimoire", url: "orpheus://song/36103436/?autoplay=1", cover: "covers/order/182 Campo - Team Grimoire.png" },
+{ name: "Glitter", artist: "Systile、Yung Kim", url: "https://t1.kugou.com/1mpzD27G6V3", cover: "covers/order/071 Glitter - Systile、Yung Kim.png"},
+{ name: "Schwarzschild", artist: "Tsukasa", url: "orpheus://song/1962484631/?autoplay=1", cover: "covers/order/Cover_schwarzschild.png", urls: { bilibili: "https://www.bilibili.com/video/BV1R84y117QJ" } },
+{ name: "ALTER EGO (Extended Mix)", artist: "Yuta Imai", url: "orpheus://song/2757833783/?autoplay=1", cover: "covers/order/084 ALTER EGO (Extended Mix) - Yuta Imai.png", urls: { bilibili: "https://www.bilibili.com/video/BV1tByDBvEg5" } },
+{ name: "Uchronia", artist: "7mai", url: "orpheus://song/2689900639/?autoplay=1", cover: "covers/order/Songs_uchronia.png", urls: { bilibili: "https://www.bilibili.com/video/BV12LFVegEBv" } },
+{ name: "Cafeteria divertida", artist: "削除", url: "orpheus://song/1430274757/?autoplay=1", cover: "covers/order/123 Cafeteria divertida - 削除.png" },
+{ name: "Desultory Signals", artist: "technoplanet", url: "orpheus://song/3443796005/?autoplay=1", cover: "covers/order/desultory signals.png", urls: { bilibili: "https://www.bilibili.com/video/BV18LHj6XEDR/?spm_id_from=333.788.recommend_more_video.1&trackid=web_related_0.router-related-2479604-9shrk.1792123993293.104&vd_source=64e26223d101732a5f226369aa88ddb9" } },
+{ name: "NOVOCAINE", artist: "PHONO、Salty Salt", url: "orpheus://song/2106244055/?autoplay=1", cover: "covers/order/020 NOVOCAINE - PHONO、Salty Salt.png", urls: { bilibili: "https://www.bilibili.com/video/BV1K4GSzwE3u" } },
+{ name: "Inverted World", artist: "ARForest", url: "orpheus://song/2099631232/?autoplay=1", cover: "covers/order/Songs_inverted-world.png", urls: { bilibili: "https://www.bilibili.com/video/BV16MhN6cE1j/?spm_id_from=333.788.recommend_more_video.4&trackid=web_related_0.router-related-2479604-fc7wt.1792124024800.122&vd_source=64e26223d101732a5f226369aa88ddb9" } },
+{ name: "No Way Back", artist: "Nhato", url: "orpheus://song/3426025784/?autoplay=1", cover: "covers/order/Songs_nowayback.png", urls: { bilibili: "https://www.bilibili.com/video/BV1RxHbzCEuT" } },
+{ name: "Just Before the Nightmare", artist: "PHONO、Salty Salt", url: "orpheus://song/2008934560/?autoplay=1", cover: "covers/order/022 Just Before the Nightmare - PHONO、Salty Salt.png", urls: { bilibili: "https://www.bilibili.com/video/BV1TVprzNEzR" } },
+{ name: "咲く星々", artist: "ユアミトス", url: "orpheus://song/2160766173/?autoplay=1", cover: "covers/order/Songs_saku-hoshiboshi.png", urls: { bilibili: "https://www.bilibili.com/video/BV1Dx4y1E7kr" } },
+{ name: "Flows With Errors", artist: "ARForest", url: "orpheus://song/2114638647/?autoplay=1", cover: "covers/order/010 Flows With Errors - 日本群星、ARForest.png", urls: { bilibili: "https://www.bilibili.com/video/BV1XtYJ6hECx" } },
+{ name: "Pure Ruby", artist: "SHIKI", url: "orpheus://song/22792642/?autoplay=1", cover: "covers/order/Songs_pure-ruby.png", urls: { bilibili: "https://www.bilibili.com/video/BV1544y1r7wo/?spm_id_from=333.788.recommend_more_video.-1&trackid=web_related_0.router-related-2479604-gjmc5.1792123288402.944&vd_source=64e26223d101732a5f226369aa88ddb9" } },
+{ name: "Aether Crest: Astral", artist: "void (Mournfinale) × 水野健治", url: "https://www.bilibili.com/video/BV1iGNhzVEA9/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", cover: "covers/order/Songs_aethercrest.png" },
+{ name: "チューリングの跡", artist: "Frums", url: "orpheus://song/2110353534/?autoplay=1", cover: "covers/order/076 チューリングの跡 - Frums.png", urls: { bilibili: "https://www.bilibili.com/video/BV1FB4y1q7mL" } },
+{ name: "Traveller's Hub", artist: "MUyu", url: "orpheus://song/2653071615/?autoplay=1", cover: "covers/order/140 Traveller's Hub - MUyu.png", urls: { bilibili: "https://www.bilibili.com/video/BV15kmqYdEGA" } },
+{ name: "Crisscrosser", artist: "void", url: "orpheus://song/34002520/?autoplay=1", cover: "covers/order/107 Crisscrosser - void.png", urls: { bilibili: "https://www.bilibili.com/video/BV1Vs41167c3/?spm_id_from=333.788.videopod.episodes&vd_source=64e26223d101732a5f226369aa88ddb9&p=10" } },
+{ name: "驟雨の狭間", artist: "Silentroom", url: "orpheus://song/1424487649/?autoplay=1", cover: "covers/order/Cover_rainshower.png", urls: { bilibili: "https://www.bilibili.com/video/BV1b44y187L1" } },
+{ name: "Matane", artist: "Moose", url: "https://www.bilibili.com/video/BV1TxJ6z4Edd/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", cover: "covers/order/Matane.png" },
+{ name: "Achromic Riddle", artist: "Nego_tiator", url: "https://t1.kugou.com/1muzT35G6V3", cover: "covers/order/015 Achromic Riddle - Nego_tiator.png", urls: { bilibili: "https://www.bilibili.com/video/BV1YuC2YvE14" } },
+{ name: "In the Garden", artist: "Qutabire", url: "orpheus://song/1401424218/?autoplay=1", cover: "covers/order/063 In the Garden - Qutabire.png", urls: { bilibili: "https://www.bilibili.com/video/BV12G411d7A1" } },
+{ name: "Estahv", artist: "Feryquitous", url: "orpheus://song/1413787810/?autoplay=1", cover: "covers/order/050 Estahv - Feryquitous.png", urls: { bilibili: "https://www.bilibili.com/video/BV1Mv4y1N7up" } },
+{ name: "Cobalt", artist: "KOAN Sound", url: "orpheus://song/1332440135/?autoplay=1", cover: "covers/order/044 Cobalt - KOAN Sound.png", urls: { bilibili: "https://www.bilibili.com/video/BV1Sb411a7bk" } },
+{ name: "Fracture Ray", artist: "Sakuzyo", url: "orpheus://song/1385304973/?autoplay=1", cover: "covers/order/Songs_fractureray.png", urls: { bilibili: "https://www.bilibili.com/video/BV1Ab411w7r6/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
+{ name: "Art for Rest", artist: "ARForest", url: "orpheus://song/1363298690/?autoplay=1", cover: "covers/order/238 Art for Rest - ARForest.png", urls: { bilibili: "https://www.bilibili.com/video/BV1Nt421u7FX" } },
+{ name: "Slide Into Light", artist: "ValeraP", url: "orpheus://song/2669546675/?autoplay=1", cover: "covers/order/Songs_slide-into-light.png", urls: { bilibili: "https://www.bilibili.com/video/BV1HgFNerEwe/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
+{ name: "Hark! The wyntres wynd bloweth", artist: "SeyriN", url: "orpheus://song/3331311059/?autoplay=1", cover: "covers/order/Songs_hark-bloweth.png", urls: { bilibili: "https://www.bilibili.com/video/BV1JbqmBbERk" } },
+{ name: "Abyssgazer", artist: "xi VS Sakuzyo", url: "https://www.bilibili.com/video/BV1vfBgYoETK/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", cover: "covers/order/Cover_abyssgazer.png" },
+{ name: "季曲 ~Seasons of Asia~", artist: "采风乐坊", url: "orpheus://song/4880513/?autoplay=1", cover: "covers/order/356 季曲 ~Seasons of Asia~ - 詹勋伟.png", urls: { bilibili: "https://www.bilibili.com/video/BV1Bs411W7C7" } },
+{ name: "終の舞姫 (Extended Mix)", artist: "Se-U-Ra", url: "orpheus://song/2612992589/?autoplay=1", cover: "covers/order/235 終の舞姫 (Extended Mix) - Se-U-Ra.png", urls: { bilibili: "https://www.bilibili.com/video/BV1T6UYYvEFA" } },
+{ name: "felys -final remix-", artist: "onoken", url: "orpheus://song/2079869782/?autoplay=1", cover: "covers/order/Cover_felysfinalremix.png", urls: { bilibili: "https://www.bilibili.com/video/BV1sj8YeKEqP" } },
+{ name: "Xenith", artist: "Tatsh", url: "orpheus://song/2690484211/?autoplay=1", cover: "covers/order/Songs_xenith.png", urls: { bilibili: "https://www.bilibili.com/video/BV17x9iYgEpY" } },
+{ name: "Ether Strike", artist: "Akira Complex", url: "orpheus://song/1300423182/?autoplay=1", cover: "covers/order/Songs_etherstrike.png", urls: { bilibili: "https://www.bilibili.com/video/BV1N54y1p71B/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
+{ name: "Der Richter", artist: "Ωμεγα", url: "orpheus://song/2655084066/?autoplay=1", cover: "covers/order/derichter.png", urls: { bilibili: "https://www.bilibili.com/video/BV11SpberEjC" } },
+{ name: "Never Say Goodbye", artist: "黒魔", url: "orpheus://song/3423746027/?autoplay=1", cover: "covers/order/Illustration.NeverSayGoodbye.黒魔.0.png", urls: { bilibili: "https://www.bilibili.com/video/BV1druw6sE1D" } },
+{ name: "Luminescence", artist: "米虾Fomiki & 初云CLoudie", url: "orpheus://song/1944086441/?autoplay=1", cover: "covers/order/Cover_luminescence.png", urls: { bilibili: "https://www.bilibili.com/video/BV12U4y1U7XE" } }
 ];
 
 const PAGE_SIZE = 10;
@@ -256,8 +269,9 @@ function renderSongs() {
     const cover = s.cover
       ? `<img src="${s.cover}" alt="${s.name}" loading="lazy" onerror="this.style.display='none'">`
       : "";
-    const listen = s.url
-      ? `<a class="btn" href="${s.url}" target="_blank" rel="noopener">收听</a>`
+    const hasLink = s.url || (s.urls && Object.keys(s.urls).some(k => s.urls[k]));
+    const listen = hasLink
+      ? `<button class="btn listen-btn" type="button" data-index="${globalIndex}">收听</button>`
       : `<span class="btn is-disabled" title="链接待补充">收听</span>`;
     return `
       <article class="song-card${globalIndex === picked ? " highlight" : ""}" data-index="${globalIndex}">
@@ -407,6 +421,83 @@ toggleEl.addEventListener("click", () => {
   applyVideo();
 });
 applyVideo();
+
+// --- listen-picker ---
+const SERVICES = [
+  { key: "netease",  label: "网易云app",      icon: "icons/netease.png"  },
+  { key: "kugou",    label: "酷狗概念版网页", icon: "icons/kugou.png"    },
+  { key: "bilibili", label: "b站网页",        icon: "icons/bilibili.png" },
+];
+
+const listenModal = document.getElementById("listenModal");
+const listenTitle = document.getElementById("listenTitle");
+const listenSub = document.getElementById("listenSub");
+const listenOptions = document.getElementById("listenOptions");
+
+function attr(v) {
+  return String(v).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+// 把一首歌的链接按渠道归位（支持 s.urls 多链接，也兼容现在的单个 s.url）
+function linksOf(song) {
+  const out = { netease: "", kugou: "", bilibili: "", other: "" };
+  if (song.urls) { for (const k in out) { if (song.urls[k]) out[k] = song.urls[k]; } }
+  const u = song.url || "";
+  if (u) {
+    let k = "other";
+    if (u.indexOf("orpheus://") === 0) k = "netease";
+    else if (/kugou\.com/i.test(u)) k = "kugou";
+    else if (/bilibili\.com/i.test(u)) k = "bilibili";
+    if (!out[k]) out[k] = u;
+  }
+  return out;
+}
+
+function openListen(song) {
+  const links = linksOf(song);
+  listenTitle.textContent = song.name;
+  listenSub.textContent = song.artist || "未知";
+
+  let html = "";
+  for (const svc of SERVICES) {
+    const url = links[svc.key];
+    if (url) {
+      const external = /^https?:/i.test(url);
+      html += `<a class="listen-opt" href="${attr(url)}"${external ? ' target="_blank" rel="noopener"' : ""}>`
+            + `<img class="listen-icon" src="${svc.icon}" alt="">`
+            + `<span class="listen-label">${svc.label}</span></a>`;
+    } else {
+      html += `<button class="listen-opt is-off" type="button" disabled>`
+            + `<img class="listen-icon" src="${svc.icon}" alt="">`
+            + `<span class="listen-label">${svc.label}</span>`
+            + `<span class="listen-tag">未配置</span></button>`;
+    }
+  }
+  if (links.other) {
+    html += `<a class="listen-opt" href="${attr(links.other)}" target="_blank" rel="noopener">`
+          + `<span class="listen-icon listen-icon-text">▶</span>`
+          + `<span class="listen-label">其它链接</span></a>`;
+  }
+  listenOptions.innerHTML = html;
+  listenModal.hidden = false;
+}
+
+function closeListen() {
+  listenModal.hidden = true;
+  listenOptions.innerHTML = "";
+}
+
+listenModal.querySelectorAll("[data-close]").forEach(el => el.addEventListener("click", closeListen));
+listenOptions.addEventListener("click", e => { if (e.target.closest("a.listen-opt")) closeListen(); });
+document.addEventListener("keydown", e => { if (e.key === "Escape" && !listenModal.hidden) closeListen(); });
+
+gridEl.addEventListener("click", e => {
+  const btn = e.target.closest(".listen-btn");
+  if (!btn) return;
+  const song = songs[Number(btn.dataset.index)];
+  if (song) openListen(song);
+});
+// --- /listen-picker ---
 
 // 随机来一首：由当前时间生成两个值 —— 一页内的位置(0~9) 与 页码
 function timeSeed() {
