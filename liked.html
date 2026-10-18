@@ -23,9 +23,14 @@
       </div>
       <p class="page-sub">没在这放不代表不喜欢，这些特别喜欢</p>
     </div>
-    <div class="tips">
-      <span class="tips-icon">i</span>
-      <span>点击封面查看曲师与收听链接</span>
+        <div class="header-actions">
+      <div class="tips">
+        <span class="tips-icon">i</span>
+        <span>点击封面查看曲师与收听链接</span>
+      </div>
+      <button class="video-toggle" id="qualityToggle" type="button" aria-pressed="false">
+        <span>高画质</span><span class="vt-state">关</span>
+      </button>
     </div>
   </header>
 
@@ -58,52 +63,85 @@ const tiers = [
     label: "超脱",
     color: "#e89a78",
     songs: [
-      { name: "sense of wonder", artist: "Yu_Asahina", cover: "covers/order/Cover_senseofwonder.png", url: "orpheus://song/2734867374/?autoplay=1", urls: { bilibili: "https://www.bilibili.com/video/BV1Y3E1z7Ekv", kugou:"https://t1.kugou.com/1pURVa5G6V3" }, intro: "缄默的破碎" },
-      { name: "Lose Yourself", artist: "Eminem", cover: "covers/pop/381 Lose Yourself - Eminem.png", url: "orpheus://song/5052317/?autoplay=1", urls: { bilibili: "https://www.bilibili.com/video/BV1e54y1e7pv/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", kugou:"https://t1.kugou.com/1pYdB48G6V3" }, intro: "请你坐起来听" }
+      { name: "sense of wonder", artist: "Yu_Asahina", cover: "covers/order/Cover_senseofwonder.jpg", url: "orpheus://song/2734867374/?autoplay=1", urls: { bilibili: "https://www.bilibili.com/video/BV1Y3E1z7Ekv", kugou:"https://t1.kugou.com/1pURVa5G6V3" }, intro: "缄默的破碎" },
+      { name: "Lose Yourself", artist: "Eminem", cover: "covers/pop/381 Lose Yourself - Eminem.jpg", url: "orpheus://song/5052317/?autoplay=1", urls: { bilibili: "https://www.bilibili.com/video/BV1e54y1e7pv/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", kugou:"https://t1.kugou.com/1pYdB48G6V3" }, intro: "请你坐起来听" }
     ]
   },
   {
     label: "超神",
     color: "#d9bd6a",
     songs: [
-      { name: "Lament Rain", artist: "Ashrount vs. 打打だいず", cover: "covers/order/Songs_lamentrain.png", url: "orpheus://song/2648894511/?autoplay=1", urls: { bilibili: "https://www.bilibili.com/video/BV1ftUDYiECJ" ,kugou:"https://t1.kugou.com/1pUlrc8G6V3"}, intro: "情感大爆发" },
-      { name: "Quadruplicity", artist: "LucaProject vs NeLiME", cover: "covers/order/Songs_quadruplicity.png", url: "orpheus://song/2689897074/?autoplay=1", urls: { bilibili: "https://www.bilibili.com/video/BV1xLFVegEXr", kugou:"https://t1.kugou.com/1pUAxf6G6V3" }, intro: "一切美好的未来从一开始就不存在" },
-      { name: "透明だった世界 (曾经透明的世界)", artist: "秦基博", cover: "covers/pop/408 透明だった世界 (曾经透明的世界) - 秦基博.png", url: "orpheus://song/1981814954/?autoplay=1", urls: { bilibili: "https://www.bilibili.com/video/BV1Mg41137C1/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9",kugou:"https://t1.kugou.com/1pZcv19G6V3" }, intro: "你将如何面对仇恨" }
+      { name: "Lament Rain", artist: "Ashrount vs. 打打だいず", cover: "covers/order/Songs_lamentrain.jpg", url: "orpheus://song/2648894511/?autoplay=1", urls: { bilibili: "https://www.bilibili.com/video/BV1ftUDYiECJ" ,kugou:"https://t1.kugou.com/1pUlrc8G6V3"}, intro: "情感大爆发" },
+      { name: "Quadruplicity", artist: "LucaProject vs NeLiME", cover: "covers/order/Songs_quadruplicity.jpg", url: "orpheus://song/2689897074/?autoplay=1", urls: { bilibili: "https://www.bilibili.com/video/BV1xLFVegEXr", kugou:"https://t1.kugou.com/1pUAxf6G6V3" }, intro: "一切美好的未来从一开始就不存在" },
+      { name: "透明だった世界 (曾经透明的世界)", artist: "秦基博", cover: "covers/pop/408 透明だった世界 (曾经透明的世界) - 秦基博.jpg", url: "orpheus://song/1981814954/?autoplay=1", urls: { bilibili: "https://www.bilibili.com/video/BV1Mg41137C1/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9",kugou:"https://t1.kugou.com/1pZcv19G6V3" }, intro: "你将如何面对仇恨" }
     ]
   },
   {
     label: "神",
     color: "#a6c08f",
     songs: [
-      { name: "#1f1e33 (Another long \"#ant1p01e\" version)", artist: "かめりあ", cover: "covers/chaos/024 _1f1e33 (Another long __ant1p01e__ version) - かめりあ.png", url: "https://www.bilibili.com/video/BV1K44y1v7BN/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", intro: "无限升华，风暴前夕" },
-      { name: "Grievous Lady -nothing is but what is not-", artist: "Team Grimoire vs Laur", cover: "covers/chaos/264 Grievous Lady -nothing is but what is not- - Various Artists、Laur、Team Grimoire.png", url: "https://www.bilibili.com/video/BV1Vz4y197SZ/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", intro: "优雅，悲伤，崩坏的绝望" },
-      { name: "PRAGMATISM -RESURRECTION-", artist: "Laur", cover: "covers/order/Songs_pragmatism.png", url: "orpheus://song/1907125216/?autoplay=1", urls: { bilibili: "https://www.bilibili.com/video/BV1pD4y1F7eB",kugou:"https://t1.kugou.com/1pVsp36G6V3" }, intro: "圣洁咏叹" },
-      { name: "Incyde", artist: "YbeLL", cover: "covers/order/Cover_incyde.png", url: "orpheus://song/2646478984/?autoplay=1", urls: { bilibili: "https://www.bilibili.com/video/BV1wV411W7HB", kugou:"https://t1.kugou.com/1pUb32eG6V3" }, intro: "烈焰点燃盛放的白花" },
-      { name: "Start to The End", artist: "LucaProject & Xeudo Code", cover: "covers/order/Start_to_The_End.png", url: "orpheus://song/2106210196/?autoplay=1", urls: { bilibili: "https://www.bilibili.com/video/BV17u411b7nK" , kugou: "https://t1.kugou.com/1pTpj33G6V3"}, intro: "南柯一梦" },
-      { name: "シルエット (剪影)", artist: "KANA-BOON", cover: "covers/pop/385 シルエット (剪影) - KANA-BOON.png", url: "orpheus://song/29750962/?autoplay=1", urls: { bilibili: "https://www.bilibili.com/video/BV1Yr4y1b7ub/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" }, intro: "忍界大战" }
+      { name: "#1f1e33 (Another long \"#ant1p01e\" version)", artist: "かめりあ", cover: "covers/chaos/024 _1f1e33 (Another long __ant1p01e__ version) - かめりあ.jpg", url: "https://www.bilibili.com/video/BV1K44y1v7BN/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", intro: "无限升华，风暴前夕" },
+      { name: "Grievous Lady -nothing is but what is not-", artist: "Team Grimoire vs Laur", cover: "covers/chaos/264 Grievous Lady -nothing is but what is not- - Various Artists、Laur、Team Grimoire.jpg", url: "https://www.bilibili.com/video/BV1Vz4y197SZ/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", intro: "优雅，悲伤，崩坏的绝望" },
+      { name: "PRAGMATISM -RESURRECTION-", artist: "Laur", cover: "covers/order/Songs_pragmatism.jpg", url: "orpheus://song/1907125216/?autoplay=1", urls: { bilibili: "https://www.bilibili.com/video/BV1pD4y1F7eB",kugou:"https://t1.kugou.com/1pVsp36G6V3" }, intro: "圣洁咏叹" },
+      { name: "Incyde", artist: "YbeLL", cover: "covers/order/Cover_incyde.jpg", url: "orpheus://song/2646478984/?autoplay=1", urls: { bilibili: "https://www.bilibili.com/video/BV1wV411W7HB", kugou:"https://t1.kugou.com/1pUb32eG6V3" }, intro: "烈焰点燃盛放的白花" },
+      { name: "Start to The End", artist: "LucaProject & Xeudo Code", cover: "covers/order/Start_to_The_End.jpg", url: "orpheus://song/2106210196/?autoplay=1", urls: { bilibili: "https://www.bilibili.com/video/BV17u411b7nK" , kugou: "https://t1.kugou.com/1pTpj33G6V3"}, intro: "南柯一梦" },
+      { name: "シルエット (剪影)", artist: "KANA-BOON", cover: "covers/pop/385 シルエット (剪影) - KANA-BOON.jpg", url: "orpheus://song/29750962/?autoplay=1", urls: { bilibili: "https://www.bilibili.com/video/BV1Yr4y1b7ub/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" }, intro: "忍界大战" }
     ]
   },
   {
     label: "仙品",
     color: "#8ab5ad",
     songs: [
-      { name: "Observatory", artist: "かめりあ", cover: "covers/order/Cover_observatory.png", url: "https://www.bilibili.com/video/BV1SYqKYNESP/?spm_id_from=333.337.search-card.all.click", intro: "坠落前斥力器的最后一次启动" },
-      { name: "Riven Pilgrimage", artist: "rejection & Supire feat. eili", cover: "covers/order/Songs_rivenpilgrim.png", url: "orpheus://song/3426079306/?autoplay=1", urls: { bilibili: "https://www.bilibili.com/video/BV11Rhw6wE5o", kugou:"https://t1.kugou.com/1pVep52G6V3" }, intro: "空灵" },
-      { name: "MIRINAE (Original Mix)", artist: "Zekk", cover: "covers/order/002 MIRINAE (Original Mix) - Zekk.png", url: "orpheus://song/2156451308/?autoplay=1", urls: { bilibili: "https://www.bilibili.com/video/BV1Fm411C7Hi", kugou: "https://t1.kugou.com/1pTKj1bG6V3"}, intro: "世界如万花筒般在眼前炸开" },
-      { name: "Hydra", artist: "James Landino X Akira Complex", cover: "covers/chaos/Cover_hydra.png", url: "orpheus://song/2635912793/?autoplay=1", urls: { bilibili: "https://www.bilibili.com/video/BV18ceGehEDU" }, intro: "× × ×××" },
-      { name: "Valhalla:0 (其他|Extended|©lowiro)", artist: "Juggernaut.", cover: "covers/chaos/198 Valhalla_0 (其他_Extended_©lowiro) - Juggernaut.png", url: "orpheus://song/1492074418/?autoplay=1", urls: { bilibili: "https://www.bilibili.com/video/BV1jr4y1B7Rx/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" }, intro: "劲爆bass" },
-      { name: "Grandspell", artist: "Hylen", cover: "covers/chaos/Songs_grandspell.png", url: "orpheus://song/3329831934/?autoplay=1", urls: { bilibili: "https://www.bilibili.com/video/BV1LXUqBpEqr" ,kugou:"https://t1.kugou.com/1pXK73bG6V3"}, intro: "锅碗瓢盆使劲敲" },
-      { name: "Undying Macula ~penumbra~", artist: "Ashrount", cover: "covers/chaos/083 Undying Macula ~penumbra~ - Ashrount.png", url: "orpheus://song/3317165351/?autoplay=1", urls: { bilibili: "https://www.bilibili.com/video/BV1JuCJBcEpi", kugou:"https://t1.kugou.com/1pTZFfaG6V3" }, intro: "颠沛流离" },
-      { name: "春はゆく (春逝)", artist: "Aimer", cover: "covers/pop/401 春はゆく (春逝) - Aimer.png", url: "orpheus://song/1429420739/?autoplay=1", urls: { bilibili: "https://www.bilibili.com/video/BV1a7411977x/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" }, intro: "春天会再来的" },
-      { name: "Faint", artist: "Linkin Park", cover: "covers/pop/347 Faint - Linkin Park.png", url: "orpheus://song/16686593/?autoplay=1", urls: { bilibili: "https://www.bilibili.com/video/BV1cV4y197yx" }, intro: "撕裂" },
-      { name: "Wonderful U (Demo Version)", artist: "AGA", cover: "covers/pop/393 Wonderful U (Demo Version) - AGA.png", url: "orpheus://song/406475394/?autoplay=1", urls: { bilibili: "https://www.bilibili.com/video/BV1in4y197nA" }, intro: "如此wonderful" },
-      { name: "Umbrella (Matte Remix)", artist: "Ember Island、Matte", cover: "covers/pop/373 Umbrella (Matte Remix) - Ember Island、Matte.png", url: "orpheus://song/518904426/?autoplay=1", urls: { bilibili: "https://www.bilibili.com/video/BV1X14y1L7LP/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" }, intro: "下雨了我有伞" },
-      { name: "Mountain Journey", artist: "Foxtail-Grass Studio", cover: "covers/pop/489 Mountain Journey - Foxtail-Grass Studio.png", url: "orpheus://song/730846/?autoplay=1", urls: { bilibili: "https://www.bilibili.com/video/BV1zY4y1z7gq",kugou:"https://t1.kugou.com/1pYMN64G6V3" }, intro: "去仙境漫游一番" }
+      { name: "Observatory", artist: "かめりあ", cover: "covers/order/Cover_observatory.jpg", url: "https://www.bilibili.com/video/BV1SYqKYNESP/?spm_id_from=333.337.search-card.all.click", intro: "坠落前斥力器的最后一次启动" },
+      { name: "Riven Pilgrimage", artist: "rejection & Supire feat. eili", cover: "covers/order/Songs_rivenpilgrim.jpg", url: "orpheus://song/3426079306/?autoplay=1", urls: { bilibili: "https://www.bilibili.com/video/BV11Rhw6wE5o", kugou:"https://t1.kugou.com/1pVep52G6V3" }, intro: "空灵" },
+      { name: "MIRINAE (Original Mix)", artist: "Zekk", cover: "covers/order/002 MIRINAE (Original Mix) - Zekk.jpg", url: "orpheus://song/2156451308/?autoplay=1", urls: { bilibili: "https://www.bilibili.com/video/BV1Fm411C7Hi", kugou: "https://t1.kugou.com/1pTKj1bG6V3"}, intro: "世界如万花筒般在眼前炸开" },
+      { name: "Hydra", artist: "James Landino X Akira Complex", cover: "covers/chaos/Cover_hydra.jpg", url: "orpheus://song/2635912793/?autoplay=1", urls: { bilibili: "https://www.bilibili.com/video/BV18ceGehEDU" }, intro: "× × ×××" },
+      { name: "Valhalla:0 (其他|Extended|©lowiro)", artist: "Juggernaut.", cover: "covers/chaos/198 Valhalla_0 (其他_Extended_©lowiro) - Juggernaut.jpg", url: "orpheus://song/1492074418/?autoplay=1", urls: { bilibili: "https://www.bilibili.com/video/BV1jr4y1B7Rx/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" }, intro: "劲爆bass" },
+      { name: "Grandspell", artist: "Hylen", cover: "covers/chaos/Songs_grandspell.jpg", url: "orpheus://song/3329831934/?autoplay=1", urls: { bilibili: "https://www.bilibili.com/video/BV1LXUqBpEqr" ,kugou:"https://t1.kugou.com/1pXK73bG6V3"}, intro: "锅碗瓢盆使劲敲" },
+      { name: "Undying Macula ~penumbra~", artist: "Ashrount", cover: "covers/chaos/083 Undying Macula ~penumbra~ - Ashrount.jpg", url: "orpheus://song/3317165351/?autoplay=1", urls: { bilibili: "https://www.bilibili.com/video/BV1JuCJBcEpi", kugou:"https://t1.kugou.com/1pTZFfaG6V3" }, intro: "颠沛流离" },
+      { name: "春はゆく (春逝)", artist: "Aimer", cover: "covers/pop/401 春はゆく (春逝) - Aimer.jpg", url: "orpheus://song/1429420739/?autoplay=1", urls: { bilibili: "https://www.bilibili.com/video/BV1a7411977x/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" }, intro: "春天会再来的" },
+      { name: "Faint", artist: "Linkin Park", cover: "covers/pop/347 Faint - Linkin Park.jpg", url: "orpheus://song/16686593/?autoplay=1", urls: { bilibili: "https://www.bilibili.com/video/BV1cV4y197yx" }, intro: "撕裂" },
+      { name: "Wonderful U (Demo Version)", artist: "AGA", cover: "covers/pop/393 Wonderful U (Demo Version) - AGA.jpg", url: "orpheus://song/406475394/?autoplay=1", urls: { bilibili: "https://www.bilibili.com/video/BV1in4y197nA" }, intro: "如此wonderful" },
+      { name: "Umbrella (Matte Remix)", artist: "Ember Island、Matte", cover: "covers/pop/373 Umbrella (Matte Remix) - Ember Island、Matte.jpg", url: "orpheus://song/518904426/?autoplay=1", urls: { bilibili: "https://www.bilibili.com/video/BV1X14y1L7LP/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" }, intro: "下雨了我有伞" },
+      { name: "Mountain Journey", artist: "Foxtail-Grass Studio", cover: "covers/pop/489 Mountain Journey - Foxtail-Grass Studio.jpg", url: "orpheus://song/730846/?autoplay=1", urls: { bilibili: "https://www.bilibili.com/video/BV1zY4y1z7gq",kugou:"https://t1.kugou.com/1pYMN64G6V3" }, intro: "去仙境漫游一番" }
     ]
   }
 ];
 
 const tierListEl = document.getElementById("tierList");
+
+// 高画质开关（默认关）：关=压缩封面，开=原图
+function readStore(key) { try { return localStorage.getItem(key); } catch { return null; } }
+function writeStore(key, val) { try { localStorage.setItem(key, val); } catch {} }
+
+const HQ_KEY = "music-hq";
+let hqMode = readStore(HQ_KEY) === "on";
+
+function coverSrc(c) {
+  if (!c) return "";
+  if (!hqMode) return c;
+  return c.replace(/^covers\//, "covers-hq/").replace(/\.jpg$/i, ".png");
+}
+
+const qualityToggle = document.getElementById("qualityToggle");
+const qualityState = qualityToggle.querySelector(".vt-state");
+
+function applyQuality() {
+  qualityToggle.setAttribute("aria-pressed", String(hqMode));
+  qualityState.textContent = hqMode ? "开" : "关";
+}
+
+qualityToggle.addEventListener("click", () => {
+  hqMode = !hqMode;
+  writeStore(HQ_KEY, hqMode ? "on" : "off");
+  applyQuality();
+  document.querySelectorAll(".tile img").forEach(img => {
+    if (img.dataset.cover) img.src = coverSrc(img.dataset.cover);
+  });
+  if (currentSong && !modal.hidden) modalCover.src = coverSrc(currentSong.cover);
+});
+
+applyQuality();
 
 tierListEl.innerHTML = tiers.map(t => `
   <div class="tier">
@@ -111,7 +149,7 @@ tierListEl.innerHTML = tiers.map(t => `
     <div class="tier-songs">
       ${t.songs.map((s, i) => `
         <span class="tile" title="点击查看详情" data-tier="${t.label}" data-index="${i}">
-          <img src="${s.cover}" alt="${s.name}" loading="lazy" onerror="this.style.display='none'">
+          <img src="${coverSrc(s.cover)}" data-cover="${s.cover}" alt="${s.name}" loading="lazy" onerror="this.style.display='none'">
         </span>
       `).join("")}
     </div>
@@ -201,7 +239,7 @@ async function copyText(text) {
 
 function openModal(song) {
   currentSong = song;
-  modalCover.src = song.cover;
+  modalCover.src = coverSrc(song.cover);
   modalCover.alt = song.name;
   modalTitle.textContent = song.name;
   modalArtist.textContent = song.artist || "未知";
@@ -243,6 +281,18 @@ modal.querySelectorAll("[data-close]").forEach(el => el.addEventListener("click"
 document.addEventListener("keydown", e => {
   if (e.key === "Escape" && !modal.hidden) closeModal();
 });
-</script>
+
+// 场景转场：站内跳转先淡出再跳
+document.addEventListener("click", (e) => {
+  const a = e.target.closest("a[href]");
+  if (!a) return;
+  if (e.button !== 0 || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) return;
+  if (a.target === "_blank" || a.hasAttribute("download")) return;
+  const href = a.getAttribute("href");
+  if (!href || href.startsWith("#") || /^[a-z][a-z0-9+.-]*:/i.test(href)) return;
+  e.preventDefault();
+  document.body.classList.add("is-leaving");
+  setTimeout(() => { window.location.href = href; }, 200);
+});</script>
 </body>
 </html>

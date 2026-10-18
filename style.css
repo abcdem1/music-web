@@ -156,6 +156,25 @@ body {
   text-rendering: optimizeLegibility;
 }
 
+/* 场景转场：进入时淡入上浮，离开时淡出 */
+@keyframes sceneIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+
+.home-wrap,
+.page-wrap {
+  animation: sceneIn .5s var(--ease) both;
+}
+
+body.is-leaving .home-wrap,
+body.is-leaving .page-wrap {
+  animation: none;
+  opacity: 0;
+  transform: translateY(-8px);
+  transition: opacity .2s var(--ease), transform .2s var(--ease);
+}
+
 /* 深棕 + 暖金背景（首页） */
 .page-home {
   background:
@@ -1059,6 +1078,12 @@ h1 {
   background: rgba(6, 8, 11, 0.62);
   -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
+  animation: backdropIn .3s ease both;
+}
+
+@keyframes backdropIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .modal-card {
@@ -1072,7 +1097,7 @@ h1 {
   -webkit-backdrop-filter: blur(22px);
   backdrop-filter: blur(22px);
   box-shadow: 0 50px 90px -40px rgba(0, 0, 0, 0.85);
-  animation: modalIn .28s var(--ease);
+  animation: modalIn .34s var(--ease);
 }
 
 @keyframes modalIn {

@@ -36,6 +36,9 @@
       <button class="video-toggle" id="videoToggle" type="button" aria-pressed="false">
         <span>视频背景</span><span class="vt-state">关</span>
       </button>
+      <button class="video-toggle" id="qualityToggle" type="button" aria-pressed="false">
+        <span>高画质</span><span class="vt-state">关</span>
+      </button>
     </div>
   </header>
 
@@ -69,146 +72,139 @@
 <script>
 // 秩序区歌单
 const songs = [
-{ name: "Secret Illumination", artist: "Yooh", url: "orpheus://song/2014795357/?autoplay=1", cover: "covers/order/Cover_secretillumination.png", urls: { bilibili: "https://www.bilibili.com/video/BV1oG4y1X7bQ" } },
-{ name: "Broken Conviction", artist: "Cansol", url: "orpheus://song/2662029189/?autoplay=1", cover: "covers/order/047 Broken Conviction - Cansol.png", urls: { bilibili: "https://www.bilibili.com/video/BV1q16DY1E2B" } },
-{ name: "Rhuzerv", artist: "Sennzai、Feryquitous", url: "orpheus://song/2069008729/?autoplay=1", cover: "covers/order/013 Rhuzerv - Sennzai、Feryquitous.png", urls: { bilibili: "https://www.bilibili.com/video/BV1QW41177ib" } },
-{ name: "Last Guardian", artist: "ARForest", url: "https://t1.kugou.com/1mwmnd2G6V3", cover: "covers/order/011 Last Guardian - ARForest.png", urls: { bilibili: "https://www.bilibili.com/video/BV1VT4m1S7Pt" } },
-{ name: "MIRINAE", artist: "TAK × Zekk", url: "orpheus://song/2156451294/?autoplay=1", cover: "covers/order/Songs_mirinae.png", urls: { bilibili: "https://www.bilibili.com/video/BV1MipWzxE4Z" } },
-{ name: "Prism Pulse", artist: "KOAN Sound", url: "orpheus://song/1332439237/?autoplay=1", cover: "covers/order/043 Prism Pulse - KOAN Sound.png" },
-{ name: "ひやむぎ、そーめん、時々うどん (冷面、素面、有时乌冬)", artist: "みかん箱", url: "orpheus://song/785793/?autoplay=1", cover: "covers/order/317 ひやむぎ、そーめん、時々うどん (冷面、素面、有时乌冬) - みかん箱.png", urls: { bilibili: "https://www.bilibili.com/video/BV1Wk4y1W7sx" } },
-{ name: "Riven Pilgrimage", artist: "rejection & Supire feat. eili", url: "orpheus://song/3426079306/?autoplay=1", cover: "covers/order/Songs_rivenpilgrim.png", urls: { bilibili: "https://www.bilibili.com/video/BV11Rhw6wE5o", kugou:"https://t1.kugou.com/1pVep52G6V3" } },
-{ name: "Slic.hertz", artist: "Sobrem", url: "orpheus://song/2013361823/?autoplay=1", cover: "covers/order/Illustration.slichertz.Sobrem.0.png", urls: { bilibili: "https://www.bilibili.com/video/BV1rg411a7bC" } },
-{ name: "Inst.", artist: "勇士的信仰", url: "https://t1.kugou.com/1mvcZ34G6V3", cover: "covers/order/389 Inst. - Aurora.png" },
-{ name: "Artificial Existence", artist: "Jun Kuroda", url: "orpheus://song/2605886690/?autoplay=1", cover: "covers/order/Cover_artificialexistence.png", urls: { bilibili: "https://www.bilibili.com/video/BV1XN411T7gZ" } },
+{ name: "Secret Illumination", artist: "Yooh", url: "orpheus://song/2014795357/?autoplay=1", cover: "covers/order/Cover_secretillumination.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1oG4y1X7bQ" } },
+{ name: "Broken Conviction", artist: "Cansol", url: "orpheus://song/2662029189/?autoplay=1", cover: "covers/order/047 Broken Conviction - Cansol.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1q16DY1E2B" } },
+{ name: "Rhuzerv", artist: "Sennzai、Feryquitous", url: "orpheus://song/2069008729/?autoplay=1", cover: "covers/order/013 Rhuzerv - Sennzai、Feryquitous.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1QW41177ib" } },
+{ name: "Last Guardian", artist: "ARForest", url: "https://t1.kugou.com/1mwmnd2G6V3", cover: "covers/order/011 Last Guardian - ARForest.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1VT4m1S7Pt" } },
+{ name: "MIRINAE", artist: "TAK × Zekk", url: "orpheus://song/2156451294/?autoplay=1", cover: "covers/order/Songs_mirinae.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1MipWzxE4Z" } },
+{ name: "Prism Pulse", artist: "KOAN Sound", url: "orpheus://song/1332439237/?autoplay=1", cover: "covers/order/043 Prism Pulse - KOAN Sound.jpg" },
+{ name: "ひやむぎ、そーめん、時々うどん (冷面、素面、有时乌冬)", artist: "みかん箱", url: "orpheus://song/785793/?autoplay=1", cover: "covers/order/317 ひやむぎ、そーめん、時々うどん (冷面、素面、有时乌冬) - みかん箱.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1Wk4y1W7sx" } },
+{ name: "Riven Pilgrimage", artist: "rejection & Supire feat. eili", url: "orpheus://song/3426079306/?autoplay=1", cover: "covers/order/Songs_rivenpilgrim.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV11Rhw6wE5o", kugou:"https://t1.kugou.com/1pVep52G6V3" } },
+{ name: "Slic.hertz", artist: "Sobrem", url: "orpheus://song/2013361823/?autoplay=1", cover: "covers/order/Illustration.slichertz.Sobrem.0.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1rg411a7bC" } },
+{ name: "Artificial Existence", artist: "Jun Kuroda", url: "orpheus://song/2605886690/?autoplay=1", cover: "covers/order/Cover_artificialexistence.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1XN411T7gZ" } },
 { name: "Message", artist: "くるぶっこちゃん", url: "orpheus://song/3444183581/?autoplay=1", cover: "covers/order/message.png", urls: { bilibili: "https://www.bilibili.com/video/BV1qcHq6XELG" } },
-{ name: "Mondlicht", artist: "Street", url: "https://t1.kugou.com/1n3A74eG6V3", cover: "covers/order/014 Mondlicht - Street.png", urls: { bilibili: "https://www.bilibili.com/video/BV1aK411e7NN" } },
-{ name: "sacred sacrifices", artist: "ak+q", url: "orpheus://song/2082261657/?autoplay=1", cover: "covers/order/Cover_sacredsacrifices.png", urls: { bilibili: "https://www.bilibili.com/video/BV1HxETzWEYM" } },
-{ name: "Lisrim", artist: "Onoken", url: "orpheus://song/1481157289/?autoplay=1", cover: "covers/order/104 Lisrim - Onoken.png", urls: { bilibili: "https://www.bilibili.com/video/BV14N411D7pi/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
-{ name: "Three pieces", artist: "effe", url: "orpheus://song/2653071618/?autoplay=1", cover: "covers/order/137 Three pieces - effe.png", urls: { bilibili: "https://www.bilibili.com/video/BV1PWBRYhEEz" } },
-{ name: "Act Beloved", artist: "void (Mournfinale) feat. Salita", url: "orpheus://song/722278/?autoplay=1", cover: "covers/order/Cover_actbeloved.png", urls: { bilibili: "https://www.bilibili.com/video/BV1nw4m1173J/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
-{ name: "Valedict", artist: "void", url: "orpheus://song/35779209/?autoplay=1", cover: "covers/order/091 Valedict - void.png", urls: { bilibili: "https://www.bilibili.com/video/BV1THBfY7E1Y" } },
-{ name: "Steadfast", artist: "Gardens", url: "orpheus://song/2683333577/?autoplay=1", cover: "covers/order/Songs_steadfast.png", urls: { bilibili: "https://www.bilibili.com/video/BV1rJAze5EDa" } },
-{ name: "Rain of Conflict in a Radiant Abyss", artist: "ak+q", url: "orpheus://song/2652405072/?autoplay=1", cover: "covers/order/Songs_rainofconflict.png", urls: { bilibili: "https://www.bilibili.com/video/BV12b4peiEpa" } },
-{ name: "森奥虚迹", artist: "ShiBa", url: "orpheus://song/2757261085/?autoplay=1", cover: "covers/order/Illustration.森奥虚跡.ShiBa.0.png", urls: {bilibili: "https://www.bilibili.com/video/BV1dWNvzHEGh/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", kugou:"https://t1.kugou.com/1pVDZadG6V3"}},
-{ name: "Quadruplicity", artist: "LucaProject vs NeLiME", url: "orpheus://song/2689897074/?autoplay=1", cover: "covers/order/Songs_quadruplicity.png", urls: { bilibili: "https://www.bilibili.com/video/BV1xLFVegEXr", kugou:"https://t1.kugou.com/1pUAxf6G6V3" } },
-{ name: "Graves -Ancient Memories-", artist: "Juggernaut.", url: "https://t1.kugou.com/1mx9f2aG6V3", cover: "covers/order/Illustration.GravesAncientMemories.Juggernaut.0.png", urls: { bilibili: "https://www.bilibili.com/video/BV12y1qYqE1A" } },
-{ name: "Chromafill", artist: "ていぬ", url: "orpheus://song/2672431270/?autoplay=1", cover: "covers/order/Songs_chromafill.png", urls: { bilibili: "https://www.bilibili.com/video/BV1rJ4m1J7Gn" } },
-{ name: "PRAGMATISM -RESURRECTION-", artist: "Laur", url: "orpheus://song/1907125216/?autoplay=1", cover: "covers/order/Songs_pragmatism.png", urls: { bilibili: "https://www.bilibili.com/video/BV1pD4y1F7eB",kugou:"https://t1.kugou.com/1pVsp36G6V3" } },
-{ name: "Antikythera", artist: "technoplanet", url: "https://t1.kugou.com/1n2OR2aG6V3", cover: "covers/order/Cover_antikythera.png", urls: { bilibili: "https://www.bilibili.com/video/BV18QHZ6uEUe?vd_source=64e26223d101732a5f226369aa88ddb9&spm_id_from=333.788.videopod.sections" } },
-{ name: "Distorted Fate", artist: "Sakuzyo", url: "orpheus://song/2080461744/?autoplay=1", cover: "covers/order/Cover_distortedfate.png", urls: { bilibili: "https://www.bilibili.com/video/BV1ZG411o7Sy" } },
-{ name: "Heart Jackin'", artist: "Yu_Asahina", url: "https://www.bilibili.com/video/BV1nU4y1K7W4/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", cover: "covers/order/Songs_heartjackin.png" },
-{ name: "Hydroplane", artist: "KOAN Sound", url: "orpheus://song/1332440139/?autoplay=1", cover: "covers/order/042 Hydroplane - KOAN Sound.png" },
-{ name: "Incyde", artist: "YbeLL", url: "orpheus://song/2646478984/?autoplay=1", cover: "covers/order/Cover_incyde.png", urls: { bilibili: "https://www.bilibili.com/video/BV1wV411W7HB", kugou:"https://t1.kugou.com/1pUb32eG6V3" } },
-{ name: "Dragon Rider", artist: "Two Steps From Hell", url: "orpheus://song/19554998/?autoplay=1", cover: "covers/order/369 Dragon Rider - Two Steps From Hell.png", urls: { bilibili: "https://www.bilibili.com/video/BV1pt411s7dh" } },
-{ name: "Dawn Nymphaea", artist: "花徒めと", url: "orpheus://song/3413081476/?autoplay=1", cover: "covers/order/Songs_dawn-nymphaea.png", urls: { bilibili: "https://www.bilibili.com/video/BV1kmga6dEmb" } },
-{ name: "GLORY：ROAD", artist: "uma vs. モリモリあつし", url: "orpheus://song/2670090259/?autoplay=1", cover: "covers/order/Songs_gloryroad.png", urls: { bilibili: "https://www.bilibili.com/video/BV1RK4y1X7iL/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
-{ name: "Alive", artist: "eicateve", url: "orpheus://song/2101756975/?autoplay=1", cover: "covers/order/Songs_alive.png", urls: { bilibili: "https://www.bilibili.com/video/BV1gD4y1n7nK" } },
-{ name: "Neural Rewind Protocol", artist: "Connexio", url: "orpheus://song/3440906440/?autoplay=1", cover: "covers/order/Songs_neural-rewind-protocol.png", urls: { bilibili: "https://www.bilibili.com/video/BV1Tme86pEYa" } },
+{ name: "Mondlicht", artist: "Street", url: "https://t1.kugou.com/1n3A74eG6V3", cover: "covers/order/014 Mondlicht - Street.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1aK411e7NN" } },
+{ name: "sacred sacrifices", artist: "ak+q", url: "orpheus://song/2082261657/?autoplay=1", cover: "covers/order/Cover_sacredsacrifices.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1HxETzWEYM" } },
+{ name: "Lisrim", artist: "Onoken", url: "orpheus://song/1481157289/?autoplay=1", cover: "covers/order/104 Lisrim - Onoken.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV14N411D7pi/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
+{ name: "Three pieces", artist: "effe", url: "orpheus://song/2653071618/?autoplay=1", cover: "covers/order/137 Three pieces - effe.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1PWBRYhEEz" } },
+{ name: "Act Beloved", artist: "void (Mournfinale) feat. Salita", url: "orpheus://song/722278/?autoplay=1", cover: "covers/order/Cover_actbeloved.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1nw4m1173J/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
+{ name: "Valedict", artist: "void", url: "orpheus://song/35779209/?autoplay=1", cover: "covers/order/091 Valedict - void.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1THBfY7E1Y" } },
+{ name: "Steadfast", artist: "Gardens", url: "orpheus://song/2683333577/?autoplay=1", cover: "covers/order/Songs_steadfast.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1rJAze5EDa" } },
+{ name: "Rain of Conflict in a Radiant Abyss", artist: "ak+q", url: "orpheus://song/2652405072/?autoplay=1", cover: "covers/order/Songs_rainofconflict.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV12b4peiEpa" } },
+{ name: "森奥虚迹", artist: "ShiBa", url: "orpheus://song/2757261085/?autoplay=1", cover: "covers/order/Illustration.森奥虚跡.ShiBa.0.jpg", urls: {bilibili: "https://www.bilibili.com/video/BV1dWNvzHEGh/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", kugou:"https://t1.kugou.com/1pVDZadG6V3"}},
+{ name: "Quadruplicity", artist: "LucaProject vs NeLiME", url: "orpheus://song/2689897074/?autoplay=1", cover: "covers/order/Songs_quadruplicity.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1xLFVegEXr", kugou:"https://t1.kugou.com/1pUAxf6G6V3" } },
+{ name: "Graves -Ancient Memories-", artist: "Juggernaut.", url: "https://t1.kugou.com/1mx9f2aG6V3", cover: "covers/order/Illustration.GravesAncientMemories.Juggernaut.0.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV12y1qYqE1A" } },
+{ name: "Chromafill", artist: "ていぬ", url: "orpheus://song/2672431270/?autoplay=1", cover: "covers/order/Songs_chromafill.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1rJ4m1J7Gn" } },
+{ name: "PRAGMATISM -RESURRECTION-", artist: "Laur", url: "orpheus://song/1907125216/?autoplay=1", cover: "covers/order/Songs_pragmatism.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1pD4y1F7eB",kugou:"https://t1.kugou.com/1pVsp36G6V3" } },
+{ name: "Antikythera", artist: "technoplanet", url: "https://t1.kugou.com/1n2OR2aG6V3", cover: "covers/order/Cover_antikythera.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV18QHZ6uEUe?vd_source=64e26223d101732a5f226369aa88ddb9&spm_id_from=333.788.videopod.sections" } },
+{ name: "Heart Jackin'", artist: "Yu_Asahina", url: "https://www.bilibili.com/video/BV1nU4y1K7W4/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", cover: "covers/order/Songs_heartjackin.jpg" },
+{ name: "Hydroplane", artist: "KOAN Sound", url: "orpheus://song/1332440139/?autoplay=1", cover: "covers/order/042 Hydroplane - KOAN Sound.jpg" },
+{ name: "Incyde", artist: "YbeLL", url: "orpheus://song/2646478984/?autoplay=1", cover: "covers/order/Cover_incyde.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1wV411W7HB", kugou:"https://t1.kugou.com/1pUb32eG6V3" } },
+{ name: "Dawn Nymphaea", artist: "花徒めと", url: "orpheus://song/3413081476/?autoplay=1", cover: "covers/order/Songs_dawn-nymphaea.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1kmga6dEmb" } },
+{ name: "GLORY：ROAD", artist: "uma vs. モリモリあつし", url: "orpheus://song/2670090259/?autoplay=1", cover: "covers/order/Songs_gloryroad.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1RK4y1X7iL/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
+{ name: "Alive", artist: "eicateve", url: "orpheus://song/2101756975/?autoplay=1", cover: "covers/order/Songs_alive.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1gD4y1n7nK" } },
+{ name: "Neural Rewind Protocol", artist: "Connexio", url: "orpheus://song/3440906440/?autoplay=1", cover: "covers/order/Songs_neural-rewind-protocol.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1Tme86pEYa" } },
 { name: "Petrichor", artist: "void (Mournfinale)", url: "orpheus://song/3444519724/?autoplay=1", cover: "covers/order/Petrichor.png", urls: { bilibili: "https://www.bilibili.com/video/BV1hXHx6EEaM" } },
-{ name: "Journey", artist: "ARForest", url: "https://t1.kugou.com/1mr5La5G6V3", cover: "covers/order/Songs_journey.png", urls: { bilibili: "https://www.bilibili.com/video/BV1uD421A7TB" } },
-{ name: "Flutter Echo", artist: "Cansol", url: "orpheus://song/1927491548/?autoplay=1", cover: "covers/order/Songs_flutter-echo.png", urls: { bilibili: "https://www.bilibili.com/video/BV1tt4y1a7w8" } },
-{ name: "И00.", artist: "Se-U-Ra", url: "orpheus://song/2614414542/?autoplay=1", cover: "covers/order/Cover_n00.png", urls: { bilibili: "https://www.bilibili.com/video/BV1gsqsYWE3t" } },
-{ name: "Colorless Coldness", artist: "かねこちはる", url: "https://www.bilibili.com/video/BV1bZFjzmE81/?spm_id_from=333.337.search-card.all.click", cover: "covers/order/Cover_colorlesscoldness.png" },
-{ name: "Unfolding", artist: "lkoik", url: "orpheus://song/2637433188/?autoplay=1", cover: "covers/order/lkoik.png", urls: {bilibili: "https://www.bilibili.com/video/BV11Fbs6nErj/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9"} },
-{ name: "Summer Time Memory", artist: "kanemiko", url: "orpheus://song/2743486202/?autoplay=1", cover: "covers/order/Songs_summer-time-memory.png", urls: { bilibili: "https://www.bilibili.com/video/BV1Z7vwzGEDu" } },
-{ name: "Overflow", artist: "effe", url: "https://www.bilibili.com/video/BV1TQ5GzTEeH/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", cover: "covers/order/Cover_overflow.png" },
-{ name: "翠杜", artist: "隣の庭は青い(庭師+Aoi)", url: "orpheus://song/2600757405/?autoplay=1", cover: "covers/order/Cover_suito.png", urls: { bilibili: "https://www.bilibili.com/video/BV1J7421o72N" } },
+{ name: "Journey", artist: "ARForest", url: "https://t1.kugou.com/1mr5La5G6V3", cover: "covers/order/Songs_journey.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1uD421A7TB" } },
+{ name: "Flutter Echo", artist: "Cansol", url: "orpheus://song/1927491548/?autoplay=1", cover: "covers/order/Songs_flutter-echo.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1tt4y1a7w8" } },
+{ name: "И00.", artist: "Se-U-Ra", url: "orpheus://song/2614414542/?autoplay=1", cover: "covers/order/Cover_n00.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1gsqsYWE3t" } },
+{ name: "Colorless Coldness", artist: "かねこちはる", url: "https://www.bilibili.com/video/BV1bZFjzmE81/?spm_id_from=333.337.search-card.all.click", cover: "covers/order/Cover_colorlesscoldness.jpg" },
+{ name: "Unfolding", artist: "lkoik", url: "orpheus://song/2637433188/?autoplay=1", cover: "covers/order/lkoik.jpg", urls: {bilibili: "https://www.bilibili.com/video/BV11Fbs6nErj/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9"} },
+{ name: "Summer Time Memory", artist: "kanemiko", url: "orpheus://song/2743486202/?autoplay=1", cover: "covers/order/Songs_summer-time-memory.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1Z7vwzGEDu" } },
+{ name: "Overflow", artist: "effe", url: "https://www.bilibili.com/video/BV1TQ5GzTEeH/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", cover: "covers/order/Cover_overflow.jpg" },
+{ name: "翠杜", artist: "隣の庭は青い(庭師+Aoi)", url: "orpheus://song/2600757405/?autoplay=1", cover: "covers/order/Cover_suito.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1J7421o72N" } },
 { name: "sølips", artist: "rintarosoma", url: "orpheus://song/3317354159/?autoplay=1", cover: "covers/order/sølips.png", urls: { bilibili: "https://www.bilibili.com/video/BV163411p7zQ" } },
-{ name: "Bustling Bar", artist: "削除", url: "orpheus://song/1430271511/?autoplay=1", cover: "covers/order/121 Bustling Bar - 削除.png" },
-{ name: "Fervidex", artist: "Feryquitous", url: "orpheus://song/1413787803/?autoplay=1", cover: "covers/order/052 Fervidex - Feryquitous.png", urls: { bilibili: "https://www.bilibili.com/video/BV1K15MzRE4D" } },
-{ name: "Travel Begins", artist: "ARForest", url: "orpheus://song/1402825201/?autoplay=1", cover: "covers/order/079 Travel Begins - ARForest.png", urls: { bilibili: "https://www.bilibili.com/video/BV1PG4y1T7gg" } },
-{ name: "World Vanquisher", artist: "void (Mournfinale)", url: "orpheus://song/1339904920/?autoplay=1", cover: "covers/order/Songs_worldvanquisher.png", urls: { bilibili: "https://www.bilibili.com/video/BV1x142197nj" } },
-{ name: "Ether Strike ('Divine Mercy' Extended)", artist: "Akira Complex", url: "https://www.bilibili.com/video/BV1664y1X767/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", cover: "covers/order/171 Ether Strike ('Divine Mercy' Extended) - Akira Complex.png" },
-{ name: "遊錘", artist: "Mylta feat. 菊植", url: "orpheus://song/3362752306/?autoplay=1", cover: "covers/order/Songs_yusui.png", urls: { bilibili: "https://www.bilibili.com/video/BV1NoAJzoE9a" } },
-{ name: "Testify", artist: "void (Mournfinale) feat. 星熊南巫", url: "orpheus://song/1965912564/?autoplay=1", cover: "covers/order/Songs_testify.png", urls: { bilibili: "https://www.bilibili.com/video/BV1QS4y1J7BK/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
-{ name: "Felis", artist: "M2U", url: "orpheus://song/1501035681/?autoplay=1", cover: "covers/order/Songs_felis.png", urls: { bilibili: "https://www.bilibili.com/video/BV1Ho4y1r75T" } },
-{ name: "Reditus Croni", artist: "ARForest、Iceloki", url: "https://t1.kugou.com/1mZ9F01G6V3", cover: "covers/order/077 Reditus Croni - ARForest、Iceloki.png", urls: { bilibili: "https://www.bilibili.com/video/BV1EiHUzzEcX" } },
-{ name: "Alfheim's faith", artist: "影虎。", url: "orpheus://song/2600753733/?autoplay=1", cover: "covers/order/Songs_alfheims-faith.png", urls: { bilibili: "https://www.bilibili.com/video/BV1eb421q7ox" } },
-{ name: "sense of wonder", artist: "Yu_Asahina", url: "orpheus://song/2734867374/?autoplay=1", cover: "covers/order/Cover_senseofwonder.png", urls: { bilibili: "https://www.bilibili.com/video/BV1Y3E1z7Ekv", kugou:"https://t1.kugou.com/1pURVa5G6V3" } },
-{ name: "［筏］は云う。幾ら漂流すれど不撓の心さえ有れば軈て行到ると。", artist: "庭師", url: "orpheus://song/3368743440/?autoplay=1", cover: "covers/order/Songs_筏.png", urls: { bilibili: "https://www.bilibili.com/video/BV1mfqKBoEao" } },
-{ name: "Elyqiria", artist: "Connexio", url: "orpheus://song/3332332369/?autoplay=1", cover: "covers/order/Songs_elyqiria.png", urls: { bilibili: "https://www.bilibili.com/video/BV1kiVAzaEWu" } },
-{ name: "edge of the world", artist: "Major Axis/Accelio", url: "orpheus://song/2726793654/?autoplay=1", cover: "covers/order/Edge_of_the_world.png"},
-{ name: "Blooming", artist: "Emotional Addict", url: "orpheus://song/1443143738/?autoplay=1", cover: "covers/order/062 Blooming - Emotional Addict.png" },
-{ name: "Fractal Fission", artist: "ARForest", url: "https://www.bilibili.com/video/BV1qU7z69E1g/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", cover: "covers/order/Cover_fractalfission.png" },
-{ name: "Stolen Lips", artist: "Osamu Kubota", url: "orpheus://song/3416774384/?autoplay=1", cover: "covers/order/Songs_stolen-lips.png", urls: { bilibili: "https://www.bilibili.com/video/BV1Whgv6NEhD" } },
-{ name: "残響404号DDD線", artist: "Nyan.PLANET (TAKIO + 羽鳥玲)", url: "https://www.bilibili.com/video/BV1hW1XB2ELD/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", cover: "covers/order/Cover_zankyou404.png" },
-{ name: "悔_", artist: "Essbee", url: "orpheus://song/3329651548/?autoplay=1", cover: "covers/order/Songs_kai.png", urls: { bilibili: "https://www.bilibili.com/video/BV1KF2QBMEA5" } },
-{ name: "Kou", artist: "Feryquitous", url: "orpheus://song/1413789349/?autoplay=1", cover: "covers/order/051 Kou - Feryquitous.png", urls: { bilibili: "https://www.bilibili.com/video/BV1dA411S7ci" } },
-{ name: "amethyst", artist: "かねこちはる", url: "orpheus://song/2612967059/?autoplay=1", cover: "covers/order/Songs_amethyst.png", urls: { bilibili: "https://www.bilibili.com/video/BV1k8411L7GP" } },
-{ name: "CRYSTAL MINING", artist: "Salty Salt", url: "https://www.bilibili.com/video/BV1ThBXB4EmD/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", cover: "covers/order/Cover_crystalmining.png" },
-{ name: "Weaver & Wanderer", artist: "黒魔(Chroma)", url: "orpheus://song/3378786094/?autoplay=1", cover: "covers/order/Songs_weaver-wanderer.png", urls: { bilibili: "https://www.bilibili.com/video/BV1M4QZBrEaY" } },
-{ name: "MIRINAE (Original Mix)", artist: "Zekk", url: "orpheus://song/2156451308/?autoplay=1", cover: "covers/order/002 MIRINAE (Original Mix) - Zekk.png", urls: { bilibili: "https://www.bilibili.com/video/BV1Fm411C7Hi", kugou: "https://t1.kugou.com/1pTKj1bG6V3"} },
-{ name: "distant call", artist: "nuphory", url: "orpheus://song/3346756405/?autoplay=1", cover: "covers/order/Songs_distant-call.png", urls: { bilibili: "https://www.bilibili.com/video/BV1hLzCBzESF/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
+{ name: "Bustling Bar", artist: "削除", url: "orpheus://song/1430271511/?autoplay=1", cover: "covers/order/121 Bustling Bar - 削除.jpg" },
+{ name: "Fervidex", artist: "Feryquitous", url: "orpheus://song/1413787803/?autoplay=1", cover: "covers/order/052 Fervidex - Feryquitous.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1K15MzRE4D" } },
+{ name: "Travel Begins", artist: "ARForest", url: "orpheus://song/1402825201/?autoplay=1", cover: "covers/order/079 Travel Begins - ARForest.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1PG4y1T7gg" } },
+{ name: "World Vanquisher", artist: "void (Mournfinale)", url: "orpheus://song/1339904920/?autoplay=1", cover: "covers/order/Songs_worldvanquisher.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1x142197nj" } },
+{ name: "Ether Strike ('Divine Mercy' Extended)", artist: "Akira Complex", url: "https://www.bilibili.com/video/BV1664y1X767/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", cover: "covers/order/171 Ether Strike ('Divine Mercy' Extended) - Akira Complex.jpg" },
+{ name: "遊錘", artist: "Mylta feat. 菊植", url: "orpheus://song/3362752306/?autoplay=1", cover: "covers/order/Songs_yusui.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1NoAJzoE9a" } },
+{ name: "Testify", artist: "void (Mournfinale) feat. 星熊南巫", url: "orpheus://song/1965912564/?autoplay=1", cover: "covers/order/Songs_testify.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1QS4y1J7BK/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
+{ name: "Felis", artist: "M2U", url: "orpheus://song/1501035681/?autoplay=1", cover: "covers/order/Songs_felis.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1Ho4y1r75T" } },
+{ name: "Reditus Croni", artist: "ARForest、Iceloki", url: "https://t1.kugou.com/1mZ9F01G6V3", cover: "covers/order/077 Reditus Croni - ARForest、Iceloki.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1EiHUzzEcX" } },
+{ name: "Alfheim's faith", artist: "影虎。", url: "orpheus://song/2600753733/?autoplay=1", cover: "covers/order/Songs_alfheims-faith.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1eb421q7ox" } },
+{ name: "sense of wonder", artist: "Yu_Asahina", url: "orpheus://song/2734867374/?autoplay=1", cover: "covers/order/Cover_senseofwonder.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1Y3E1z7Ekv", kugou:"https://t1.kugou.com/1pURVa5G6V3" } },
+{ name: "［筏］は云う。幾ら漂流すれど不撓の心さえ有れば軈て行到ると。", artist: "庭師", url: "orpheus://song/3368743440/?autoplay=1", cover: "covers/order/Songs_筏.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1mfqKBoEao" } },
+{ name: "Elyqiria", artist: "Connexio", url: "orpheus://song/3332332369/?autoplay=1", cover: "covers/order/Songs_elyqiria.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1kiVAzaEWu" } },
+{ name: "edge of the world", artist: "Major Axis/Accelio", url: "orpheus://song/2726793654/?autoplay=1", cover: "covers/order/Edge_of_the_world.jpg"},
+{ name: "Blooming", artist: "Emotional Addict", url: "orpheus://song/1443143738/?autoplay=1", cover: "covers/order/062 Blooming - Emotional Addict.jpg" },
+{ name: "Fractal Fission", artist: "ARForest", url: "https://www.bilibili.com/video/BV1qU7z69E1g/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", cover: "covers/order/Cover_fractalfission.jpg" },
+{ name: "Stolen Lips", artist: "Osamu Kubota", url: "orpheus://song/3416774384/?autoplay=1", cover: "covers/order/Songs_stolen-lips.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1Whgv6NEhD" } },
+{ name: "残響404号DDD線", artist: "Nyan.PLANET (TAKIO + 羽鳥玲)", url: "https://www.bilibili.com/video/BV1hW1XB2ELD/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", cover: "covers/order/Cover_zankyou404.jpg" },
+{ name: "悔_", artist: "Essbee", url: "orpheus://song/3329651548/?autoplay=1", cover: "covers/order/Songs_kai.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1KF2QBMEA5" } },
+{ name: "Kou", artist: "Feryquitous", url: "orpheus://song/1413789349/?autoplay=1", cover: "covers/order/051 Kou - Feryquitous.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1dA411S7ci" } },
+{ name: "amethyst", artist: "かねこちはる", url: "orpheus://song/2612967059/?autoplay=1", cover: "covers/order/Songs_amethyst.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1k8411L7GP" } },
+{ name: "CRYSTAL MINING", artist: "Salty Salt", url: "https://www.bilibili.com/video/BV1ThBXB4EmD/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", cover: "covers/order/Cover_crystalmining.jpg" },
+{ name: "Weaver & Wanderer", artist: "黒魔(Chroma)", url: "orpheus://song/3378786094/?autoplay=1", cover: "covers/order/Songs_weaver-wanderer.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1M4QZBrEaY" } },
+{ name: "MIRINAE (Original Mix)", artist: "Zekk", url: "orpheus://song/2156451308/?autoplay=1", cover: "covers/order/002 MIRINAE (Original Mix) - Zekk.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1Fm411C7Hi", kugou: "https://t1.kugou.com/1pTKj1bG6V3"} },
 { name: "彩", artist: "MisoilePunch♪", url: "https://t1.kugou.com/1n0NL63G6V3", cover: "covers/order/彩.png", urls: { bilibili: "https://www.bilibili.com/video/BV1y5411174Z" } },
-{ name: "-ish", artist: "natsume & alpha", url: "orpheus://song/3363530196/?autoplay=1", cover: "covers/order/Songs_ish.png", urls: { bilibili: "https://www.bilibili.com/video/BV1NoAJzoE6W" } },
-{ name: "Start to The End", artist: "LucaProject & Xeudo Code", url: "orpheus://song/2106210196/?autoplay=1", cover: "covers/order/Start_to_The_End.png", urls: { bilibili: "https://www.bilibili.com/video/BV17u411b7nK" , kugou: "https://t1.kugou.com/1pTpj33G6V3"} },
-{ name: "Forgotten Myths", artist: "KOAN Sound", url: "orpheus://song/32189281/?autoplay=1", cover: "covers/order/041 Forgotten Myths - KOAN Sound.png", urls: { bilibili: "https://www.bilibili.com/video/BV1fQySY4E19" } },
-{ name: "Chunlian", artist: "utzbo", url: "orpheus://song/3350032819/?autoplay=1", cover: "covers/order/Songs_chunlian.png", urls: { bilibili: "https://www.bilibili.com/video/BV1jiFdzKEWA" } },
-{ name: "多次元宇宙融合論", artist: "TAKIO feat. つぐ", url: "orpheus://song/3340439385/?autoplay=1", cover: "covers/order/Songs_extradimensional.png", urls: { bilibili: "https://www.bilibili.com/video/BV1UYbs6ZEux" } },
-{ name: "Lumina", artist: "Wisp X & Xomu", url: "orpheus://song/1395977748/?autoplay=1", cover: "covers/order/Songs_lumina.png", urls: { bilibili: "https://www.bilibili.com/video/BV1PE411Y7Lc" } },
-{ name: "Satelite：memories (Rework)", artist: "Qutabire", url: "orpheus://song/2009992247/?autoplay=1", cover: "covers/order/061 Satelite：memories (Rework) - Qutabire.png", urls: { bilibili: "https://www.bilibili.com/video/BV1REYbzBEvz" } },
-{ name: "Works and Coffee", artist: "削除", url: "orpheus://song/440101458/?autoplay=1", cover: "covers/order/131 Works and Coffee - 削除.png" },
-{ name: "Hollow Green", artist: "Yu-dachi、Seunghwan Yoo", url: "orpheus://song/1944651759/?autoplay=1", cover: "covers/order/148 Hollow Green - Yu-dachi、Seunghwan Yoo.png", urls: { bilibili: "https://www.bilibili.com/video/BV1Ja4y197ND" } },
-{ name: "Embracing intelligences", artist: "かめりあ", url: "orpheus://song/1336656392/?autoplay=1", cover: "covers/order/224 Embracing intelligences - かめりあ.png", urls: { bilibili: "https://www.bilibili.com/video/BV1U5zDBpEfA" } },
-{ name: "Frey's Philosophy", artist: "Powerless", url: "orpheus://song/561307211/?autoplay=1", cover: "covers/order/Cover_freysphilosophy.png", urls: { bilibili: "https://www.bilibili.com/video/BV1p4411L7YT" } },
-{ name: "キオク回路", artist: "ShiBa", url: "https://www.bilibili.com/video/BV1L6W7zpERH/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", cover: "covers/order/Cover_kiokukairo.png" },
-{ name: "明晰夢にて", artist: "DJ Raisei", url: "orpheus://song/3378755182/?autoplay=1", cover: "covers/order/Songs_meiseki-yume-nite.png", urls: { bilibili: "https://www.bilibili.com/video/BV1xoAJzoE4o" } },
-{ name: "Sidewalk Cafe", artist: "削除", url: "orpheus://song/440101455/?autoplay=1", cover: "covers/order/132 Sidewalk Cafe - 削除.png", urls: { bilibili: "https://www.bilibili.com/video/BV1fs4118772" } },
-{ name: "Birds Of Plague", artist: "ARForest", url: "orpheus://song/1363303059/?autoplay=1", cover: "covers/order/242 Birds Of Plague - ARForest.png", urls: { bilibili: "https://www.bilibili.com/video/BV1ST411V7sm" } },
-{ name: "Waltz for Lorelei", artist: "Sobrem & 庭師", url: "orpheus://song/2601565693/?autoplay=1", cover: "covers/order/Songs_waltz-for-lorelei.png", urls: { bilibili: "https://www.bilibili.com/video/BV18s421G7ET" } },
-{ name: "Vindication", artist: "Laur", url: "orpheus://song/1391247763/?autoplay=1", cover: "covers/order/271 Vindication - Laur.png", urls: { bilibili: "https://www.bilibili.com/video/BV147411w7ip/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
-{ name: "Excelsia", artist: "ak+q", url: "orpheus://song/1441250066/?autoplay=1", cover: "covers/order/243 Excelsia - ak+q.png", urls: { bilibili: "https://www.bilibili.com/video/BV16x411u7wh" } },
-{ name: "Lament Rain", artist: "Ashrount vs. 打打だいず", url: "orpheus://song/2648894511/?autoplay=1", cover: "covers/order/Songs_lamentrain.png", urls: { bilibili: "https://www.bilibili.com/video/BV1ftUDYiECJ" ,kugou:"https://t1.kugou.com/1pUlrc8G6V3"} },
-{ name: "Lumia", artist: "sky_delta", url: "https://www.bilibili.com/video/BV1JpCjB9EDS/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", cover: "covers/order/Songs_lumia.png" },
-{ name: "Shattered Sky After Rain", artist: "Lorph & Elexia", url: "orpheus://song/2682074878/?autoplay=1", cover: "covers/order/Songs_shattered-sky-after-rain.png", urls: { bilibili: "https://www.bilibili.com/video/BV1GTYuzLE4y" } },
+{ name: "-ish", artist: "natsume & alpha", url: "orpheus://song/3363530196/?autoplay=1", cover: "covers/order/Songs_ish.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1NoAJzoE6W" } },
+{ name: "Start to The End", artist: "LucaProject & Xeudo Code", url: "orpheus://song/2106210196/?autoplay=1", cover: "covers/order/Start_to_The_End.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV17u411b7nK" , kugou: "https://t1.kugou.com/1pTpj33G6V3"} },
+{ name: "Forgotten Myths", artist: "KOAN Sound", url: "orpheus://song/32189281/?autoplay=1", cover: "covers/order/041 Forgotten Myths - KOAN Sound.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1fQySY4E19" } },
+{ name: "Chunlian", artist: "utzbo", url: "orpheus://song/3350032819/?autoplay=1", cover: "covers/order/Songs_chunlian.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1jiFdzKEWA" } },
+{ name: "Lumina", artist: "Wisp X & Xomu", url: "orpheus://song/1395977748/?autoplay=1", cover: "covers/order/Songs_lumina.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1PE411Y7Lc" } },
+{ name: "Satelite：memories (Rework)", artist: "Qutabire", url: "orpheus://song/2009992247/?autoplay=1", cover: "covers/order/061 Satelite：memories (Rework) - Qutabire.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1REYbzBEvz" } },
+{ name: "Works and Coffee", artist: "削除", url: "orpheus://song/440101458/?autoplay=1", cover: "covers/order/131 Works and Coffee - 削除.jpg" },
+{ name: "Hollow Green", artist: "Yu-dachi、Seunghwan Yoo", url: "orpheus://song/1944651759/?autoplay=1", cover: "covers/order/148 Hollow Green - Yu-dachi、Seunghwan Yoo.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1Ja4y197ND" } },
+{ name: "Embracing intelligences", artist: "かめりあ", url: "orpheus://song/1336656392/?autoplay=1", cover: "covers/order/224 Embracing intelligences - かめりあ.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1U5zDBpEfA" } },
+{ name: "Frey's Philosophy", artist: "Powerless", url: "orpheus://song/561307211/?autoplay=1", cover: "covers/order/Cover_freysphilosophy.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1p4411L7YT" } },
+{ name: "キオク回路", artist: "ShiBa", url: "https://www.bilibili.com/video/BV1L6W7zpERH/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", cover: "covers/order/Cover_kiokukairo.jpg" },
+{ name: "明晰夢にて", artist: "DJ Raisei", url: "orpheus://song/3378755182/?autoplay=1", cover: "covers/order/Songs_meiseki-yume-nite.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1xoAJzoE4o" } },
+{ name: "Sidewalk Cafe", artist: "削除", url: "orpheus://song/440101455/?autoplay=1", cover: "covers/order/132 Sidewalk Cafe - 削除.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1fs4118772" } },
+{ name: "Birds Of Plague", artist: "ARForest", url: "orpheus://song/1363303059/?autoplay=1", cover: "covers/order/242 Birds Of Plague - ARForest.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1ST411V7sm" } },
+{ name: "Waltz for Lorelei", artist: "Sobrem & 庭師", url: "orpheus://song/2601565693/?autoplay=1", cover: "covers/order/Songs_waltz-for-lorelei.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV18s421G7ET" } },
+{ name: "Vindication", artist: "Laur", url: "orpheus://song/1391247763/?autoplay=1", cover: "covers/order/271 Vindication - Laur.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV147411w7ip/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
+{ name: "Excelsia", artist: "ak+q", url: "orpheus://song/1441250066/?autoplay=1", cover: "covers/order/243 Excelsia - ak+q.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV16x411u7wh" } },
+{ name: "Lament Rain", artist: "Ashrount vs. 打打だいず", url: "orpheus://song/2648894511/?autoplay=1", cover: "covers/order/Songs_lamentrain.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1ftUDYiECJ" ,kugou:"https://t1.kugou.com/1pUlrc8G6V3"} },
+{ name: "Lumia", artist: "sky_delta", url: "https://www.bilibili.com/video/BV1JpCjB9EDS/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", cover: "covers/order/Songs_lumia.jpg" },
+{ name: "Shattered Sky After Rain", artist: "Lorph & Elexia", url: "orpheus://song/2682074878/?autoplay=1", cover: "covers/order/Songs_shattered-sky-after-rain.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1GTYuzLE4y" } },
 { name: "夢の降る日に", artist: "seatrus", url: "orpheus://song/3416792092/?autoplay=1", cover: "covers/order/夢の降る日に.png", urls: { bilibili: "https://www.bilibili.com/video/BV1vxT46REZa" } },
-{ name: "Straight into the lights", artist: "Cosmograph", url: "orpheus://song/2628998924/?autoplay=1", cover: "covers/order/Cover_straightintothelights.png", urls: { bilibili: "https://www.bilibili.com/video/BV1mx4y1Z7kh" } },
-{ name: "Observatory", artist: "かめりあ", url: "https://www.bilibili.com/video/BV1SYqKYNESP/?spm_id_from=333.337.search-card.all.click", cover: "covers/order/Cover_observatory.png" },
-{ name: "Serendibite", artist: "Nego_tiator", url: "https://t1.kugou.com/1n3ixf2G6V3", cover: "covers/order/017 Serendibite - Nego_tiator.png", urls: { bilibili: "https://www.bilibili.com/video/BV1mv4meBEW8" } },
-{ name: "World Ender", artist: "sasakure.UK × TJ.hangneil", url: "orpheus://song/1962519608/?autoplay=1", cover: "covers/order/Songs_worldender.png", urls: { bilibili: "https://www.bilibili.com/video/BV1qa411n7UV/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
-{ name: "Final Resonance", artist: "ARForest", url: "https://t1.kugou.com/1n1Rtd7G6V3", cover: "covers/order/240 Final Resonance - ARForest.png", urls: { bilibili: "https://www.bilibili.com/video/BV1uVEDzHEW2" } },
-{ name: "Quaoar (For \"Thanks Follower 50k\")", artist: "かめりあ", url: "orpheus://song/1336689107/?autoplay=1", cover: "covers/order/225 Quaoar (For _Thanks Follower 50k_) - かめりあ.png", urls: { bilibili: "https://www.bilibili.com/video/BV1N54y1a7wv" } },
-{ name: "Axium Crisis", artist: "ak+q", url: "orpheus://song/2650427950/?autoplay=1", cover: "covers/order/Songs_axiumcrisis.png", urls: { bilibili: "https://www.bilibili.com/video/BV1Lc411w7Mq" } },
-{ name: "cyanine", artist: "jioyi", url: "orpheus://song/1403719540/?autoplay=1", cover: "covers/order/Cover_cyanine.png", urls: { bilibili: "https://www.bilibili.com/video/BV1nnFXegEKG" } },
-{ name: "Renegade", artist: "sky_delta", url: "orpheus://song/2714793272/?autoplay=1", cover: "covers/order/Songs_renegade.png", urls: { bilibili: "https://www.bilibili.com/video/BV14WUmYkEfa" } },
-{ name: "The Zulla", artist: "KOAN Sound", url: "orpheus://song/1332439239/?autoplay=1", cover: "covers/order/045 The Zulla - KOAN Sound.png", urls: { bilibili: "https://www.bilibili.com/video/BV1q9YKzjERU" } },
-{ name: "Campo", artist: "Team Grimoire", url: "orpheus://song/36103436/?autoplay=1", cover: "covers/order/182 Campo - Team Grimoire.png" },
-{ name: "Glitter", artist: "Systile、Yung Kim", url: "https://t1.kugou.com/1mpzD27G6V3", cover: "covers/order/071 Glitter - Systile、Yung Kim.png"},
-{ name: "Schwarzschild", artist: "Tsukasa", url: "orpheus://song/1962484631/?autoplay=1", cover: "covers/order/Cover_schwarzschild.png", urls: { bilibili: "https://www.bilibili.com/video/BV1R84y117QJ" } },
-{ name: "ALTER EGO (Extended Mix)", artist: "Yuta Imai", url: "orpheus://song/2757833783/?autoplay=1", cover: "covers/order/084 ALTER EGO (Extended Mix) - Yuta Imai.png", urls: { bilibili: "https://www.bilibili.com/video/BV1tByDBvEg5" } },
-{ name: "Uchronia", artist: "7mai", url: "orpheus://song/2689900639/?autoplay=1", cover: "covers/order/Songs_uchronia.png", urls: { bilibili: "https://www.bilibili.com/video/BV12LFVegEBv" } },
-{ name: "Cafeteria divertida", artist: "削除", url: "orpheus://song/1430274757/?autoplay=1", cover: "covers/order/123 Cafeteria divertida - 削除.png" },
+{ name: "Observatory", artist: "かめりあ", url: "https://www.bilibili.com/video/BV1SYqKYNESP/?spm_id_from=333.337.search-card.all.click", cover: "covers/order/Cover_observatory.jpg" },
+{ name: "Serendibite", artist: "Nego_tiator", url: "https://t1.kugou.com/1n3ixf2G6V3", cover: "covers/order/017 Serendibite - Nego_tiator.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1mv4meBEW8" } },
+{ name: "World Ender", artist: "sasakure.UK × TJ.hangneil", url: "orpheus://song/1962519608/?autoplay=1", cover: "covers/order/Songs_worldender.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1qa411n7UV/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
+{ name: "Final Resonance", artist: "ARForest", url: "https://t1.kugou.com/1n1Rtd7G6V3", cover: "covers/order/240 Final Resonance - ARForest.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1uVEDzHEW2" } },
+{ name: "Quaoar (For \"Thanks Follower 50k\")", artist: "かめりあ", url: "orpheus://song/1336689107/?autoplay=1", cover: "covers/order/225 Quaoar (For _Thanks Follower 50k_) - かめりあ.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1N54y1a7wv" } },
+{ name: "Axium Crisis", artist: "ak+q", url: "orpheus://song/2650427950/?autoplay=1", cover: "covers/order/Songs_axiumcrisis.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1Lc411w7Mq" } },
+{ name: "cyanine", artist: "jioyi", url: "orpheus://song/1403719540/?autoplay=1", cover: "covers/order/Cover_cyanine.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1nnFXegEKG" } },
+{ name: "Renegade", artist: "sky_delta", url: "orpheus://song/2714793272/?autoplay=1", cover: "covers/order/Songs_renegade.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV14WUmYkEfa" } },
+{ name: "The Zulla", artist: "KOAN Sound", url: "orpheus://song/1332439239/?autoplay=1", cover: "covers/order/045 The Zulla - KOAN Sound.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1q9YKzjERU" } },
+{ name: "Campo", artist: "Team Grimoire", url: "orpheus://song/36103436/?autoplay=1", cover: "covers/order/182 Campo - Team Grimoire.jpg" },
+{ name: "Glitter", artist: "Systile、Yung Kim", url: "https://t1.kugou.com/1mpzD27G6V3", cover: "covers/order/071 Glitter - Systile、Yung Kim.jpg"},
+{ name: "Schwarzschild", artist: "Tsukasa", url: "orpheus://song/1962484631/?autoplay=1", cover: "covers/order/Cover_schwarzschild.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1R84y117QJ" } },
+{ name: "Uchronia", artist: "7mai", url: "orpheus://song/2689900639/?autoplay=1", cover: "covers/order/Songs_uchronia.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV12LFVegEBv" } },
+{ name: "Cafeteria divertida", artist: "削除", url: "orpheus://song/1430274757/?autoplay=1", cover: "covers/order/123 Cafeteria divertida - 削除.jpg" },
 { name: "Desultory Signals", artist: "technoplanet", url: "orpheus://song/3443796005/?autoplay=1", cover: "covers/order/desultory signals.png", urls: { bilibili: "https://www.bilibili.com/video/BV18LHj6XEDR/?spm_id_from=333.788.recommend_more_video.1&trackid=web_related_0.router-related-2479604-9shrk.1792123993293.104&vd_source=64e26223d101732a5f226369aa88ddb9" } },
-{ name: "NOVOCAINE", artist: "PHONO、Salty Salt", url: "orpheus://song/2106244055/?autoplay=1", cover: "covers/order/020 NOVOCAINE - PHONO、Salty Salt.png", urls: { bilibili: "https://www.bilibili.com/video/BV1K4GSzwE3u" } },
-{ name: "Inverted World", artist: "ARForest", url: "orpheus://song/2099631232/?autoplay=1", cover: "covers/order/Songs_inverted-world.png", urls: { bilibili: "https://www.bilibili.com/video/BV16MhN6cE1j/?spm_id_from=333.788.recommend_more_video.4&trackid=web_related_0.router-related-2479604-fc7wt.1792124024800.122&vd_source=64e26223d101732a5f226369aa88ddb9" } },
-{ name: "No Way Back", artist: "Nhato", url: "orpheus://song/3426025784/?autoplay=1", cover: "covers/order/Songs_nowayback.png", urls: { bilibili: "https://www.bilibili.com/video/BV1RxHbzCEuT" } },
-{ name: "Just Before the Nightmare", artist: "PHONO、Salty Salt", url: "orpheus://song/2008934560/?autoplay=1", cover: "covers/order/022 Just Before the Nightmare - PHONO、Salty Salt.png", urls: { bilibili: "https://www.bilibili.com/video/BV1TVprzNEzR" } },
-{ name: "咲く星々", artist: "ユアミトス", url: "orpheus://song/2160766173/?autoplay=1", cover: "covers/order/Songs_saku-hoshiboshi.png", urls: { bilibili: "https://www.bilibili.com/video/BV1Dx4y1E7kr" } },
-{ name: "Flows With Errors", artist: "ARForest", url: "orpheus://song/2114638647/?autoplay=1", cover: "covers/order/010 Flows With Errors - 日本群星、ARForest.png", urls: { bilibili: "https://www.bilibili.com/video/BV1XtYJ6hECx" } },
-{ name: "Pure Ruby", artist: "SHIKI", url: "orpheus://song/22792642/?autoplay=1", cover: "covers/order/Songs_pure-ruby.png", urls: { bilibili: "https://www.bilibili.com/video/BV1544y1r7wo/?spm_id_from=333.788.recommend_more_video.-1&trackid=web_related_0.router-related-2479604-gjmc5.1792123288402.944&vd_source=64e26223d101732a5f226369aa88ddb9" } },
-{ name: "Aether Crest: Astral", artist: "void (Mournfinale) × 水野健治", url: "https://www.bilibili.com/video/BV1iGNhzVEA9/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", cover: "covers/order/Songs_aethercrest.png" },
-{ name: "チューリングの跡", artist: "Frums", url: "orpheus://song/2110353534/?autoplay=1", cover: "covers/order/076 チューリングの跡 - Frums.png", urls: { bilibili: "https://www.bilibili.com/video/BV1FB4y1q7mL" } },
-{ name: "Traveller's Hub", artist: "MUyu", url: "orpheus://song/2653071615/?autoplay=1", cover: "covers/order/140 Traveller's Hub - MUyu.png", urls: { bilibili: "https://www.bilibili.com/video/BV15kmqYdEGA" } },
-{ name: "Crisscrosser", artist: "void", url: "orpheus://song/34002520/?autoplay=1", cover: "covers/order/107 Crisscrosser - void.png", urls: { bilibili: "https://www.bilibili.com/video/BV1Vs41167c3/?spm_id_from=333.788.videopod.episodes&vd_source=64e26223d101732a5f226369aa88ddb9&p=10" } },
-{ name: "驟雨の狭間", artist: "Silentroom", url: "orpheus://song/1424487649/?autoplay=1", cover: "covers/order/Cover_rainshower.png", urls: { bilibili: "https://www.bilibili.com/video/BV1b44y187L1" } },
+{ name: "NOVOCAINE", artist: "PHONO、Salty Salt", url: "orpheus://song/2106244055/?autoplay=1", cover: "covers/order/020 NOVOCAINE - PHONO、Salty Salt.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1K4GSzwE3u" } },
+{ name: "Inverted World", artist: "ARForest", url: "orpheus://song/2099631232/?autoplay=1", cover: "covers/order/Songs_inverted-world.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV16MhN6cE1j/?spm_id_from=333.788.recommend_more_video.4&trackid=web_related_0.router-related-2479604-fc7wt.1792124024800.122&vd_source=64e26223d101732a5f226369aa88ddb9" } },
+{ name: "No Way Back", artist: "Nhato", url: "orpheus://song/3426025784/?autoplay=1", cover: "covers/order/Songs_nowayback.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1RxHbzCEuT" } },
+{ name: "Just Before the Nightmare", artist: "PHONO、Salty Salt", url: "orpheus://song/2008934560/?autoplay=1", cover: "covers/order/022 Just Before the Nightmare - PHONO、Salty Salt.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1TVprzNEzR" } },
+{ name: "咲く星々", artist: "ユアミトス", url: "orpheus://song/2160766173/?autoplay=1", cover: "covers/order/Songs_saku-hoshiboshi.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1Dx4y1E7kr" } },
+{ name: "Flows With Errors", artist: "ARForest", url: "orpheus://song/2114638647/?autoplay=1", cover: "covers/order/010 Flows With Errors - 日本群星、ARForest.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1XtYJ6hECx" } },
+{ name: "Pure Ruby", artist: "SHIKI", url: "orpheus://song/22792642/?autoplay=1", cover: "covers/order/Songs_pure-ruby.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1544y1r7wo/?spm_id_from=333.788.recommend_more_video.-1&trackid=web_related_0.router-related-2479604-gjmc5.1792123288402.944&vd_source=64e26223d101732a5f226369aa88ddb9" } },
+{ name: "Aether Crest: Astral", artist: "void (Mournfinale) × 水野健治", url: "https://www.bilibili.com/video/BV1iGNhzVEA9/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", cover: "covers/order/Songs_aethercrest.jpg" },
+{ name: "チューリングの跡", artist: "Frums", url: "orpheus://song/2110353534/?autoplay=1", cover: "covers/order/076 チューリングの跡 - Frums.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1FB4y1q7mL" } },
+{ name: "Traveller's Hub", artist: "MUyu", url: "orpheus://song/2653071615/?autoplay=1", cover: "covers/order/140 Traveller's Hub - MUyu.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV15kmqYdEGA" } },
+{ name: "Crisscrosser", artist: "void", url: "orpheus://song/34002520/?autoplay=1", cover: "covers/order/107 Crisscrosser - void.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1Vs41167c3/?spm_id_from=333.788.videopod.episodes&vd_source=64e26223d101732a5f226369aa88ddb9&p=10" } },
+{ name: "驟雨の狭間", artist: "Silentroom", url: "orpheus://song/1424487649/?autoplay=1", cover: "covers/order/Cover_rainshower.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1b44y187L1" } },
 { name: "Matane", artist: "Moose", url: "https://www.bilibili.com/video/BV1TxJ6z4Edd/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", cover: "covers/order/Matane.png" },
-{ name: "Achromic Riddle", artist: "Nego_tiator", url: "https://t1.kugou.com/1muzT35G6V3", cover: "covers/order/015 Achromic Riddle - Nego_tiator.png", urls: { bilibili: "https://www.bilibili.com/video/BV1YuC2YvE14" } },
-{ name: "In the Garden", artist: "Qutabire", url: "orpheus://song/1401424218/?autoplay=1", cover: "covers/order/063 In the Garden - Qutabire.png", urls: { bilibili: "https://www.bilibili.com/video/BV12G411d7A1" } },
-{ name: "Estahv", artist: "Feryquitous", url: "orpheus://song/1413787810/?autoplay=1", cover: "covers/order/050 Estahv - Feryquitous.png", urls: { bilibili: "https://www.bilibili.com/video/BV1Mv4y1N7up" } },
-{ name: "Cobalt", artist: "KOAN Sound", url: "orpheus://song/1332440135/?autoplay=1", cover: "covers/order/044 Cobalt - KOAN Sound.png", urls: { bilibili: "https://www.bilibili.com/video/BV1Sb411a7bk" } },
-{ name: "Fracture Ray", artist: "Sakuzyo", url: "orpheus://song/1385304973/?autoplay=1", cover: "covers/order/Songs_fractureray.png", urls: { bilibili: "https://www.bilibili.com/video/BV1Ab411w7r6/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
-{ name: "Art for Rest", artist: "ARForest", url: "orpheus://song/1363298690/?autoplay=1", cover: "covers/order/238 Art for Rest - ARForest.png", urls: { bilibili: "https://www.bilibili.com/video/BV1Nt421u7FX" } },
-{ name: "Slide Into Light", artist: "ValeraP", url: "orpheus://song/2669546675/?autoplay=1", cover: "covers/order/Songs_slide-into-light.png", urls: { bilibili: "https://www.bilibili.com/video/BV1HgFNerEwe/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
-{ name: "Hark! The wyntres wynd bloweth", artist: "SeyriN", url: "orpheus://song/3331311059/?autoplay=1", cover: "covers/order/Songs_hark-bloweth.png", urls: { bilibili: "https://www.bilibili.com/video/BV1JbqmBbERk" } },
-{ name: "Abyssgazer", artist: "xi VS Sakuzyo", url: "https://www.bilibili.com/video/BV1vfBgYoETK/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", cover: "covers/order/Cover_abyssgazer.png" },
-{ name: "季曲 ~Seasons of Asia~", artist: "采风乐坊", url: "orpheus://song/4880513/?autoplay=1", cover: "covers/order/356 季曲 ~Seasons of Asia~ - 詹勋伟.png", urls: { bilibili: "https://www.bilibili.com/video/BV1Bs411W7C7" } },
-{ name: "終の舞姫 (Extended Mix)", artist: "Se-U-Ra", url: "orpheus://song/2612992589/?autoplay=1", cover: "covers/order/235 終の舞姫 (Extended Mix) - Se-U-Ra.png", urls: { bilibili: "https://www.bilibili.com/video/BV1T6UYYvEFA" } },
-{ name: "felys -final remix-", artist: "onoken", url: "orpheus://song/2079869782/?autoplay=1", cover: "covers/order/Cover_felysfinalremix.png", urls: { bilibili: "https://www.bilibili.com/video/BV1sj8YeKEqP" } },
-{ name: "Xenith", artist: "Tatsh", url: "orpheus://song/2690484211/?autoplay=1", cover: "covers/order/Songs_xenith.png", urls: { bilibili: "https://www.bilibili.com/video/BV17x9iYgEpY" } },
-{ name: "Ether Strike", artist: "Akira Complex", url: "orpheus://song/1300423182/?autoplay=1", cover: "covers/order/Songs_etherstrike.png", urls: { bilibili: "https://www.bilibili.com/video/BV1N54y1p71B/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
+{ name: "Achromic Riddle", artist: "Nego_tiator", url: "https://t1.kugou.com/1muzT35G6V3", cover: "covers/order/015 Achromic Riddle - Nego_tiator.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1YuC2YvE14" } },
+{ name: "In the Garden", artist: "Qutabire", url: "orpheus://song/1401424218/?autoplay=1", cover: "covers/order/063 In the Garden - Qutabire.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV12G411d7A1" } },
+{ name: "Estahv", artist: "Feryquitous", url: "orpheus://song/1413787810/?autoplay=1", cover: "covers/order/050 Estahv - Feryquitous.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1Mv4y1N7up" } },
+{ name: "Cobalt", artist: "KOAN Sound", url: "orpheus://song/1332440135/?autoplay=1", cover: "covers/order/044 Cobalt - KOAN Sound.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1Sb411a7bk" } },
+{ name: "Fracture Ray", artist: "Sakuzyo", url: "orpheus://song/1385304973/?autoplay=1", cover: "covers/order/Songs_fractureray.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1Ab411w7r6/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
+{ name: "Art for Rest", artist: "ARForest", url: "orpheus://song/1363298690/?autoplay=1", cover: "covers/order/238 Art for Rest - ARForest.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1Nt421u7FX" } },
+{ name: "Slide Into Light", artist: "ValeraP", url: "orpheus://song/2669546675/?autoplay=1", cover: "covers/order/Songs_slide-into-light.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1HgFNerEwe/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
+{ name: "Hark! The wyntres wynd bloweth", artist: "SeyriN", url: "orpheus://song/3331311059/?autoplay=1", cover: "covers/order/Songs_hark-bloweth.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1JbqmBbERk" } },
+{ name: "Abyssgazer", artist: "xi VS Sakuzyo", url: "https://www.bilibili.com/video/BV1vfBgYoETK/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", cover: "covers/order/Cover_abyssgazer.jpg" },
+{ name: "季曲 ~Seasons of Asia~", artist: "采风乐坊", url: "orpheus://song/4880513/?autoplay=1", cover: "covers/order/356 季曲 ~Seasons of Asia~ - 詹勋伟.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1Bs411W7C7" } },
+{ name: "終の舞姫 (Extended Mix)", artist: "Se-U-Ra", url: "orpheus://song/2612992589/?autoplay=1", cover: "covers/order/235 終の舞姫 (Extended Mix) - Se-U-Ra.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1T6UYYvEFA" } },
+{ name: "felys -final remix-", artist: "onoken", url: "orpheus://song/2079869782/?autoplay=1", cover: "covers/order/Cover_felysfinalremix.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1sj8YeKEqP" } },
+{ name: "Xenith", artist: "Tatsh", url: "orpheus://song/2690484211/?autoplay=1", cover: "covers/order/Songs_xenith.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV17x9iYgEpY" } },
+{ name: "Ether Strike", artist: "Akira Complex", url: "orpheus://song/1300423182/?autoplay=1", cover: "covers/order/Songs_etherstrike.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1N54y1p71B/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
 { name: "Der Richter", artist: "Ωμεγα", url: "orpheus://song/2655084066/?autoplay=1", cover: "covers/order/derichter.png", urls: { bilibili: "https://www.bilibili.com/video/BV11SpberEjC" } },
-{ name: "Never Say Goodbye", artist: "黒魔", url: "orpheus://song/3423746027/?autoplay=1", cover: "covers/order/Illustration.NeverSayGoodbye.黒魔.0.png", urls: { bilibili: "https://www.bilibili.com/video/BV1druw6sE1D" } },
-{ name: "Luminescence", artist: "米虾Fomiki & 初云CLoudie", url: "orpheus://song/1944086441/?autoplay=1", cover: "covers/order/Cover_luminescence.png", urls: { bilibili: "https://www.bilibili.com/video/BV12U4y1U7XE" } }
+{ name: "Never Say Goodbye", artist: "黒魔", url: "orpheus://song/3423746027/?autoplay=1", cover: "covers/order/Illustration.NeverSayGoodbye.黒魔.0.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1druw6sE1D" } },
+{ name: "Luminescence", artist: "米虾Fomiki & 初云CLoudie", url: "orpheus://song/1944086441/?autoplay=1", cover: "covers/order/Cover_luminescence.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV12U4y1U7XE" } }
 ];
 
 const PAGE_SIZE = 10;
@@ -267,7 +263,7 @@ function renderSongs() {
   gridEl.innerHTML = pageSongs.map(s => {
     const globalIndex = songs.indexOf(s);
     const cover = s.cover
-      ? `<img src="${s.cover}" alt="${s.name}" loading="lazy" onerror="this.style.display='none'">`
+      ? `<img src="${coverSrc(s.cover)}" alt="${s.name}" loading="lazy" onerror="this.style.display='none'">`
       : "";
     const hasLink = s.url || (s.urls && Object.keys(s.urls).some(k => s.urls[k]));
     const listen = hasLink
@@ -408,7 +404,7 @@ const STORE_KEY = "music-order-video";
 function readStore(key) { try { return localStorage.getItem(key); } catch { return null; } }
 function writeStore(key, val) { try { localStorage.setItem(key, val); } catch {} }
 
-let videoOn = readStore(STORE_KEY) !== "off";
+let videoOn = readStore(STORE_KEY) !== "on";
 function applyVideo() {
   document.body.classList.toggle("video-on", videoOn);
   stateEl.textContent = videoOn ? "开" : "关";
@@ -421,6 +417,32 @@ toggleEl.addEventListener("click", () => {
   applyVideo();
 });
 applyVideo();
+
+// 高画质开关（默认关）：关=压缩封面，开=原图
+const HQ_KEY = "music-hq";
+let hqMode = readStore(HQ_KEY) === "on";
+
+function coverSrc(c) {
+  if (!c) return "";
+  if (!hqMode) return c;
+  return c.replace(/^covers\//, "covers-hq/").replace(/\.jpg$/i, ".png");
+}
+
+const qualityToggle = document.getElementById("qualityToggle");
+const qualityState = qualityToggle.querySelector(".vt-state");
+
+function applyQuality() {
+  qualityToggle.setAttribute("aria-pressed", String(hqMode));
+  qualityState.textContent = hqMode ? "开" : "关";
+}
+qualityToggle.addEventListener("click", () => {
+  hqMode = !hqMode;
+  writeStore(HQ_KEY, hqMode ? "on" : "off");
+  applyQuality();
+  renderSongs();
+});
+applyQuality();
+
 
 // --- listen-picker ---
 const SERVICES = [
@@ -499,26 +521,35 @@ gridEl.addEventListener("click", e => {
 });
 // --- /listen-picker ---
 
-// 随机来一首：由当前时间生成两个值 —— 一页内的位置(0~9) 与 页码
-function timeSeed() {
-  const d = new Date();
-  return ((d.getHours() * 60 + d.getMinutes()) * 60 + d.getSeconds()) * 1000 + d.getMilliseconds();
+// 随机：洗牌袋 —— 一轮内不重复，抽完再重新洗
+let bag = [];
+let bagSig = "";
+
+function nextRandomPos(list) {
+  const sig = query + "|" + list.length;
+  if (sig !== bagSig) { bag = []; bagSig = sig; }
+  if (!bag.length) {
+    bag = list.map((_, i) => i);
+    for (let i = bag.length - 1; i > 0; i--) {
+      let j;
+      if (window.crypto && window.crypto.getRandomValues) {
+        const buf = new Uint32Array(1);
+        window.crypto.getRandomValues(buf);
+        j = buf[0] % (i + 1);
+      } else {
+        j = Math.floor(Math.random() * (i + 1));
+      }
+      const t = bag[i]; bag[i] = bag[j]; bag[j] = t;
+    }
+  }
+  return bag.pop();
 }
 
 document.getElementById("randomBtn").addEventListener("click", () => {
   const list = currentSongs();
-  const N = list.length;
-  if (!N) return;
+  if (!list.length) return;
 
-  const totalPages = Math.ceil(N / PAGE_SIZE);
-  const seed = timeSeed();
-  const slot = seed % PAGE_SIZE;                          // 一页内的位置：0~9
-  const page = Math.floor(seed / PAGE_SIZE) % totalPages; // 页码：0 ~ totalPages-1
-
-  let pos = page * PAGE_SIZE + slot;
-  if (pos >= N) pos = pos % N;
-  if (N > 1 && songs.indexOf(list[pos]) === picked) pos = (pos + 1) % N;
-
+  const pos = nextRandomPos(list);
   picked = songs.indexOf(list[pos]);
   currentPage = Math.floor(pos / PAGE_SIZE) + 1;
 
@@ -544,6 +575,18 @@ document.addEventListener("keydown", (e) => {
   if (e.key === "ArrowLeft") { e.preventDefault(); gotoPage(currentPage - 1); }
   else if (e.key === "ArrowRight") { e.preventDefault(); gotoPage(currentPage + 1); }
 });
-</script>
+
+// 场景转场：站内跳转先淡出再跳
+document.addEventListener("click", (e) => {
+  const a = e.target.closest("a[href]");
+  if (!a) return;
+  if (e.button !== 0 || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) return;
+  if (a.target === "_blank" || a.hasAttribute("download")) return;
+  const href = a.getAttribute("href");
+  if (!href || href.startsWith("#") || /^[a-z][a-z0-9+.-]*:/i.test(href)) return;
+  e.preventDefault();
+  document.body.classList.add("is-leaving");
+  setTimeout(() => { window.location.href = href; }, 200);
+});</script>
 </body>
 </html>

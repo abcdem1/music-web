@@ -69,5 +69,18 @@
   </footer>
 </div>
 
+<script>
+// 场景转场：站内跳转先淡出再跳
+document.addEventListener("click", (e) => {
+  const a = e.target.closest("a[href]");
+  if (!a) return;
+  if (e.button !== 0 || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) return;
+  if (a.target === "_blank" || a.hasAttribute("download")) return;
+  const href = a.getAttribute("href");
+  if (!href || href.startsWith("#") || /^[a-z][a-z0-9+.-]*:/i.test(href)) return;
+  e.preventDefault();
+  document.body.classList.add("is-leaving");
+  setTimeout(() => { window.location.href = href; }, 200);
+});</script>
 </body>
 </html>

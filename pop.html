@@ -34,6 +34,9 @@
       <button class="video-toggle" id="videoToggle" type="button" aria-pressed="false">
         <span>视频背景</span><span class="vt-state">关</span>
       </button>
+      <button class="video-toggle" id="qualityToggle" type="button" aria-pressed="false">
+        <span>高画质</span><span class="vt-state">关</span>
+      </button>
     </div>
   </header>
 
@@ -67,160 +70,162 @@
 <script>
 // 流行乐歌单（字段：name 歌名 / artist 曲师 / url 收听链接 / cover 封面路径）
 const songs = [
-{ name: "Animals", artist: "Maroon 5", url: "orpheus://song/28987626/?autoplay=1", cover: "covers/pop/476 Animals - Maroon 5.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1sh4y1878n" } },
-{ name: "BINGBIAN病变 (女声版)", artist: "鞠文娴", url: "https://www.bilibili.com/video/BV16W411v7cN/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", cover: "covers/pop/473 BINGBIAN病变 (女声版) - 鞠文娴.png" },
-{ name: "Without Me", artist: "Eminem", url: "orpheus://song/1299818/?autoplay=1", cover: "covers/pop/377 Without Me - Eminem.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1yu411P7qS" } },
-{ name: "Bye Bye Beautiful", artist: "Nightwish", url: "orpheus://song/21312234/?autoplay=1", cover: "covers/pop/463 Bye Bye Beautiful - Nightwish.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1jU4y1a7Gv" } },
-{ name: "Wonderful U (Demo Version)", artist: "AGA", url: "orpheus://song/406475394/?autoplay=1", cover: "covers/pop/393 Wonderful U (Demo Version) - AGA.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1in4y197nA" } },
-{ name: "Demons", artist: "Imagine Dragons", url: "orpheus://song/19945735/?autoplay=1", cover: "covers/pop/436 Demons - Imagine Dragons.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1rR4y187FL" } },
-{ name: "Welcome to Wonderland", artist: "Anson Seabra", url: "orpheus://song/552060841/?autoplay=1", cover: "covers/pop/372 Welcome to Wonderland - Anson Seabra.png" , urls: { bilibili: "https://www.bilibili.com/video/BV14S4y1a7Hc/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
-{ name: "耍把戏", artist: "阿禹ayy", url: "orpheus://song/3404023828/?autoplay=1", cover: "covers/pop/367 耍把戏 - 阿禹ayy.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1eC4y1G7J5" } },
-{ name: "ENEMY (宿敌)", artist: "Imagine Dragons、JID", url: "orpheus://song/1890494798/?autoplay=1", cover: "covers/pop/354 ENEMY (宿敌) - Imagine Dragons、JID.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1wq4y1R7DC/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
-{ name: "悬溺", artist: "葛东琪", url: "orpheus://song/1397345903/?autoplay=1", cover: "covers/pop/318 悬溺 - 葛东琪.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1JV411K7V3" } },
-{ name: "Last Ride Of The Day", artist: "Nightwish", url: "orpheus://song/21311962/?autoplay=1", cover: "covers/pop/481 Last Ride Of The Day - Nightwish.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1Ch411K7pE" } },
-{ name: "Lose Control (Explicit)", artist: "Hedley", url: "orpheus://song/36307815/?autoplay=1", cover: "covers/pop/362 Lose Control (Explicit) - Hedley.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1oF4m157HC" } },
-{ name: "Kill This Love", artist: "BLACKPINK", url: "orpheus://song/1357116203/?autoplay=1", cover: "covers/pop/394 Kill This Love - BLACKPINK.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1wg41147ND" } },
-{ name: "HandClap", artist: "Fitz and The Tantrums", url: "orpheus://song/407839677/?autoplay=1", cover: "covers/pop/457 HandClap - Fitz and The Tantrums.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1bW41137DB/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
-{ name: "Layers", artist: "SawanoHiroyuki[nZk]", url: "https://www.bilibili.com/video/BV17W411W74i/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", cover: "covers/pop/446 Layers - SawanoHiroyuki[nZk].png" },
-{ name: "明月天涯", artist: "五音Jw", url: "orpheus://song/470736413/?autoplay=1", cover: "covers/pop/475 明月天涯 - 五音Jw.png" , urls: { bilibili: "https://www.bilibili.com/video/BV11e41197Yu" } },
-{ name: "New Divide", artist: "Linkin Park", url: "orpheus://song/16686619/?autoplay=1", cover: "covers/pop/349 New Divide - Linkin Park.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1PV4y1a7cw" } },
-{ name: "secret base～君がくれたもの～ (secret base ~你给我的所有~)(10 years after Ver.)", artist: "茅野愛衣、戸松遥、早見沙織", url: "orpheus://song/27674995/?autoplay=1", cover: "covers/pop/388 secret base～君がくれたもの～ (secret base ~你给我的所有~)(10 years after Ver.) - 茅野愛衣、戸松遥、早見沙織.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1V24y1L7e6" } },
-{ name: "少年", artist: "梦然", url: "https://www.bilibili.com/video/BV1nh4y1G7qH/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", cover: "covers/pop/439 少年 - 梦然.png" },
-{ name: "琵琶行", artist: "奇然、沈谧仁", url: "orpheus://song/476513774/?autoplay=1", cover: "covers/pop/426 琵琶行 - 奇然、沈谧仁.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1TG411e7j1" } },
-{ name: "谪仙", artist: "伊格赛听、叶里", url: "https://www.bilibili.com/video/BV1LTKHzSEAv/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", cover: "covers/pop/422 谪仙 - 伊格赛听、叶里.png" },
-{ name: "マインドブランド (Mind Brand)", artist: "足首", url: "orpheus://song/438462344/?autoplay=1", cover: "covers/pop/338 マインドブランド (Mind Brand) - 足首.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1fE411g7Ym" } },
-{ name: "君以外害", artist: "电鸟个灯泡", url: "orpheus://song/567544544/?autoplay=1", cover: "covers/pop/339 君以外害 - 电鸟个灯泡.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1up411R7AR" } },
-{ name: "王者战歌", artist: "王者荣耀", url: "orpheus://song/1320098257/?autoplay=1", cover: "covers/pop/433 王者战歌 - 王者荣耀.png" , urls: { bilibili: "https://www.bilibili.com/video/BV14j411H7yR" } },
-{ name: "RISE", artist: "The Glitch Mob、Mako、The Word Alive", url: "orpheus://song/1313107065/?autoplay=1", cover: "covers/pop/374 RISE - The Glitch Mob、Mako、The Word Alive.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1EW41167Yv/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
-{ name: "Castle On A Cloud", artist: "Isabelle Allen", url: "orpheus://song/28468848/?autoplay=1", cover: "covers/pop/297 Castle On A Cloud - Isabelle Allen.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1Hf4y1u7PA/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
-{ name: "孤勇者", artist: "陈奕迅", url: "orpheus://song/1901371647/?autoplay=1", cover: "covers/pop/390 孤勇者 - 陈奕迅.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1ifUDBREF3" } },
-{ name: "Wolves", artist: "Selena Gomez、Marshmello", url: "https://www.bilibili.com/video/BV1v94y1B7NW/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", cover: "covers/pop/428 Wolves - Selena Gomez、Marshmello.png" },
-{ name: "Believer", artist: "Imagine Dragons、Lil Wayne", url: "orpheus://song/1338149101/?autoplay=1", cover: "covers/pop/438 Believer - Imagine Dragons、Lil Wayne.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1R24y1h7wi/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
-{ name: "双面燕洵 (网友改编)", artist: "王英涛", url: "orpheus://song/3362259363/?autoplay=1", cover: "covers/pop/416 双面燕洵 (网友改编) - 王英涛.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1L7411C7X6" } },
-{ name: "I Need A Doctor (Explicit)", artist: "Dr. Dre、Eminem、Skylar Grey", url: "orpheus://song/2416737/?autoplay=1", cover: "covers/pop/378 I Need A Doctor (Explicit) - Dr. Dre、Eminem、Skylar Grey.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1bG411Z7oc/?spm_id_from=333.337.search-card.all.click" } },
-{ name: "꽃 (FLOWER)", artist: "JISOO", url: "https://www.bilibili.com/video/BV1RX4y1R7w1/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", cover: "covers/pop/319 꽃 (FLOWER) - JISOO.png" },
-{ name: "初学者", artist: "薛之谦", url: "orpheus://song/412902689/?autoplay=1", cover: "covers/pop/430 初学者 - 薛之谦.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1ZV411Y7qe" } },
-{ name: "...Baby One More Time", artist: "Britney Spears", url: "orpheus://song/2187720/?autoplay=1", cover: "covers/pop/459 ...Baby One More Time - Britney Spears.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1uN411T7bC" } },
-{ name: "Electric Romeo", artist: "Immediate Music", url: "orpheus://song/33471594/?autoplay=1", cover: "covers/pop/484 Electric Romeo - Immediate Music.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1AY41147CM" } },
-{ name: "神宠传说", artist: "洛克王国", url: "orpheus://song/391613/?autoplay=1", cover: "covers/pop/440 神宠传说 - 洛克王国.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1EZiMBVE7F/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
-{ name: "看见什么吃什么", artist: "林宥嘉", url: "https://www.bilibili.com/video/BV13b411H7m9/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", cover: "covers/pop/474 看见什么吃什么 - 林宥嘉.png" },
-{ name: "Life Will Change", artist: "Lyn、アトラスサウンドチーム", url: "orpheus://song/454231736/?autoplay=1", cover: "covers/pop/333 Life Will Change - Lyn、アトラスサウンドチーム.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1cs4y1o77x/?spm_id_from=333.337.search-card.all.click" } },
-{ name: "Touhikou (逃避行)", artist: "Eve", url: "orpheus://song/2102359628/?autoplay=1", cover: "covers/pop/290 Touhikou (逃避行) - Eve.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1Re411r7Ry/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
-{ name: "超兽武装", artist: "刘罡、陈洁丽", url: "orpheus://song/31835410/?autoplay=1", cover: "covers/pop/429 超兽武装 - 刘罡、陈洁丽.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1Ys411t7Te/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
-{ name: "恋西游", artist: "TFBOYS", url: "orpheus://song/31384819/?autoplay=1", cover: "covers/pop/455 恋西游 - TFBOYS.png" , urls: { bilibili: "https://www.bilibili.com/video/BV16s41197GZ/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
-{ name: "Counting Stars", artist: "OneRepublic", url: "orpheus://song/26060065/?autoplay=1", cover: "covers/pop/465 Counting Stars - OneRepublic.png" , urls: { bilibili: "https://www.bilibili.com/video/BV14v4y1Q7nG" } },
-{ name: "Purple Passion (紫色激情)", artist: "Diana Boncheva", url: "orpheus://song/2529472/?autoplay=1", cover: "covers/pop/485 Purple Passion (紫色激情) - Diana Boncheva.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1UcQgYCEGy" } },
-{ name: "Love The Way You Lie", artist: "Eminem、Rihanna", url: "orpheus://song/1297841/?autoplay=1", cover: "covers/pop/413 Love The Way You Lie - Eminem、Rihanna.png" , urls: { bilibili: "https://www.bilibili.com/video/BV11s4y1U77T" } },
-{ name: "In The End", artist: "Linkin Park", url: "orpheus://song/1313303916/?autoplay=1", cover: "covers/pop/346 In The End - Linkin Park.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1Kk4y157ie" } },
-{ name: "霜雪千年", artist: "双笙 (陈元汐)、封茗囧菌", url: "orpheus://song/409650851/?autoplay=1", cover: "covers/pop/424 霜雪千年 - 双笙 (陈元汐)、封茗囧菌.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1AF4m1j7rK" } },
-{ name: "NO", artist: "Meghan Trainor", url: "orpheus://song/405564682/?autoplay=1", cover: "covers/pop/444 NO - Meghan Trainor.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1q24y1z7uH" } },
-{ name: "你的答案", artist: "阿冗", url: "orpheus://song/1400256289/?autoplay=1", cover: "covers/pop/460 你的答案 - 阿冗.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1aSqzYYEb8" } },
-{ name: "雾里", artist: "姚六一", url: "orpheus://song/1815085049/?autoplay=1", cover: "covers/pop/368 雾里 - 姚六一.png" , urls: { bilibili: "https://www.bilibili.com/video/BV13v411V7Da" } },
-{ name: "Time Bomb", artist: "Feint、Veela、Boyinaband", url: "orpheus://song/5067882/?autoplay=1", cover: "covers/pop/483 Time Bomb - Feint、Veela、Boyinaband.png" , urls: { bilibili: "https://www.bilibili.com/video/BV14s411o7U2/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
-{ name: "盗墓笔记·十年人间", artist: "李常超（Lao乾妈）", url: "orpheus://song/1297802566/?autoplay=1", cover: "covers/pop/380 盗墓笔记·十年人间 - 李常超（Lao乾妈）.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1824y1T7cD" } },
-{ name: "祝福", artist: "YOASOBI", url: "orpheus://song/1983292457/?autoplay=1", cover: "covers/pop/336 祝福 - YOASOBI.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1h24y1R7MN" } },
-{ name: "千本桜 (千本樱)", artist: "初音ミク、镜音リン・レン、巡音ルカ、KAITO、Haigo Meiko", url: "orpheus://song/26209798/?autoplay=1", cover: "covers/pop/470 千本桜 (千本樱) - 初音ミク、镜音リン・レン、巡音ルカ、KAITO、Haigo Meiko.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1sM4y1V7x1" } },
-{ name: "Italian Coffee Shop (Idea Extended)", artist: "3Nacria", url: "orpheus://song/506068947/?autoplay=1", cover: "covers/pop/400 Italian Coffee Shop (Idea Extended) - 3Nacria.png" , urls: { bilibili: "https://www.bilibili.com/video/BV12G4y1p7ru" } },
-{ name: "mede:mede", artist: "Reol", url: "orpheus://song/33516495/?autoplay=1", cover: "covers/pop/478 mede_mede - Reol.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1XG4y1H7yZ" } },
-{ name: "Mountain Journey", artist: "Foxtail-Grass Studio", url: "orpheus://song/730846/?autoplay=1", cover: "covers/pop/489 Mountain Journey - Foxtail-Grass Studio.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1zY4y1z7gq",kugou:"https://t1.kugou.com/1pYMN64G6V3" } },
-{ name: "采茶纪", artist: "双笙 (陈元汐)", url: "orpheus://song/2115066180/?autoplay=1", cover: "covers/pop/490 采茶纪 - 双笙 (陈元汐).png" , urls: { bilibili: "https://www.bilibili.com/video/BV1As411o7aE" } },
-{ name: "锦鲤抄", artist: "双笙 (陈元汐)", url: "orpheus://song/28188434/?autoplay=1", cover: "covers/pop/491 锦鲤抄 - 双笙 (陈元汐).png" , urls: { bilibili: "https://www.bilibili.com/video/BV1CT411t7w6" } },
-{ name: "安和桥", artist: "宋冬野", url: "orpheus://song/27646205/?autoplay=1", cover: "covers/pop/405 安和桥 - 宋冬野.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1CcgrzFEMQ" } },
-{ name: "恋愛サーキュレーション (恋爱循环)", artist: "花澤香菜", url: "orpheus://song/461011/?autoplay=1", cover: "covers/pop/432 恋愛サーキュレーション (恋爱循环) - 花澤香菜.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1wp411o733/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
-{ name: "涅槃 (Phoenix)", artist: "英雄联盟", url: "orpheus://song/1396151812/?autoplay=1", cover: "covers/pop/348 涅槃 (Phoenix) - 英雄联盟.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1jE411f7HM" } },
-{ name: "Zombie", artist: "Bad Wolves", url: "orpheus://song/572848291/?autoplay=1", cover: "covers/pop/472 Zombie - Bad Wolves.png" , urls: { bilibili: "https://www.bilibili.com/video/BV13Y411D7fJ" } },
-{ name: "Shots (remix：Broiler)", artist: "Imagine Dragons、Broiler", url: "orpheus://song/31789010/?autoplay=1", cover: "covers/pop/355 Shots (remix：Broiler) - Imagine Dragons、Broiler.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1yD4y1m7y5/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
-{ name: "Geisha", artist: "Dino Sor", url: "orpheus://song/407007703/?autoplay=1", cover: "covers/pop/480 Geisha (Original Mix) - Dino Sor.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1Ty4y117WD/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
-{ name: "Shake It Off", artist: "Taylor Swift", url: "orpheus://song/29561033/?autoplay=1", cover: "covers/pop/330 Shake It Off - Taylor Swift.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1Cz4y1Z7K4" } },
-{ name: "ジャスミン (茉莉)", artist: "牧野由依", url: "orpheus://song/610212/?autoplay=1", cover: "covers/pop/451 ジャスミン (茉莉) - 牧野由依.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1cqd5BSE2b" } },
-{ name: "不该 (with aMEI)", artist: "周杰伦、张惠妹", url: "https://www.bilibili.com/video/BV1n24y1y7L5/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", cover: "covers/pop/294 不该 (with aMEI) - 周杰伦、张惠妹.png" },
-{ name: "漠河舞厅·2022", artist: "柳爽", url: "orpheus://song/1894094482/?autoplay=1", cover: "covers/pop/313 漠河舞厅·2022 - 柳爽.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1hU4y1M7Ef" } },
-{ name: "Love Story", artist: "Taylor Swift", url: "orpheus://song/19292984/?autoplay=1", cover: "covers/pop/406 Love Story - Taylor Swift.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1myqnBYEf6" } },
-{ name: "BAD BAD", artist: "可可爱kkluv、THOME", url: "orpheus://song/2009226782/?autoplay=1", cover: "covers/pop/315 BAD BAD - 可可爱kkluv、THOME.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1WG41127KX",kugou:"https://t1.kugou.com/1pYZ127G6V3" } },
-{ name: "你曾是少年", artist: "S.H.E", url: "https://www.bilibili.com/video/BV1Bu4y1d7KJ/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", cover: "covers/pop/487 你曾是少年 - S.H.E.png" },
-{ name: "斗罗大陆", artist: "萧敬腾", url: "orpheus://song/529546384/?autoplay=1", cover: "covers/pop/468 斗罗大陆 - 萧敬腾.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1Q5411c7bw" } },
-{ name: "浮诛", artist: "张杰", url: "orpheus://song/2113439640/?autoplay=1", cover: "covers/pop/469 浮诛 - 张杰.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1As411k7at" } },
-{ name: "God knows…", artist: "平野綾", url: "orpheus://song/22826401/?autoplay=1", cover: "covers/pop/332 God knows… - 平野綾.png" , urls: { bilibili: "https://www.bilibili.com/video/BV16i4y1j7aX/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
-{ name: "STAY", artist: "The Kid LAROI、Justin Bieber", url: "https://www.bilibili.com/video/BV1nh41167Wh/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", cover: "covers/pop/376 STAY (Explicit) - The Kid LAROI、Justin Bieber.png" },
-{ name: "芒种", artist: "赵方婧", url: "orpheus://song/1369798757/?autoplay=1", cover: "covers/pop/488 芒种 - 赵方婧.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1L4411f7N1" } },
-{ name: "不可阻挡 (Burn It All Down)", artist: "英雄联盟", url: "orpheus://song/4151845/?autoplay=1", cover: "covers/pop/375 不可阻挡 (Burn It All Down) - 英雄联盟.png" , urls: { bilibili: "https://www.bilibili.com/video/BV17Q4y1C7rP" } },
-{ name: "Numb", artist: "Linkin Park", url: "orpheus://song/16686599/?autoplay=1", cover: "covers/pop/411 Numb - Linkin Park.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1Mm4y1k7We" } },
-{ name: "Bones", artist: "Imagine Dragons", url: "orpheus://song/1927389937/?autoplay=1", cover: "covers/pop/366 Bones - Imagine Dragons.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1Pg411J7MY" } },
-{ name: "Sold Out", artist: "Hawk Nelson、Jonathan Steingard", url: "https://www.bilibili.com/video/BV1btzqYoEUv/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", cover: "covers/pop/471 Sold Out - Hawk Nelson、Jonathan Steingard.png" },
-{ name: "Take My Hand", artist: "Simple Plan", url: "orpheus://song/21609195/?autoplay=1", cover: "covers/pop/341 Take My Hand - Simple Plan.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1ns4y1J76L" } },
-{ name: "Whistle", artist: "Flo Rida", url: "orpheus://song/17793698/?autoplay=1", cover: "covers/pop/431 Whistle - Flo Rida.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1YG411U7gQ" } },
-{ name: "Peter Pan Was Right", artist: "Anson Seabra", url: "orpheus://song/1942594143/?autoplay=1", cover: "covers/pop/371 Peter Pan Was Right - Anson Seabra.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1bC411J7sz" } },
-{ name: "无人之岛", artist: "任然", url: "orpheus://song/493735012/?autoplay=1", cover: "covers/pop/246 无人之岛 - 任然.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1bb4y147UC" } },
-{ name: "Blame", artist: "Calvin Harris、John Newman", url: "https://www.bilibili.com/video/BV1Rh4y197D1/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", cover: "covers/pop/386 Blame - Calvin Harris、John Newman.png" },
-{ name: "燕无歇", artist: "蒋雪儿Snow.J", url: "orpheus://song/1469825684/?autoplay=1", cover: "covers/pop/417 燕无歇 - 蒋雪儿Snow.J.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1wnSYBQE4y" } },
-{ name: "透明だった世界 (曾经透明的世界)", artist: "秦基博", url: "orpheus://song/1981814954/?autoplay=1", cover: "covers/pop/408 透明だった世界 (曾经透明的世界) - 秦基博.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1Mg41137C1/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9",kugou:"https://t1.kugou.com/1pZcv19G6V3" } },
-{ name: "LOSER", artist: "米津玄師", url: "orpheus://song/512359195/?autoplay=1", cover: "covers/pop/427 LOSER - 米津玄師.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1Y4411d7sz" } },
-{ name: "广寒宫", artist: "丸子呦", url: "orpheus://song/1362125019/?autoplay=1", cover: "covers/pop/423 广寒宫 - 丸子呦.png" , urls: { bilibili: "https://www.bilibili.com/video/BV11E411h7EA" } },
-{ name: "Revolution", artist: "The Score", url: "orpheus://song/455500439/?autoplay=1", cover: "covers/pop/452 Revolution - The Score.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1xY4y1d77N" } },
-{ name: "Despacito", artist: "Luis Fonsi、Daddy Yankee", url: "orpheus://song/1805543540/?autoplay=1", cover: "covers/pop/486 Despacito - Luis Fonsi、Daddy Yankee.png" , urls: { bilibili: "https://www.bilibili.com/video/BV11c411Q7As" } },
-{ name: "Lalalalalalalalalala (Explicit)", artist: "Mikolas Josef", url: "orpheus://song/1488312127/?autoplay=1", cover: "covers/pop/323 Lalalalalalalalalala (Explicit) - Mikolas Josef.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1RH5p64EkJ/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
-{ name: "Stitches", artist: "Shawn Mendes", url: "orpheus://song/406347117/?autoplay=1", cover: "covers/pop/335 Stitches - Shawn Mendes.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1Qw411t7jD" } },
-{ name: "嗤うマネキン (嗤笑着的人体模型)", artist: "电鸟个灯泡", url: "orpheus://song/542860205/?autoplay=1", cover: "covers/pop/327 嗤うマネキン (嗤笑着的人体模型) - 电鸟个灯泡.png" },
-{ name: "凉凉", artist: "杨宗纬、张碧晨", url: "https://www.bilibili.com/video/BV1HXUeBREik/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", cover: "covers/pop/458 凉凉 - 杨宗纬、张碧晨.png" },
-{ name: "寄明月", artist: "SING女团", url: "orpheus://song/1465948921/?autoplay=1", cover: "covers/pop/425 寄明月 - SING女团.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1Wx411M7T1" } },
-{ name: "罗生门 (Follow)", artist: "梨冻紧、Wiz_H张子豪", url: "orpheus://song/1456890009/?autoplay=1", cover: "covers/pop/314 罗生门 (Follow) - 梨冻紧、Wiz_H张子豪.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1EiGwzSEH4" } },
-{ name: "Just Like Fire", artist: "P!NK", url: "orpheus://song/409931224/?autoplay=1", cover: "covers/pop/403 Just Like Fire - P!NK.png" , urls: { bilibili: "https://www.bilibili.com/video/BV15N411a7sK" } },
-{ name: "Normal No More (Explicit)", artist: "TYSM", url: "orpheus://song/1440570723/?autoplay=1", cover: "covers/pop/365 Normal No More (Explicit) - TYSM.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1V9sEzxEJr" } },
-{ name: "Edge of My Life", artist: "Manafest", url: "orpheus://song/1434984281/?autoplay=1", cover: "covers/pop/399 Edge of My Life - Manafest.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1RY9mYPER1" } },
-{ name: "The Phoenix", artist: "Fall Out Boy", url: "orpheus://song/26199445/?autoplay=1", cover: "covers/pop/434 The Phoenix - Fall Out Boy.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1k7rPBQEf8" } },
-{ name: "喜迎新春", artist: "Jeff Broadbent", url: "orpheus://song/1320101300/?autoplay=1", cover: "covers/pop/441 喜迎新春 - Jeff Broadbent.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1HU421o7wD" } },
-{ name: "Breaking Now", artist: "From Ashes to New", url: "orpheus://song/441577395/?autoplay=1", cover: "covers/pop/402 Breaking Now (混音) - From Ashes to New.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1U54y1z7c2" } },
-{ name: "虞兮叹", artist: "闻人听書_", url: "orpheus://song/1479526505/?autoplay=1", cover: "covers/pop/419 虞兮叹 - 闻人听書_.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1dp4y1A7c3" } },
-{ name: "Lemon", artist: "米津玄師", url: "orpheus://song/536622304/?autoplay=1", cover: "covers/pop/414 Lemon - 米津玄師.png" , urls: { bilibili: "https://www.bilibili.com/video/BV164411D7vc" } },
-{ name: "他夏了夏天", artist: "苏打绿", url: "orpheus://song/2620912908/?autoplay=1", cover: "covers/pop/410 他夏了夏天 - 苏打绿.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1Ah4y187kW" } },
-{ name: "周大侠", artist: "周杰伦", url: "https://www.bilibili.com/video/BV1j44y1p77g/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", cover: "covers/pop/454 周大侠 - 周杰伦.png" },
-{ name: "風 (风)", artist: "山猿", url: "orpheus://song/32944184/?autoplay=1", cover: "covers/pop/383 風 (风) - 山猿.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1D14y1f7DR/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
-{ name: "Lose Yourself", artist: "Eminem", url: "orpheus://song/5052317/?autoplay=1", cover: "covers/pop/381 Lose Yourself - Eminem.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1e54y1e7pv/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", kugou:"https://t1.kugou.com/1pYdB48G6V3" } },
-{ name: "打上花火", artist: "米津玄師、Daoko", url: "orpheus://song/496869422/?autoplay=1", cover: "covers/pop/443 打上花火 - 米津玄師、Daoko.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1bhFHewENE" } },
-{ name: "红昭愿", artist: "音阙诗听", url: "orpheus://song/452986458/?autoplay=1", cover: "covers/pop/421 红昭愿 - 音阙诗听.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1oW411T733" } },
-{ name: "春庭雪", artist: "邓寓君(等什么君)", url: "https://www.bilibili.com/video/BV13S411w74o/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", cover: "covers/pop/420 春庭雪 - 邓寓君(等什么君).png" },
-{ name: "满天星辰不及你", artist: "ycccc", url: "https://www.bilibili.com/video/BV1wg411D7xa/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", cover: "covers/pop/387 满天星辰不及你 - ycccc.png" },
-{ name: "PLANET", artist: "ラムジ", url: "orpheus://song/812400/?autoplay=1", cover: "covers/pop/329 PLANET - ラムジ.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1k43t6mEdc" } },
-{ name: "뱅뱅뱅 (BANG BANG BANG)", artist: "BIGBANG", url: "https://www.bilibili.com/video/BV13cziY4EXp/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", cover: "covers/pop/445 뱅뱅뱅 (BANG BANG BANG) - BIGBANG.png" },
-{ name: "Goodbye Happiness", artist: "宇多田ヒカル", url: "orpheus://song/666122/?autoplay=1", cover: "covers/pop/448 Goodbye Happiness - 宇多田ヒカル.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1q5411b77h" } },
-{ name: "Faint", artist: "Linkin Park", url: "orpheus://song/16686593/?autoplay=1", cover: "covers/pop/347 Faint - Linkin Park.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1cV4y197yx" } },
-{ name: "爱人错过", artist: "告五人", url: "orpheus://song/1368754688/?autoplay=1", cover: "covers/pop/359 爱人错过 - 告五人.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1Kv4y1q7e1" } },
-{ name: "Born to Do", artist: "Steven Cooper", url: "orpheus://song/28458116/?autoplay=1", cover: "covers/pop/370 Born to Do - Steven Cooper.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1KC4y1Y7Qt" } },
-{ name: "群青", artist: "YOASOBI", url: "orpheus://song/1472480890/?autoplay=1", cover: "covers/pop/343 群青 - YOASOBI.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1Yr4y1P73q" } },
-{ name: "春娇与志明", artist: "街道办GDC、欧阳耀莹", url: "orpheus://song/2690846376/?autoplay=1", cover: "covers/pop/437 春娇与志明 - 街道办GDC、欧阳耀莹.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1WU411f7hB/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
-{ name: "Stray (游荡)", artist: "Feint", url: "orpheus://song/30394495/?autoplay=1", cover: "covers/pop/398 Stray (游荡) - Feint.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1Hh411n7tt" } },
-{ name: "unravel", artist: "TK from 凛として時雨", url: "orpheus://song/29017078/?autoplay=1", cover: "covers/pop/379 unravel - TK from 凛として時雨.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1aK5d62EVX" } },
-{ name: "Together We Fight", artist: "果味VC", url: "orpheus://song/3365902821/?autoplay=1", cover: "covers/pop/395 Together We Fight - 果味VC.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1v14y1u7jG" } },
-{ name: "棠梨煎雪", artist: "银临", url: "orpheus://song/28188427/?autoplay=1", cover: "covers/pop/392 棠梨煎雪 - 银临.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1ss4y1y7WE" } },
-{ name: "Intro", artist: "Dreamtale", url: "orpheus://song/4017240/?autoplay=1", cover: "covers/pop/464 Intro - Dreamtale.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1CY4y1y7QQ" } },
-{ name: "冠军杯", artist: "Jason Walsh", url: "orpheus://song/1320098260/?autoplay=1", cover: "covers/pop/453 冠军杯 - Jason Walsh.png" },
-{ name: "心如止水", artist: "Ice Paper", url: "orpheus://song/1349292048/?autoplay=1", cover: "covers/pop/479 心如止水 - Ice Paper.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1dM4m1U7ev" } },
-{ name: "Flashback", artist: "Beatrich", url: "https://t1.kugou.com/1nrjt8aG6V3", cover: "covers/pop/442 Flashback - Beatrich.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1ge411s7pk" } },
-{ name: "不染 (Live)", artist: "毛不易", url: "orpheus://song/536099160/?autoplay=1", cover: "covers/pop/415 不染 (Live) - 毛不易.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1G9i3BkEkA" } },
-{ name: "Natural", artist: "James Major", url: "orpheus://song/1305112651/?autoplay=1", cover: "covers/pop/364 Natural - James Major.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1X226YdEP4/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
-{ name: "牵丝戏", artist: "银临、Aki阿杰", url: "orpheus://song/30352891/?autoplay=1", cover: "covers/pop/418 牵丝戏 - 银临、Aki阿杰.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1ZL411i7YQ" } },
-{ name: "倒数", artist: "G.E.M.邓紫棋", url: "orpheus://song/1299550532/?autoplay=1", cover: "covers/pop/331 倒数 - G.E.M.邓紫棋.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1Lu4m1g7DW" } },
-{ name: "曾经你说", artist: "赵乃吉", url: "https://www.bilibili.com/video/BV1H44y1T7jc/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", cover: "covers/pop/396 曾经你说 - 赵乃吉.png" },
-{ name: "Umbrella (Matte Remix)", artist: "Ember Island、Matte", url: "orpheus://song/518904426/?autoplay=1", cover: "covers/pop/373 Umbrella (Matte Remix) - Ember Island、Matte.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1X14y1L7LP/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
-{ name: "One more time, One more chance", artist: "Eastalso", url: "orpheus://song/540968/?autoplay=1", cover: "covers/pop/391 One more time, One more chance - Eastalso.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1qs41117aQ" } },
-{ name: "带我去找夜生活", artist: "告五人", url: "orpheus://song/1410647903/?autoplay=1", cover: "covers/pop/358 带我去找夜生活 - 告五人.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1ov4y1v7AD" } },
-{ name: "CHOIR JAIL", artist: "鈴木このみ", url: "orpheus://song/655828/?autoplay=1", cover: "covers/pop/477 CHOIR JAIL - 鈴木このみ.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1zQ4y1j7yn/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
-{ name: "三生三世", artist: "张杰", url: "https://www.bilibili.com/video/BV1B6n2zPEox/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", cover: "covers/pop/467 三生三世 - 张杰.png" },
-{ name: "噩梦", artist: "TizzyT", url: "orpheus://song/1844149003/?autoplay=1", cover: "covers/pop/322 噩梦 - TizzyT.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1YBbYzqEMz" } },
-{ name: "Promise (Reprise)", artist: "山岡晃", url: "https://www.bilibili.com/video/BV1Ld4y1K7aF/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", cover: "covers/pop/357 Promise (Reprise) - 山岡晃.png" },
-{ name: "ホウキ雲 (彗星云)", artist: "RYTHEM", url: "orpheus://song/1970189185/?autoplay=1", cover: "covers/pop/449 ホウキ雲 (彗星云) - RYTHEM.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1cd4y1F7FW" } },
-{ name: "Legends Never Die (传奇永不熄)", artist: "英雄联盟、Against The Current", url: "orpheus://song/506196018/?autoplay=1", cover: "covers/pop/466 Legends Never Die (传奇永不熄) - 英雄联盟、Against The Current.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1px411M7sn/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
-{ name: "ブラッドサーキュレーター (血压循环)", artist: "ASIAN KUNG-FU GENERATION", url: "orpheus://song/523248365/?autoplay=1", cover: "covers/pop/382 ブラッドサーキュレーター (血压循环) - ASIAN KUNG-FU GENERATION.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1D8411n7Gc/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
-{ name: "only my railgun", artist: "fripSide", url: "orpheus://song/725692/?autoplay=1", cover: "covers/pop/334 only my railgun - fripSide.png" , urls: { bilibili: "https://www.bilibili.com/video/BV13Aj16dETy" } },
-{ name: "下山", artist: "徐泽（要不要买菜）", url: "orpheus://song/1404885266/?autoplay=1", cover: "covers/pop/409 下山 - 徐泽（要不要买菜）.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1La8rzqErH/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
-{ name: "怪物", artist: "YOASOBI", url: "orpheus://song/1803908863/?autoplay=1", cover: "covers/pop/351 怪物 - YOASOBI.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1bV411B7uK" } },
-{ name: "Light My Fire (TVサイズ)", artist: "KOTOKO", url: "orpheus://song/589338/?autoplay=1", cover: "covers/pop/450 Light My Fire (TVサイズ) - KOTOKO.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1Jhq5YzEwW" } },
-{ name: "I SAY YES", artist: "ICHIKO", url: "orpheus://song/583624/?autoplay=1", cover: "covers/pop/447 I SAY YES - ICHIKO.png" , urls: { bilibili: "https://www.bilibili.com/video/BV14wS7BUEBN/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
-{ name: "シルエット (剪影)", artist: "KANA-BOON", url: "orpheus://song/29750962/?autoplay=1", cover: "covers/pop/385 シルエット (剪影) - KANA-BOON.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1Yr4y1b7ub/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
-{ name: "I Want My Tears Back", artist: "Nightwish", url: "orpheus://song/1429731759/?autoplay=1", cover: "covers/pop/462 I Want My Tears Back - Nightwish.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1tm421L7Hp" } },
-{ name: "紅蓮 (红莲)", artist: "DOES", url: "orpheus://song/28757109/?autoplay=1", cover: "covers/pop/384 紅蓮 (红莲) - DOES.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1WL411v7v4" } },
-{ name: "Star Sky", artist: "Two Steps From Hell、Thomas Bergersen", url: "orpheus://song/31654478/?autoplay=1", cover: "covers/pop/482 Star Sky - Two Steps From Hell、Thomas Bergersen.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1o63TztERq" } },
-{ name: "春はゆく (春逝)", artist: "Aimer", url: "orpheus://song/1429420739/?autoplay=1", cover: "covers/pop/401 春はゆく (春逝) - Aimer.png" , urls: { bilibili: "https://www.bilibili.com/video/BV1a7411977x/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } }
+{ name: "Animals", artist: "Maroon 5", url: "orpheus://song/28987626/?autoplay=1", cover: "covers/pop/476 Animals - Maroon 5.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1sh4y1878n" } },
+{ name: "BINGBIAN病变 (女声版)", artist: "鞠文娴", url: "https://www.bilibili.com/video/BV16W411v7cN/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", cover: "covers/pop/473 BINGBIAN病变 (女声版) - 鞠文娴.jpg" },
+{ name: "Without Me", artist: "Eminem", url: "orpheus://song/1299818/?autoplay=1", cover: "covers/pop/377 Without Me - Eminem.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1yu411P7qS" } },
+{ name: "Bye Bye Beautiful", artist: "Nightwish", url: "orpheus://song/21312234/?autoplay=1", cover: "covers/pop/463 Bye Bye Beautiful - Nightwish.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1jU4y1a7Gv" } },
+{ name: "Wonderful U (Demo Version)", artist: "AGA", url: "orpheus://song/406475394/?autoplay=1", cover: "covers/pop/393 Wonderful U (Demo Version) - AGA.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1in4y197nA" } },
+{ name: "Demons", artist: "Imagine Dragons", url: "orpheus://song/19945735/?autoplay=1", cover: "covers/pop/436 Demons - Imagine Dragons.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1rR4y187FL" } },
+{ name: "Welcome to Wonderland", artist: "Anson Seabra", url: "orpheus://song/552060841/?autoplay=1", cover: "covers/pop/372 Welcome to Wonderland - Anson Seabra.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV14S4y1a7Hc/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
+{ name: "耍把戏", artist: "阿禹ayy", url: "orpheus://song/3404023828/?autoplay=1", cover: "covers/pop/367 耍把戏 - 阿禹ayy.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1eC4y1G7J5" } },
+{ name: "ENEMY (宿敌)", artist: "Imagine Dragons、JID", url: "orpheus://song/1890494798/?autoplay=1", cover: "covers/pop/354 ENEMY (宿敌) - Imagine Dragons、JID.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1wq4y1R7DC/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
+{ name: "悬溺", artist: "葛东琪", url: "orpheus://song/1397345903/?autoplay=1", cover: "covers/pop/318 悬溺 - 葛东琪.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1JV411K7V3" } },
+{ name: "Last Ride Of The Day", artist: "Nightwish", url: "orpheus://song/21311962/?autoplay=1", cover: "covers/pop/481 Last Ride Of The Day - Nightwish.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1Ch411K7pE" } },
+{ name: "Lose Control (Explicit)", artist: "Hedley", url: "orpheus://song/36307815/?autoplay=1", cover: "covers/pop/362 Lose Control (Explicit) - Hedley.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1oF4m157HC" } },
+{ name: "Kill This Love", artist: "BLACKPINK", url: "orpheus://song/1357116203/?autoplay=1", cover: "covers/pop/394 Kill This Love - BLACKPINK.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1wg41147ND" } },
+{ name: "HandClap", artist: "Fitz and The Tantrums", url: "orpheus://song/407839677/?autoplay=1", cover: "covers/pop/457 HandClap - Fitz and The Tantrums.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1bW41137DB/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
+{ name: "Layers", artist: "SawanoHiroyuki[nZk]", url: "https://www.bilibili.com/video/BV17W411W74i/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", cover: "covers/pop/446 Layers - SawanoHiroyuki[nZk].jpg" },
+{ name: "明月天涯", artist: "五音Jw", url: "orpheus://song/470736413/?autoplay=1", cover: "covers/pop/475 明月天涯 - 五音Jw.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV11e41197Yu" } },
+{ name: "New Divide", artist: "Linkin Park", url: "orpheus://song/16686619/?autoplay=1", cover: "covers/pop/349 New Divide - Linkin Park.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1PV4y1a7cw" } },
+{ name: "secret base～君がくれたもの～ (secret base ~你给我的所有~)(10 years after Ver.)", artist: "茅野愛衣、戸松遥、早見沙織", url: "orpheus://song/27674995/?autoplay=1", cover: "covers/pop/388 secret base～君がくれたもの～ (secret base ~你给我的所有~)(10 years after Ver.) - 茅野愛衣、戸松遥、早見沙織.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1V24y1L7e6" } },
+{ name: "少年", artist: "梦然", url: "https://www.bilibili.com/video/BV1nh4y1G7qH/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", cover: "covers/pop/439 少年 - 梦然.jpg" },
+{ name: "琵琶行", artist: "奇然、沈谧仁", url: "orpheus://song/476513774/?autoplay=1", cover: "covers/pop/426 琵琶行 - 奇然、沈谧仁.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1TG411e7j1" } },
+{ name: "谪仙", artist: "伊格赛听、叶里", url: "https://www.bilibili.com/video/BV1LTKHzSEAv/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", cover: "covers/pop/422 谪仙 - 伊格赛听、叶里.jpg" },
+{ name: "マインドブランド (Mind Brand)", artist: "足首", url: "orpheus://song/438462344/?autoplay=1", cover: "covers/pop/338 マインドブランド (Mind Brand) - 足首.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1fE411g7Ym" } },
+{ name: "君以外害", artist: "电鸟个灯泡", url: "orpheus://song/567544544/?autoplay=1", cover: "covers/pop/339 君以外害 - 电鸟个灯泡.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1up411R7AR" } },
+{ name: "王者战歌", artist: "王者荣耀", url: "orpheus://song/1320098257/?autoplay=1", cover: "covers/pop/433 王者战歌 - 王者荣耀.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV14j411H7yR" } },
+{ name: "RISE", artist: "The Glitch Mob、Mako、The Word Alive", url: "orpheus://song/1313107065/?autoplay=1", cover: "covers/pop/374 RISE - The Glitch Mob、Mako、The Word Alive.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1EW41167Yv/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
+{ name: "Castle On A Cloud", artist: "Isabelle Allen", url: "orpheus://song/28468848/?autoplay=1", cover: "covers/pop/297 Castle On A Cloud - Isabelle Allen.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1Hf4y1u7PA/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
+{ name: "孤勇者", artist: "陈奕迅", url: "orpheus://song/1901371647/?autoplay=1", cover: "covers/pop/390 孤勇者 - 陈奕迅.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1ifUDBREF3" } },
+{ name: "Wolves", artist: "Selena Gomez、Marshmello", url: "https://www.bilibili.com/video/BV1v94y1B7NW/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", cover: "covers/pop/428 Wolves - Selena Gomez、Marshmello.jpg" },
+{ name: "Believer", artist: "Imagine Dragons、Lil Wayne", url: "orpheus://song/1338149101/?autoplay=1", cover: "covers/pop/438 Believer - Imagine Dragons、Lil Wayne.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1R24y1h7wi/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
+{ name: "双面燕洵 (网友改编)", artist: "王英涛", url: "orpheus://song/3362259363/?autoplay=1", cover: "covers/pop/416 双面燕洵 (网友改编) - 王英涛.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1L7411C7X6" } },
+{ name: "I Need A Doctor (Explicit)", artist: "Dr. Dre、Eminem、Skylar Grey", url: "orpheus://song/2416737/?autoplay=1", cover: "covers/pop/378 I Need A Doctor (Explicit) - Dr. Dre、Eminem、Skylar Grey.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1bG411Z7oc/?spm_id_from=333.337.search-card.all.click" } },
+{ name: "꽃 (FLOWER)", artist: "JISOO", url: "https://www.bilibili.com/video/BV1RX4y1R7w1/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", cover: "covers/pop/319 꽃 (FLOWER) - JISOO.jpg" },
+{ name: "初学者", artist: "薛之谦", url: "orpheus://song/412902689/?autoplay=1", cover: "covers/pop/430 初学者 - 薛之谦.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1ZV411Y7qe" } },
+{ name: "...Baby One More Time", artist: "Britney Spears", url: "orpheus://song/2187720/?autoplay=1", cover: "covers/pop/459 ...Baby One More Time - Britney Spears.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1uN411T7bC" } },
+{ name: "Electric Romeo", artist: "Immediate Music", url: "orpheus://song/33471594/?autoplay=1", cover: "covers/pop/484 Electric Romeo - Immediate Music.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1AY41147CM" } },
+{ name: "神宠传说", artist: "洛克王国", url: "orpheus://song/391613/?autoplay=1", cover: "covers/pop/440 神宠传说 - 洛克王国.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1EZiMBVE7F/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
+{ name: "看见什么吃什么", artist: "林宥嘉", url: "https://www.bilibili.com/video/BV13b411H7m9/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", cover: "covers/pop/474 看见什么吃什么 - 林宥嘉.jpg" },
+{ name: "Life Will Change", artist: "Lyn、アトラスサウンドチーム", url: "orpheus://song/454231736/?autoplay=1", cover: "covers/pop/333 Life Will Change - Lyn、アトラスサウンドチーム.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1cs4y1o77x/?spm_id_from=333.337.search-card.all.click" } },
+{ name: "Touhikou (逃避行)", artist: "Eve", url: "orpheus://song/2102359628/?autoplay=1", cover: "covers/pop/290 Touhikou (逃避行) - Eve.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1Re411r7Ry/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
+{ name: "超兽武装", artist: "刘罡、陈洁丽", url: "orpheus://song/31835410/?autoplay=1", cover: "covers/pop/429 超兽武装 - 刘罡、陈洁丽.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1Ys411t7Te/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
+{ name: "恋西游", artist: "TFBOYS", url: "orpheus://song/31384819/?autoplay=1", cover: "covers/pop/455 恋西游 - TFBOYS.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV16s41197GZ/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
+{ name: "Counting Stars", artist: "OneRepublic", url: "orpheus://song/26060065/?autoplay=1", cover: "covers/pop/465 Counting Stars - OneRepublic.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV14v4y1Q7nG" } },
+{ name: "Purple Passion (紫色激情)", artist: "Diana Boncheva", url: "orpheus://song/2529472/?autoplay=1", cover: "covers/pop/485 Purple Passion (紫色激情) - Diana Boncheva.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1UcQgYCEGy" } },
+{ name: "Love The Way You Lie", artist: "Eminem、Rihanna", url: "orpheus://song/1297841/?autoplay=1", cover: "covers/pop/413 Love The Way You Lie - Eminem、Rihanna.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV11s4y1U77T" } },
+{ name: "In The End", artist: "Linkin Park", url: "orpheus://song/1313303916/?autoplay=1", cover: "covers/pop/346 In The End - Linkin Park.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1Kk4y157ie" } },
+{ name: "霜雪千年", artist: "双笙 (陈元汐)、封茗囧菌", url: "orpheus://song/409650851/?autoplay=1", cover: "covers/pop/424 霜雪千年 - 双笙 (陈元汐)、封茗囧菌.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1AF4m1j7rK" } },
+{ name: "NO", artist: "Meghan Trainor", url: "orpheus://song/405564682/?autoplay=1", cover: "covers/pop/444 NO - Meghan Trainor.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1q24y1z7uH" } },
+{ name: "你的答案", artist: "阿冗", url: "orpheus://song/1400256289/?autoplay=1", cover: "covers/pop/460 你的答案 - 阿冗.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1aSqzYYEb8" } },
+{ name: "雾里", artist: "姚六一", url: "orpheus://song/1815085049/?autoplay=1", cover: "covers/pop/368 雾里 - 姚六一.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV13v411V7Da" } },
+{ name: "Time Bomb", artist: "Feint、Veela、Boyinaband", url: "orpheus://song/5067882/?autoplay=1", cover: "covers/pop/483 Time Bomb - Feint、Veela、Boyinaband.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV14s411o7U2/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
+{ name: "盗墓笔记·十年人间", artist: "李常超（Lao乾妈）", url: "orpheus://song/1297802566/?autoplay=1", cover: "covers/pop/380 盗墓笔记·十年人间 - 李常超（Lao乾妈）.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1824y1T7cD" } },
+{ name: "祝福", artist: "YOASOBI", url: "orpheus://song/1983292457/?autoplay=1", cover: "covers/pop/336 祝福 - YOASOBI.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1h24y1R7MN" } },
+{ name: "千本桜 (千本樱)", artist: "初音ミク、镜音リン・レン、巡音ルカ、KAITO、Haigo Meiko", url: "orpheus://song/26209798/?autoplay=1", cover: "covers/pop/470 千本桜 (千本樱) - 初音ミク、镜音リン・レン、巡音ルカ、KAITO、Haigo Meiko.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1sM4y1V7x1" } },
+{ name: "Italian Coffee Shop (Idea Extended)", artist: "3Nacria", url: "orpheus://song/506068947/?autoplay=1", cover: "covers/pop/400 Italian Coffee Shop (Idea Extended) - 3Nacria.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV12G4y1p7ru" } },
+{ name: "mede:mede", artist: "Reol", url: "orpheus://song/33516495/?autoplay=1", cover: "covers/pop/478 mede_mede - Reol.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1XG4y1H7yZ" } },
+{ name: "Mountain Journey", artist: "Foxtail-Grass Studio", url: "orpheus://song/730846/?autoplay=1", cover: "covers/pop/489 Mountain Journey - Foxtail-Grass Studio.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1zY4y1z7gq",kugou:"https://t1.kugou.com/1pYMN64G6V3" } },
+{ name: "采茶纪", artist: "双笙 (陈元汐)", url: "orpheus://song/2115066180/?autoplay=1", cover: "covers/pop/490 采茶纪 - 双笙 (陈元汐).jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1As411o7aE" } },
+{ name: "锦鲤抄", artist: "双笙 (陈元汐)", url: "orpheus://song/28188434/?autoplay=1", cover: "covers/pop/491 锦鲤抄 - 双笙 (陈元汐).jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1CT411t7w6" } },
+{ name: "安和桥", artist: "宋冬野", url: "orpheus://song/27646205/?autoplay=1", cover: "covers/pop/405 安和桥 - 宋冬野.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1CcgrzFEMQ" } },
+{ name: "恋愛サーキュレーション (恋爱循环)", artist: "花澤香菜", url: "orpheus://song/461011/?autoplay=1", cover: "covers/pop/432 恋愛サーキュレーション (恋爱循环) - 花澤香菜.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1wp411o733/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
+{ name: "涅槃 (Phoenix)", artist: "英雄联盟", url: "orpheus://song/1396151812/?autoplay=1", cover: "covers/pop/348 涅槃 (Phoenix) - 英雄联盟.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1jE411f7HM" } },
+{ name: "Zombie", artist: "Bad Wolves", url: "orpheus://song/572848291/?autoplay=1", cover: "covers/pop/472 Zombie - Bad Wolves.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV13Y411D7fJ" } },
+{ name: "Shots (remix：Broiler)", artist: "Imagine Dragons、Broiler", url: "orpheus://song/31789010/?autoplay=1", cover: "covers/pop/355 Shots (remix：Broiler) - Imagine Dragons、Broiler.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1yD4y1m7y5/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
+{ name: "Geisha", artist: "Dino Sor", url: "orpheus://song/407007703/?autoplay=1", cover: "covers/pop/480 Geisha (Original Mix) - Dino Sor.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1Ty4y117WD/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
+{ name: "Shake It Off", artist: "Taylor Swift", url: "orpheus://song/29561033/?autoplay=1", cover: "covers/pop/330 Shake It Off - Taylor Swift.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1Cz4y1Z7K4" } },
+{ name: "ジャスミン (茉莉)", artist: "牧野由依", url: "orpheus://song/610212/?autoplay=1", cover: "covers/pop/451 ジャスミン (茉莉) - 牧野由依.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1cqd5BSE2b" } },
+{ name: "不该 (with aMEI)", artist: "周杰伦、张惠妹", url: "https://www.bilibili.com/video/BV1n24y1y7L5/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", cover: "covers/pop/294 不该 (with aMEI) - 周杰伦、张惠妹.jpg" },
+{ name: "漠河舞厅·2022", artist: "柳爽", url: "orpheus://song/1894094482/?autoplay=1", cover: "covers/pop/313 漠河舞厅·2022 - 柳爽.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1hU4y1M7Ef" } },
+{ name: "Love Story", artist: "Taylor Swift", url: "orpheus://song/19292984/?autoplay=1", cover: "covers/pop/406 Love Story - Taylor Swift.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1myqnBYEf6" } },
+{ name: "BAD BAD", artist: "可可爱kkluv、THOME", url: "orpheus://song/2009226782/?autoplay=1", cover: "covers/pop/315 BAD BAD - 可可爱kkluv、THOME.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1WG41127KX",kugou:"https://t1.kugou.com/1pYZ127G6V3" } },
+{ name: "你曾是少年", artist: "S.H.E", url: "https://www.bilibili.com/video/BV1Bu4y1d7KJ/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", cover: "covers/pop/487 你曾是少年 - S.H.E.jpg" },
+{ name: "斗罗大陆", artist: "萧敬腾", url: "orpheus://song/529546384/?autoplay=1", cover: "covers/pop/468 斗罗大陆 - 萧敬腾.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1Q5411c7bw" } },
+{ name: "浮诛", artist: "张杰", url: "orpheus://song/2113439640/?autoplay=1", cover: "covers/pop/469 浮诛 - 张杰.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1As411k7at" } },
+{ name: "God knows…", artist: "平野綾", url: "orpheus://song/22826401/?autoplay=1", cover: "covers/pop/332 God knows… - 平野綾.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV16i4y1j7aX/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
+{ name: "STAY", artist: "The Kid LAROI、Justin Bieber", url: "https://www.bilibili.com/video/BV1nh41167Wh/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", cover: "covers/pop/376 STAY (Explicit) - The Kid LAROI、Justin Bieber.jpg" },
+{ name: "芒种", artist: "赵方婧", url: "orpheus://song/1369798757/?autoplay=1", cover: "covers/pop/488 芒种 - 赵方婧.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1L4411f7N1" } },
+{ name: "不可阻挡 (Burn It All Down)", artist: "英雄联盟", url: "orpheus://song/4151845/?autoplay=1", cover: "covers/pop/375 不可阻挡 (Burn It All Down) - 英雄联盟.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV17Q4y1C7rP" } },
+{ name: "Numb", artist: "Linkin Park", url: "orpheus://song/16686599/?autoplay=1", cover: "covers/pop/411 Numb - Linkin Park.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1Mm4y1k7We" } },
+{ name: "Bones", artist: "Imagine Dragons", url: "orpheus://song/1927389937/?autoplay=1", cover: "covers/pop/366 Bones - Imagine Dragons.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1Pg411J7MY" } },
+{ name: "Sold Out", artist: "Hawk Nelson、Jonathan Steingard", url: "https://www.bilibili.com/video/BV1btzqYoEUv/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", cover: "covers/pop/471 Sold Out - Hawk Nelson、Jonathan Steingard.jpg" },
+{ name: "Take My Hand", artist: "Simple Plan", url: "orpheus://song/21609195/?autoplay=1", cover: "covers/pop/341 Take My Hand - Simple Plan.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1ns4y1J76L" } },
+{ name: "Whistle", artist: "Flo Rida", url: "orpheus://song/17793698/?autoplay=1", cover: "covers/pop/431 Whistle - Flo Rida.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1YG411U7gQ" } },
+{ name: "Peter Pan Was Right", artist: "Anson Seabra", url: "orpheus://song/1942594143/?autoplay=1", cover: "covers/pop/371 Peter Pan Was Right - Anson Seabra.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1bC411J7sz" } },
+{ name: "无人之岛", artist: "任然", url: "orpheus://song/493735012/?autoplay=1", cover: "covers/pop/246 无人之岛 - 任然.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1bb4y147UC" } },
+{ name: "Blame", artist: "Calvin Harris、John Newman", url: "https://www.bilibili.com/video/BV1Rh4y197D1/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", cover: "covers/pop/386 Blame - Calvin Harris、John Newman.jpg" },
+{ name: "燕无歇", artist: "蒋雪儿Snow.J", url: "orpheus://song/1469825684/?autoplay=1", cover: "covers/pop/417 燕无歇 - 蒋雪儿Snow.J.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1wnSYBQE4y" } },
+{ name: "透明だった世界 (曾经透明的世界)", artist: "秦基博", url: "orpheus://song/1981814954/?autoplay=1", cover: "covers/pop/408 透明だった世界 (曾经透明的世界) - 秦基博.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1Mg41137C1/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9",kugou:"https://t1.kugou.com/1pZcv19G6V3" } },
+{ name: "LOSER", artist: "米津玄師", url: "orpheus://song/512359195/?autoplay=1", cover: "covers/pop/427 LOSER - 米津玄師.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1Y4411d7sz" } },
+{ name: "广寒宫", artist: "丸子呦", url: "orpheus://song/1362125019/?autoplay=1", cover: "covers/pop/423 广寒宫 - 丸子呦.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV11E411h7EA" } },
+{ name: "Revolution", artist: "The Score", url: "orpheus://song/455500439/?autoplay=1", cover: "covers/pop/452 Revolution - The Score.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1xY4y1d77N" } },
+{ name: "Despacito", artist: "Luis Fonsi、Daddy Yankee", url: "orpheus://song/1805543540/?autoplay=1", cover: "covers/pop/486 Despacito - Luis Fonsi、Daddy Yankee.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV11c411Q7As" } },
+{ name: "Lalalalalalalalalala (Explicit)", artist: "Mikolas Josef", url: "orpheus://song/1488312127/?autoplay=1", cover: "covers/pop/323 Lalalalalalalalalala (Explicit) - Mikolas Josef.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1RH5p64EkJ/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
+{ name: "Stitches", artist: "Shawn Mendes", url: "orpheus://song/406347117/?autoplay=1", cover: "covers/pop/335 Stitches - Shawn Mendes.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1Qw411t7jD" } },
+{ name: "嗤うマネキン (嗤笑着的人体模型)", artist: "电鸟个灯泡", url: "orpheus://song/542860205/?autoplay=1", cover: "covers/pop/327 嗤うマネキン (嗤笑着的人体模型) - 电鸟个灯泡.jpg" },
+{ name: "凉凉", artist: "杨宗纬、张碧晨", url: "https://www.bilibili.com/video/BV1HXUeBREik/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", cover: "covers/pop/458 凉凉 - 杨宗纬、张碧晨.jpg" },
+{ name: "寄明月", artist: "SING女团", url: "orpheus://song/1465948921/?autoplay=1", cover: "covers/pop/425 寄明月 - SING女团.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1Wx411M7T1" } },
+{ name: "罗生门 (Follow)", artist: "梨冻紧、Wiz_H张子豪", url: "orpheus://song/1456890009/?autoplay=1", cover: "covers/pop/314 罗生门 (Follow) - 梨冻紧、Wiz_H张子豪.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1EiGwzSEH4" } },
+{ name: "Just Like Fire", artist: "P!NK", url: "orpheus://song/409931224/?autoplay=1", cover: "covers/pop/403 Just Like Fire - P!NK.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV15N411a7sK" } },
+{ name: "Normal No More (Explicit)", artist: "TYSM", url: "orpheus://song/1440570723/?autoplay=1", cover: "covers/pop/365 Normal No More (Explicit) - TYSM.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1V9sEzxEJr" } },
+{ name: "Edge of My Life", artist: "Manafest", url: "orpheus://song/1434984281/?autoplay=1", cover: "covers/pop/399 Edge of My Life - Manafest.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1RY9mYPER1" } },
+{ name: "The Phoenix", artist: "Fall Out Boy", url: "orpheus://song/26199445/?autoplay=1", cover: "covers/pop/434 The Phoenix - Fall Out Boy.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1k7rPBQEf8" } },
+{ name: "喜迎新春", artist: "Jeff Broadbent", url: "orpheus://song/1320101300/?autoplay=1", cover: "covers/pop/441 喜迎新春 - Jeff Broadbent.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1HU421o7wD" } },
+{ name: "Breaking Now", artist: "From Ashes to New", url: "orpheus://song/441577395/?autoplay=1", cover: "covers/pop/402 Breaking Now (混音) - From Ashes to New.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1U54y1z7c2" } },
+{ name: "虞兮叹", artist: "闻人听書_", url: "orpheus://song/1479526505/?autoplay=1", cover: "covers/pop/419 虞兮叹 - 闻人听書_.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1dp4y1A7c3" } },
+{ name: "Lemon", artist: "米津玄師", url: "orpheus://song/536622304/?autoplay=1", cover: "covers/pop/414 Lemon - 米津玄師.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV164411D7vc" } },
+{ name: "他夏了夏天", artist: "苏打绿", url: "orpheus://song/2620912908/?autoplay=1", cover: "covers/pop/410 他夏了夏天 - 苏打绿.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1Ah4y187kW" } },
+{ name: "周大侠", artist: "周杰伦", url: "https://www.bilibili.com/video/BV1j44y1p77g/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", cover: "covers/pop/454 周大侠 - 周杰伦.jpg" },
+{ name: "風 (风)", artist: "山猿", url: "orpheus://song/32944184/?autoplay=1", cover: "covers/pop/383 風 (风) - 山猿.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1D14y1f7DR/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
+{ name: "Lose Yourself", artist: "Eminem", url: "orpheus://song/5052317/?autoplay=1", cover: "covers/pop/381 Lose Yourself - Eminem.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1e54y1e7pv/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", kugou:"https://t1.kugou.com/1pYdB48G6V3" } },
+{ name: "打上花火", artist: "米津玄師、Daoko", url: "orpheus://song/496869422/?autoplay=1", cover: "covers/pop/443 打上花火 - 米津玄師、Daoko.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1bhFHewENE" } },
+{ name: "红昭愿", artist: "音阙诗听", url: "orpheus://song/452986458/?autoplay=1", cover: "covers/pop/421 红昭愿 - 音阙诗听.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1oW411T733" } },
+{ name: "春庭雪", artist: "邓寓君(等什么君)", url: "https://www.bilibili.com/video/BV13S411w74o/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", cover: "covers/pop/420 春庭雪 - 邓寓君(等什么君).jpg" },
+{ name: "满天星辰不及你", artist: "ycccc", url: "https://www.bilibili.com/video/BV1wg411D7xa/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", cover: "covers/pop/387 满天星辰不及你 - ycccc.jpg" },
+{ name: "PLANET", artist: "ラムジ", url: "orpheus://song/812400/?autoplay=1", cover: "covers/pop/329 PLANET - ラムジ.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1k43t6mEdc" } },
+{ name: "뱅뱅뱅 (BANG BANG BANG)", artist: "BIGBANG", url: "https://www.bilibili.com/video/BV13cziY4EXp/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", cover: "covers/pop/445 뱅뱅뱅 (BANG BANG BANG) - BIGBANG.jpg" },
+{ name: "Goodbye Happiness", artist: "宇多田ヒカル", url: "orpheus://song/666122/?autoplay=1", cover: "covers/pop/448 Goodbye Happiness - 宇多田ヒカル.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1q5411b77h" } },
+{ name: "Faint", artist: "Linkin Park", url: "orpheus://song/16686593/?autoplay=1", cover: "covers/pop/347 Faint - Linkin Park.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1cV4y197yx" } },
+{ name: "爱人错过", artist: "告五人", url: "orpheus://song/1368754688/?autoplay=1", cover: "covers/pop/359 爱人错过 - 告五人.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1Kv4y1q7e1" } },
+{ name: "Born to Do", artist: "Steven Cooper", url: "orpheus://song/28458116/?autoplay=1", cover: "covers/pop/370 Born to Do - Steven Cooper.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1KC4y1Y7Qt" } },
+{ name: "群青", artist: "YOASOBI", url: "orpheus://song/1472480890/?autoplay=1", cover: "covers/pop/343 群青 - YOASOBI.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1Yr4y1P73q" } },
+{ name: "春娇与志明", artist: "街道办GDC、欧阳耀莹", url: "orpheus://song/2690846376/?autoplay=1", cover: "covers/pop/437 春娇与志明 - 街道办GDC、欧阳耀莹.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1WU411f7hB/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
+{ name: "Stray (游荡)", artist: "Feint", url: "orpheus://song/30394495/?autoplay=1", cover: "covers/pop/398 Stray (游荡) - Feint.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1Hh411n7tt" } },
+{ name: "unravel", artist: "TK from 凛として時雨", url: "orpheus://song/29017078/?autoplay=1", cover: "covers/pop/379 unravel - TK from 凛として時雨.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1aK5d62EVX" } },
+{ name: "Together We Fight", artist: "果味VC", url: "orpheus://song/3365902821/?autoplay=1", cover: "covers/pop/395 Together We Fight - 果味VC.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1v14y1u7jG" } },
+{ name: "棠梨煎雪", artist: "银临", url: "orpheus://song/28188427/?autoplay=1", cover: "covers/pop/392 棠梨煎雪 - 银临.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1ss4y1y7WE" } },
+{ name: "Intro", artist: "Dreamtale", url: "orpheus://song/4017240/?autoplay=1", cover: "covers/pop/464 Intro - Dreamtale.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1CY4y1y7QQ" } },
+{ name: "冠军杯", artist: "Jason Walsh", url: "orpheus://song/1320098260/?autoplay=1", cover: "covers/pop/453 冠军杯 - Jason Walsh.jpg" },
+{ name: "心如止水", artist: "Ice Paper", url: "orpheus://song/1349292048/?autoplay=1", cover: "covers/pop/479 心如止水 - Ice Paper.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1dM4m1U7ev" } },
+{ name: "Flashback", artist: "Beatrich", url: "https://t1.kugou.com/1nrjt8aG6V3", cover: "covers/pop/442 Flashback - Beatrich.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1ge411s7pk" } },
+{ name: "不染 (Live)", artist: "毛不易", url: "orpheus://song/536099160/?autoplay=1", cover: "covers/pop/415 不染 (Live) - 毛不易.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1G9i3BkEkA" } },
+{ name: "Natural", artist: "James Major", url: "orpheus://song/1305112651/?autoplay=1", cover: "covers/pop/364 Natural - James Major.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1X226YdEP4/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
+{ name: "牵丝戏", artist: "银临、Aki阿杰", url: "orpheus://song/30352891/?autoplay=1", cover: "covers/pop/418 牵丝戏 - 银临、Aki阿杰.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1ZL411i7YQ" } },
+{ name: "倒数", artist: "G.E.M.邓紫棋", url: "orpheus://song/1299550532/?autoplay=1", cover: "covers/pop/331 倒数 - G.E.M.邓紫棋.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1Lu4m1g7DW" } },
+{ name: "曾经你说", artist: "赵乃吉", url: "https://www.bilibili.com/video/BV1H44y1T7jc/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", cover: "covers/pop/396 曾经你说 - 赵乃吉.jpg" },
+{ name: "Umbrella (Matte Remix)", artist: "Ember Island、Matte", url: "orpheus://song/518904426/?autoplay=1", cover: "covers/pop/373 Umbrella (Matte Remix) - Ember Island、Matte.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1X14y1L7LP/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
+{ name: "One more time, One more chance", artist: "Eastalso", url: "orpheus://song/540968/?autoplay=1", cover: "covers/pop/391 One more time, One more chance - Eastalso.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1qs41117aQ" } },
+{ name: "带我去找夜生活", artist: "告五人", url: "orpheus://song/1410647903/?autoplay=1", cover: "covers/pop/358 带我去找夜生活 - 告五人.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1ov4y1v7AD" } },
+{ name: "CHOIR JAIL", artist: "鈴木このみ", url: "orpheus://song/655828/?autoplay=1", cover: "covers/pop/477 CHOIR JAIL - 鈴木このみ.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1zQ4y1j7yn/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
+{ name: "三生三世", artist: "张杰", url: "https://www.bilibili.com/video/BV1B6n2zPEox/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", cover: "covers/pop/467 三生三世 - 张杰.jpg" },
+{ name: "噩梦", artist: "TizzyT", url: "orpheus://song/1844149003/?autoplay=1", cover: "covers/pop/322 噩梦 - TizzyT.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1YBbYzqEMz" } },
+{ name: "Promise (Reprise)", artist: "山岡晃", url: "https://www.bilibili.com/video/BV1Ld4y1K7aF/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9", cover: "covers/pop/357 Promise (Reprise) - 山岡晃.jpg" },
+{ name: "ホウキ雲 (彗星云)", artist: "RYTHEM", url: "orpheus://song/1970189185/?autoplay=1", cover: "covers/pop/449 ホウキ雲 (彗星云) - RYTHEM.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1cd4y1F7FW" } },
+{ name: "Legends Never Die (传奇永不熄)", artist: "英雄联盟、Against The Current", url: "orpheus://song/506196018/?autoplay=1", cover: "covers/pop/466 Legends Never Die (传奇永不熄) - 英雄联盟、Against The Current.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1px411M7sn/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
+{ name: "ブラッドサーキュレーター (血压循环)", artist: "ASIAN KUNG-FU GENERATION", url: "orpheus://song/523248365/?autoplay=1", cover: "covers/pop/382 ブラッドサーキュレーター (血压循环) - ASIAN KUNG-FU GENERATION.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1D8411n7Gc/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
+{ name: "only my railgun", artist: "fripSide", url: "orpheus://song/725692/?autoplay=1", cover: "covers/pop/334 only my railgun - fripSide.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV13Aj16dETy" } },
+{ name: "下山", artist: "徐泽（要不要买菜）", url: "orpheus://song/1404885266/?autoplay=1", cover: "covers/pop/409 下山 - 徐泽（要不要买菜）.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1La8rzqErH/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
+{ name: "怪物", artist: "YOASOBI", url: "orpheus://song/1803908863/?autoplay=1", cover: "covers/pop/351 怪物 - YOASOBI.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1bV411B7uK" } },
+{ name: "Light My Fire (TVサイズ)", artist: "KOTOKO", url: "orpheus://song/589338/?autoplay=1", cover: "covers/pop/450 Light My Fire (TVサイズ) - KOTOKO.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1Jhq5YzEwW" } },
+{ name: "I SAY YES", artist: "ICHIKO", url: "orpheus://song/583624/?autoplay=1", cover: "covers/pop/447 I SAY YES - ICHIKO.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV14wS7BUEBN/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
+{ name: "シルエット (剪影)", artist: "KANA-BOON", url: "orpheus://song/29750962/?autoplay=1", cover: "covers/pop/385 シルエット (剪影) - KANA-BOON.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1Yr4y1b7ub/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
+{ name: "I Want My Tears Back", artist: "Nightwish", url: "orpheus://song/1429731759/?autoplay=1", cover: "covers/pop/462 I Want My Tears Back - Nightwish.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1tm421L7Hp" } },
+{ name: "紅蓮 (红莲)", artist: "DOES", url: "orpheus://song/28757109/?autoplay=1", cover: "covers/pop/384 紅蓮 (红莲) - DOES.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1WL411v7v4" } },
+{ name: "Star Sky", artist: "Two Steps From Hell、Thomas Bergersen", url: "orpheus://song/31654478/?autoplay=1", cover: "covers/pop/482 Star Sky - Two Steps From Hell、Thomas Bergersen.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1o63TztERq" } },
+{ name: "春はゆく (春逝)", artist: "Aimer", url: "orpheus://song/1429420739/?autoplay=1", cover: "covers/pop/401 春はゆく (春逝) - Aimer.jpg" , urls: { bilibili: "https://www.bilibili.com/video/BV1a7411977x/?spm_id_from=333.337.search-card.all.click&vd_source=64e26223d101732a5f226369aa88ddb9" } },
+{ name: "Inst.", artist: "勇士的信仰", url: "https://t1.kugou.com/1mvcZ34G6V3", cover: "covers/pop/389 Inst. - Aurora.jpg" },
+{ name: "Dragon Rider", artist: "Two Steps From Hell", url: "orpheus://song/19554998/?autoplay=1", cover: "covers/pop/369 Dragon Rider - Two Steps From Hell.jpg", urls: { bilibili: "https://www.bilibili.com/video/BV1pt411s7dh" } }
 ];
 
 const PAGE_SIZE = 10;
@@ -279,7 +284,7 @@ function renderSongs() {
   gridEl.innerHTML = pageSongs.map(s => {
     const globalIndex = songs.indexOf(s);
     const cover = s.cover
-      ? `<img src="${s.cover}" alt="${s.name}" loading="lazy" onerror="this.style.display='none'">`
+      ? `<img src="${coverSrc(s.cover)}" alt="${s.name}" loading="lazy" onerror="this.style.display='none'">`
       : "";
     const hasLink = s.url || (s.urls && Object.keys(s.urls).some(k => s.urls[k]));
     const listen = hasLink
@@ -420,7 +425,7 @@ const STORE_KEY = "music-pop-video";
 function readStore(key) { try { return localStorage.getItem(key); } catch { return null; } }
 function writeStore(key, val) { try { localStorage.setItem(key, val); } catch {} }
 
-let videoOn = readStore(STORE_KEY) === "on";
+let videoOn = readStore(STORE_KEY) !== "on";
 function applyVideo() {
   document.body.classList.toggle("video-on", videoOn);
   stateEl.textContent = videoOn ? "开" : "关";
@@ -433,6 +438,32 @@ toggleEl.addEventListener("click", () => {
   applyVideo();
 });
 applyVideo();
+
+// 高画质开关（默认关）：关=压缩封面，开=原图
+const HQ_KEY = "music-hq";
+let hqMode = readStore(HQ_KEY) === "on";
+
+function coverSrc(c) {
+  if (!c) return "";
+  if (!hqMode) return c;
+  return c.replace(/^covers\//, "covers-hq/").replace(/\.jpg$/i, ".png");
+}
+
+const qualityToggle = document.getElementById("qualityToggle");
+const qualityState = qualityToggle.querySelector(".vt-state");
+
+function applyQuality() {
+  qualityToggle.setAttribute("aria-pressed", String(hqMode));
+  qualityState.textContent = hqMode ? "开" : "关";
+}
+qualityToggle.addEventListener("click", () => {
+  hqMode = !hqMode;
+  writeStore(HQ_KEY, hqMode ? "on" : "off");
+  applyQuality();
+  renderSongs();
+});
+applyQuality();
+
 
 // --- listen-picker ---
 const SERVICES = [
@@ -511,26 +542,35 @@ gridEl.addEventListener("click", e => {
 });
 // --- /listen-picker ---
 
-// 随机来一首：由当前时间生成两个值 —— 一页内的位置(0~9) 与 页码
-function timeSeed() {
-  const d = new Date();
-  return ((d.getHours() * 60 + d.getMinutes()) * 60 + d.getSeconds()) * 1000 + d.getMilliseconds();
+// 随机：洗牌袋 —— 一轮内不重复，抽完再重新洗
+let bag = [];
+let bagSig = "";
+
+function nextRandomPos(list) {
+  const sig = query + "|" + list.length;
+  if (sig !== bagSig) { bag = []; bagSig = sig; }
+  if (!bag.length) {
+    bag = list.map((_, i) => i);
+    for (let i = bag.length - 1; i > 0; i--) {
+      let j;
+      if (window.crypto && window.crypto.getRandomValues) {
+        const buf = new Uint32Array(1);
+        window.crypto.getRandomValues(buf);
+        j = buf[0] % (i + 1);
+      } else {
+        j = Math.floor(Math.random() * (i + 1));
+      }
+      const t = bag[i]; bag[i] = bag[j]; bag[j] = t;
+    }
+  }
+  return bag.pop();
 }
 
 document.getElementById("randomBtn").addEventListener("click", () => {
   const list = currentSongs();
-  const N = list.length;
-  if (!N) return;
+  if (!list.length) return;
 
-  const totalPages = Math.ceil(N / PAGE_SIZE);
-  const seed = timeSeed();
-  const slot = seed % PAGE_SIZE;                          // 一页内的位置：0~9
-  const page = Math.floor(seed / PAGE_SIZE) % totalPages; // 页码：0 ~ totalPages-1
-
-  let pos = page * PAGE_SIZE + slot;
-  if (pos >= N) pos = pos % N;
-  if (N > 1 && songs.indexOf(list[pos]) === picked) pos = (pos + 1) % N;
-
+  const pos = nextRandomPos(list);
   picked = songs.indexOf(list[pos]);
   currentPage = Math.floor(pos / PAGE_SIZE) + 1;
 
@@ -556,6 +596,18 @@ document.addEventListener("keydown", (e) => {
   if (e.key === "ArrowLeft") { e.preventDefault(); gotoPage(currentPage - 1); }
   else if (e.key === "ArrowRight") { e.preventDefault(); gotoPage(currentPage + 1); }
 });
-</script>
+
+// 场景转场：站内跳转先淡出再跳
+document.addEventListener("click", (e) => {
+  const a = e.target.closest("a[href]");
+  if (!a) return;
+  if (e.button !== 0 || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) return;
+  if (a.target === "_blank" || a.hasAttribute("download")) return;
+  const href = a.getAttribute("href");
+  if (!href || href.startsWith("#") || /^[a-z][a-z0-9+.-]*:/i.test(href)) return;
+  e.preventDefault();
+  document.body.classList.add("is-leaving");
+  setTimeout(() => { window.location.href = href; }, 200);
+});</script>
 </body>
 </html>
