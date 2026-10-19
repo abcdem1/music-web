@@ -425,7 +425,7 @@ const STORE_KEY = "music-pop-video";
 function readStore(key) { try { return localStorage.getItem(key); } catch { return null; } }
 function writeStore(key, val) { try { localStorage.setItem(key, val); } catch {} }
 
-let videoOn = readStore(STORE_KEY) !== "on";
+let videoOn = readStore(STORE_KEY) === "on";
 function applyVideo() {
   document.body.classList.toggle("video-on", videoOn);
   stateEl.textContent = videoOn ? "开" : "关";
